@@ -211,7 +211,8 @@ p {
     width: 80%;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: stretch;
+    /* Allunga i figli per farli della stessa altezza */
     gap: 24px;
     margin-top: 40px;
 }
@@ -226,6 +227,7 @@ p {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border: 5px solid #000;
     margin-bottom: 20px;
+    height: auto;
 }
 
 .reviewForm h3,

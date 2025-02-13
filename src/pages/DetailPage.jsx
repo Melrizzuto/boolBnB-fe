@@ -153,7 +153,7 @@ const DetailPage = () => {
 
                 {/* CONTACT FORM */}
                 <section className={styles.contactHost} ref={contactFormRef}>
-                    <h3>Contact the Host</h3>
+                    <h3>Contact Host</h3>
                     <FormContact />
                 </section>
             </div>

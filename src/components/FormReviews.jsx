@@ -1,25 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import styles from "./FormContact&Reviews.module.css";
 import { FaStar } from "react-icons/fa";
 
 const initialData = {
-    name: "",
-    email: "",
+    user_name: "",
+    user_email: "",
     rating: 0,
-    check_in: "",
-    check_out: "",
-    comment: "",
+    start_date: "",
+    end_date: "",
+    review_text: "",
 };
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 function FormReviews() {
+    const [reviews, setReviews] = useState([]);
     const [formData, setFormData] = useState(initialData);
     const [errorMessage, setErrorMessage] = useState({});
     const [successMessage, setSuccessMessage] = useState("");
     const { slug } = useParams();
+
+    const defaultPlaceholders = {
+        user_name: "Enter your full name",
+        user_email: "Enter your email",
+        review_text: "Write your review",
+        start_date: "YYYY-MM-DD",
+        end_date: "YYYY-MM-DD"
+    };
+
+    const hoverPlaceholders = {
+        user_name: "Min. 3 characters",
+        user_email: "Email must contain '@'",
+        review_text: "Message must be between 10 and 500 characters",
+        start_date: "Enter a valid date (YYYY-MM-DD)",
+        end_date: "Must be after check-in"
+    };
+
+    const [placeholders, setPlaceholders] = useState(defaultPlaceholders);
 
     function handleInput(e) {
         const { name, value } = e.target;
@@ -28,6 +47,33 @@ function FormReviews() {
             [name]: value || "",
         }));
     }
+
+    function handleMouseEnter(e) {
+        const field = e.target.name;
+        setPlaceholders(prev => ({
+            ...prev,
+            [field]: hoverPlaceholders[field]
+        }));
+    }
+
+    function handleMouseLeave(e) {
+        const field = e.target.name;
+        setPlaceholders(prev => ({
+            ...prev,
+            [field]: defaultPlaceholders[field]
+        }));
+    }
+    // Funzione per recuperare le recensioni dal backend
+    function fetchReviews() {
+        axios.get(`${apiUrl}/properties/${slug}/reviews`)
+            .then(response => setReviews(response.data)) // Aggiorna le recensioni nello stato
+            .catch(error => console.error("Errore nel recupero delle recensioni:", error));
+    }
+
+    // Recupera le recensioni al caricamento della pagina
+    useEffect(() => {
+        fetchReviews();
+    }, [slug]);
 
     function handleStarClick(rating) {
         setFormData(prev => ({
@@ -47,34 +93,44 @@ function FormReviews() {
         return regex.test(date);
     }
 
-    function validateEmail(email) {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
+    function validateForm() {
+        let errors = {};
+        const today = new Date().toISOString().split("T")[0];
+
+        if (!formData.user_name || formData.user_name.length < 3) {
+            errors.user_name = "Name must be at least 3 characters";
+        }
+        if (!formData.user_email.includes("@")) {
+            errors.user_email = "Email must contain '@'";
+        }
+        if (formData.review_text.length < 10 || formData.review_text.length > 500) {
+            errors.review_text = "Message must be between 10 and 500 characters";
+        }
+        if (!validateDate(formData.start_date) || formData.start_date > today) {
+            errors.start_date = "Check-in date must be today or earlier";
+        }
+        if (!validateDate(formData.end_date) || formData.end_date <= formData.start_date) {
+            errors.end_date = "Check-out must be after check-in";
+        }
+        if (formData.rating < 1 || formData.rating > 5) {
+            errors.rating = "Please select a rating between 1 and 5";
+        }
+        setErrorMessage(errors);
+        return Object.keys(errors).length === 0;
     }
+
 
     function handleSubmit(e) {
         e.preventDefault();
         if (!validateForm()) return;
 
-        const newReview = {
-            user_name: formData.name,
-            user_email: formData.email,
-            review_text: formData.comment,
-            rating: formData.rating,
-            start_date: formData.check_in,
-            end_date: formData.check_out,
-        };
-
-        console.log("📤 Sending review:", newReview);
-
-        axios
-            .post(`${apiUrl}/properties/${slug}/reviews`, newReview, {
-                headers: { "Content-Type": "application/json" },
-            })
+        axios.post(`${apiUrl}/properties/${slug}/reviews`, formData, {
+            headers: { "Content-Type": "application/json" }
+        })
             .then(() => {
-                console.log("✅ Review sent successfully!");
-                setSuccessMessage("Review submitted successfully! ✅");
+                setSuccessMessage("Review submitted successfully!");
                 setFormData(initialData);
+                fetchReviews(); // Aggiorna le recensioni dopo l'invio
                 setTimeout(() => setSuccessMessage(""), 3000);
             })
             .catch((err) => {
@@ -82,96 +138,67 @@ function FormReviews() {
                 setErrorMessage({ general: "Error submitting the review. Please try again." });
             });
     }
-
-    function validateForm() {
-        let errorMessage = {};
-        const today = new Date().toISOString().split("T")[0];
-        const checkInDate = formData.check_in;
-        const checkOutDate = formData.check_out;
-
-        if (!formData.name || formData.name.trim().length < 3) {
-            errorMessage.name = "Name must be at least 3 characters";
-        }
-        if (!validateEmail(formData.email)) {
-            errorMessage.email = "Enter a valid email";
-        }
-        if (!formData.rating || formData.rating < 1 || formData.rating > 5) {
-            errorMessage.rating = "Please select a rating";
-        }
-        if (!validateDate(checkInDate) || checkInDate > today) {
-            errorMessage.check_in = "Invalid date format or must be in the past";
-        }
-        if (!validateDate(checkOutDate) || checkInDate >= checkOutDate) {
-            errorMessage.check_out = "Invalid date format or must be after check-in";
-        }
-        if (!formData.comment || formData.comment.length > 200) {
-            errorMessage.comment = "Review must be less than 200 characters";
-        }
-
-        if (Object.keys(errorMessage).length > 0) {
-            setErrorMessage(errorMessage);
-            return false;
-        }
-
-        return true;
-    }
-
     return (
         <form className={styles.formContainer} onSubmit={handleSubmit}>
             {successMessage && <p className={styles.successMessage}>{successMessage}</p>}
             {errorMessage.general && <p className={styles.errorMessage}>{errorMessage.general}</p>}
+            {/* Prima riga: Nome ed Email */}
+            <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                    <label htmlFor="user_name">Name</label>
+                    <input
+                        type="text"
+                        name="user_name"
+                        value={formData.user_name}
+                        placeholder={placeholders.user_name}
+                        onChange={handleInput}
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                    />
+                    {errorMessage.user_name && <p className={styles.errorMessage}>{errorMessage.user_name}</p>}
+                </div>
 
-            <div>
-                <label htmlFor="name">Name</label>
-                <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    placeholder="Enter your full name"
-                    onChange={handleInput}
-                />
-                {errorMessage.name && <p className={styles.errorMessage}>{errorMessage.name}</p>}
+                <div className={styles.formGroup}>
+                    <label htmlFor="user_email">Email</label>
+                    <input
+                        type="email"
+                        name="user_email"
+                        value={formData.user_email}
+                        placeholder={placeholders.user_email}
+                        onChange={handleInput}
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                    />
+                    {errorMessage.user_email && <p className={styles.errorMessage}>{errorMessage.user_email}</p>}
+                </div>
             </div>
 
-            <div>
-                <label htmlFor="email">Email</label>
-                <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    placeholder="Enter your email"
-                    onChange={handleInput}
-                />
-                {errorMessage.email && <p className={styles.errorMessage}>{errorMessage.email}</p>}
+            {/* Seconda riga: Check-in e Check-out */}
+            <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                    <label htmlFor="start_date">Check-in</label>
+                    <input
+                        type="date"
+                        name="start_date"
+                        value={formData.start_date}
+                        onChange={handleInput}
+                    />
+                    {errorMessage.start_date && <p className={styles.errorMessage}>{errorMessage.start_date}</p>}
+                </div>
+
+                <div className={styles.formGroup}>
+                    <label htmlFor="end_date">Check-out</label>
+                    <input
+                        type="date"
+                        name="end_date"
+                        value={formData.end_date}
+                        onChange={handleInput}
+                    />
+                    {errorMessage.end_date && <p className={styles.errorMessage}>{errorMessage.end_date}</p>}
+                </div>
             </div>
 
-            <div>
-                <label htmlFor="check_in">Check-in</label>
-                <input
-                    type="date"
-                    name="check_in"
-                    value={formData.check_in}
-                    onChange={handleInput}
-                    placeholder="YYYY/MM/DD"
-                    lang="en"
-                />
-                {errorMessage.check_in && <p className={styles.errorMessage}>{errorMessage.check_in}</p>}
-            </div>
 
-            <div>
-                <label htmlFor="check_out">Check-out</label>
-                <input
-                    type="date"
-                    name="check_out"
-                    value={formData.check_out}
-                    onChange={handleInput}
-                    placeholder="YYYY/MM/DD"
-                    lang="en"
-                />
-                {errorMessage.check_out && <p className={styles.errorMessage}>{errorMessage.check_out}</p>}
-            </div>
-
-            {/* Rating con le stelle */}
             <div>
                 <label>Rating</label>
                 <div className={styles.starRating}>
@@ -186,16 +213,17 @@ function FormReviews() {
                 {errorMessage.rating && <p className={styles.errorMessage}>{errorMessage.rating}</p>}
             </div>
 
-            {/* Textarea per la recensione */}
             <div>
-                <label htmlFor="comment">Leave your review</label>
+                <label htmlFor="review_text">Leave your review</label>
                 <textarea
-                    name="comment"
-                    value={formData.comment}
+                    name="review_text"
+                    value={formData.review_text}
+                    placeholder={placeholders.review_text}
                     onChange={handleInput}
-                    placeholder="Write your review"
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
                 />
-                {errorMessage.comment && <p className={styles.errorMessage}>{errorMessage.comment}</p>}
+                {errorMessage.review_text && <p className={styles.errorMessage}>{errorMessage.review_text}</p>}
             </div>
 
             <div className={styles.buttonContainer}>

@@ -4,6 +4,7 @@ import axios from "axios";
 import styles from "./FormContact&Reviews.module.css";
 
 const initialData = {
+    sender_name: "",
     sender_email: "",
     message_text: ""
 };
@@ -12,95 +13,122 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 function FormContact() {
     const [formData, setFormData] = useState(initialData);
+    const [isFormValid, setIsFormValid] = useState(null);
     const [errorMessage, setErrorMessage] = useState({});
-    const [successMessage, setSuccessMessage] = useState("");
     const { slug } = useParams();
+
+    const [placeholders, setPlaceholders] = useState({
+        sender_email: "Enter your email",
+        message_text: "Enter your message"
+    });
 
     function handleInput(e) {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        setFormData({ ...formData, [name]: value });
+    }
+
+    function handleMouseEnter(field) {
+        setPlaceholders((prev) => ({
+            ...prev,
+            [field]: getHoverPlaceholder(field)
+        }));
+    }
+
+    function handleMouseLeave(field) {
+        setPlaceholders((prev) => ({
+            ...prev,
+            [field]: getDefaultPlaceholder(field)
+        }));
+    }
+
+    function getHoverPlaceholder(field) {
+        const hints = {
+            sender_email: "Email must contain '@'",
+            message_text: "Message must be between 10 and 500 characters"
+        };
+        return hints[field] || placeholders[field];
+    }
+
+    function getDefaultPlaceholder(field) {
+        return {
+            sender_email: "Enter your email",
+            message_text: "Enter your message"
+        }[field];
     }
 
     function handleSubmit(e) {
         e.preventDefault();
         if (!validateForm()) return;
 
-        const newMessage = {
+        const newEmail = {
+            property_id: slug,
             sender_email: formData.sender_email,
             message_text: formData.message_text,
         };
 
-        console.log("📤 Sending message:", newMessage);
+        console.log("\ud83d\udce4 Sending review:", newEmail);
 
         axios
-            .post(`${apiUrl}/contact/${slug}`, newMessage) // ✅ Route corretta
+            .post(`${apiUrl}/properties/${slug}/contact`, newEmail)
             .then(() => {
-                console.log("✅ Message sent successfully!");
-                setSuccessMessage("Message sent successfully! ✅");
+                console.log("Email sent successfully!");
                 setFormData(initialData);
-                setTimeout(() => setSuccessMessage(""), 3000);
             })
             .catch((err) => {
-                console.error("❌ Error sending message:", err.response ? err.response.data : err.message);
-                setErrorMessage({ general: "Error sending message. Please try again." });
+                console.log("Error sending email", err);
             });
     }
 
     function validateForm() {
         let errorMessage = {};
-
+        if (!formData.sender_name || formData.sender_name.trim().length < 3) {
+            errorMessage.sender_name = "Enter a valid name";
+        }
         if (!formData.sender_email || !/\S+@\S+\.\S+/.test(formData.sender_email)) {
             errorMessage.sender_email = "Enter a valid email";
         }
         if (!formData.message_text || formData.message_text.trim().length < 10 || formData.message_text.length > 500) {
-            errorMessage.message_text = "Message must be between 10 and 500 characters";
+            errorMessage.message_text = "Enter a valid message";
         }
-
         if (Object.keys(errorMessage).length > 0) {
             setErrorMessage(errorMessage);
             return false;
         }
 
+        setIsFormValid(true);
         return true;
-    }
-
-    function handleReset() {
-        setFormData(initialData);
-        setErrorMessage({});
-        setSuccessMessage("");
     }
 
     return (
         <form className={styles.formContainer} onSubmit={handleSubmit}>
-            {successMessage && <p className={styles.successMessage}>{successMessage}</p>}
-            {errorMessage.general && <p className={styles.errorMessage}>{errorMessage.general}</p>}
-
             <div className={styles.formGroup}>
                 <label htmlFor="sender_email">Email</label>
                 <input
                     type="email"
                     name="sender_email"
                     value={formData.sender_email}
-                    placeholder="Enter your email"
+                    placeholder={placeholders.sender_email}
                     onChange={handleInput}
+                    onMouseEnter={() => handleMouseEnter("sender_email")}
+                    onMouseLeave={() => handleMouseLeave("sender_email")}
                 />
                 {errorMessage.sender_email && <p className={styles.errorMessage}>{errorMessage.sender_email}</p>}
             </div>
-
             <div className={styles.formGroup}>
                 <label htmlFor="message_text">What do you need?</label>
                 <textarea
                     name="message_text"
                     value={formData.message_text}
-                    placeholder="Enter your message"
+                    placeholder={placeholders.message_text}
                     onChange={handleInput}
-                />
+                    onMouseEnter={() => handleMouseEnter("message_text")}
+                    onMouseLeave={() => handleMouseLeave("message_text")}
+                ></textarea>
                 {errorMessage.message_text && <p className={styles.errorMessage}>{errorMessage.message_text}</p>}
             </div>
-
             <div className={styles.buttonContainer}>
                 <button className={styles.submitButton} type="submit">Send</button>
-                <button className={styles.resetButton} type="button" onClick={handleReset}>Reset</button>
+                <button className={styles.resetButton} type="reset">Reset</button>
             </div>
         </form>
     );
