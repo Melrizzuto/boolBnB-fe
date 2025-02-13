@@ -15,7 +15,9 @@ const AdvancedSearchPage = () => {
         propertyType: ''
     });
     const [properties, setProperties] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [loadingPropertyTypes, setLoadingPropertyTypes] = useState(true);
+    const [isSearching, setIsSearching] = useState(false);
     const navigate = useNavigate();
 
     // Fetch property types
@@ -26,6 +28,8 @@ const AdvancedSearchPage = () => {
                 setPropertyTypes(data.types);
             } catch (error) {
                 console.error('Errore nel recupero delle tipologie:', error);
+            } finally {
+                setLoadingPropertyTypes(false);
             }
         };
         fetchPropertyTypes();
@@ -34,32 +38,63 @@ const AdvancedSearchPage = () => {
     // Search properties
     useEffect(() => {
         const searchProperties = async () => {
+            setIsSearching(true);  // Inizia la ricerca
+
+            const params = {
+                searchTerm: searchTerm.trim(),
+                ...filters
+            };
+
+            // Se non ci sono né term di ricerca né filtri, non fare la ricerca
+            if (searchTerm.trim() === "" && Object.values(filters).every(x => x === "" || x === null)) {
+                setProperties([]);
+                setIsSearching(false);  // Fine della ricerca, nessun risultato
+                return;
+            }
+
             try {
                 setLoading(true);
-                const params = {
-                    searchTerm,
-                    ...filters
-                };
-
                 const { data } = await axios.get('http://localhost:3000/properties', { params });
                 setProperties(data.results);
             } catch (error) {
                 console.error('Errore nella ricerca:', error);
             } finally {
                 setLoading(false);
+                setIsSearching(false);  // Fine della ricerca
             }
         };
 
-        const timer = setTimeout(searchProperties, 300);
-        return () => clearTimeout(timer);
+        // Avvia la ricerca non appena i filtri o il termine di ricerca cambiano
+        searchProperties();
     }, [searchTerm, filters]);
+
+    // Funzione per svuotare tutti i campi (sia barra di ricerca che filtri)
+    const handleResetAll = () => {
+        setSearchTerm('');  // Resetta la barra di ricerca
+        setFilters({
+            minRooms: '',
+            minBeds: '',
+            minBathrooms: '',
+            propertyType: ''
+        });  // Resetta i filtri
+    };
 
     return (
         <div className="container">
             <h1 className="my-4">Ricerca Avanzata</h1>
             
             <div className="mb-4">
-                <SearchBar onSearch={setSearchTerm} />
+                {/* Bottone per svuotare tutti i campi */}
+                <button onClick={handleResetAll} className="btn btn-secondary mb-4">
+                    Svuota tutti i campi
+                </button>
+            </div>
+
+            <div className="mb-4">
+                <SearchBar 
+                    onSearch={setSearchTerm} 
+                    searchTerm={searchTerm}  // Passa searchTerm come prop al componente SearchBar
+                />
             </div>
 
             <div className="row mb-4 g-3">
@@ -69,8 +104,10 @@ const AdvancedSearchPage = () => {
                 />
             </div>
 
-            {loading ? (
-                <p>Caricamento risultati...</p>
+            {loading || isSearching ? (
+                <p>Caricamento risultati...</p>  // Durante il caricamento o la ricerca
+            ) : (searchTerm.trim() === "" && Object.values(filters).every(x => x === "" || x === null) && !loadingPropertyTypes) ? (
+                <p>Dove vuoi alloggiare?</p>  // Se la ricerca è vuota e nessun filtro è applicato
             ) : properties.length > 0 ? (
                 <div className="row d-flex justify-content-center">
                     {properties.map(property => (
@@ -83,7 +120,7 @@ const AdvancedSearchPage = () => {
                     ))}
                 </div>
             ) : (
-                <p>Nessun immobile trovato</p>
+                <p>Nessun immobile trovato</p>  // Quando non ci sono risultati dopo la ricerca
             )}
         </div>
     );

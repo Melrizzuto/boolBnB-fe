@@ -1,32 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const SearchBar = ({ onSearch }) => {
-    const [searchTerm, setSearchTerm] = useState("");
+const SearchBar = ({ onSearch, searchTerm }) => {
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            onSearch(searchTerm.trim());
+        }, 300);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSearch(searchTerm.trim());
-    };
+        return () => clearTimeout(timer);
+    }, [searchTerm, onSearch]);
 
     return (
-        <form onSubmit={handleSubmit} className="search-bar">
-            <div className="input-group">
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Cerca città o indirizzo..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    aria-label="Cerca immobili"
-                />
-                <button 
-                    type="submit" 
-                    className="btn btn-primary"
-                >
-                    Cerca
-                </button>
-            </div>
-        </form>
+        <div className="input-group">
+            <input
+                type="text"
+                className="form-control"
+                placeholder="Cerca città o indirizzo..."
+                value={searchTerm}  // Collegato allo stato searchTerm del componente parent
+                onChange={(e) => onSearch(e.target.value)} // Quando cambia, aggiorna lo stato nel componente principale
+                aria-label="Cerca immobili"
+            />
+        </div>
     );
 };
 
