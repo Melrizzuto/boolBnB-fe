@@ -5,18 +5,27 @@ const SearchBar = ({ onSearch }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSearch(searchTerm);
+        onSearch(searchTerm.trim());
     };
 
     return (
         <form onSubmit={handleSubmit} className="search-bar">
-            <input
-                type="text"
-                placeholder="Cerca città o indirizzo..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <button type="submit">Search</button>
+            <div className="input-group">
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Cerca città o indirizzo..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    aria-label="Cerca immobili"
+                />
+                <button 
+                    type="submit" 
+                    className="btn btn-primary"
+                >
+                    Cerca
+                </button>
+            </div>
         </form>
     );
 };
