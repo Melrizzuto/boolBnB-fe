@@ -47,7 +47,11 @@ ol {
     list-style: none;
 }
 
-/* classe debug */
+/* classe debug
 .debug {
     border: 1px solid red;
+} */
+
+main {
+    margin-top: 70px;
 }
