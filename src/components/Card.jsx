@@ -1,4 +1,7 @@
 import { Link } from "react-router-dom";
+import styles from "./Card.module.css";
+
+import HeartRatingComponent from "./HeartRatingComponent";
 
 export default function Card({ property }) {
 
@@ -7,15 +10,16 @@ export default function Card({ property }) {
 
 
     return (
-        <div className="card" style={{ width: "18rem", height: "370px" }}>
+        <div className={`card ${styles.cardItem}`} style={{ width: "18rem", height: "400px" }}>
             <img src={imageUrl} className="card-img-top"
                 alt={property.title}
                 style={{ objectFit: "cover", height: "200px" }}
             />
             <div className="card-body" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                 <h5 className="card-title text-center">{property.title}</h5>
-                <p className="fw-lighter">{property.total_votes} Likes</p>
-                <Link to={`/properties/${property.slug}`} className="btn btn-primary">See more</Link>
+                <HeartRatingComponent />
+                {/* <p className="fw-lighter">{property.likes} Likes</p> */}
+                <Link to={`/properties/${property.slug}`} className={` ${styles.btnGreen}`}>See more</Link>
             </div>
         </div >
     )
