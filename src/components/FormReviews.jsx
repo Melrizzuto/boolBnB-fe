@@ -25,7 +25,7 @@ function FormReviews() {
         const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,
-            [name]: value || "", // ✅ Evita problemi di `undefined`
+            [name]: value || "",
         }));
     }
 
@@ -43,12 +43,12 @@ function FormReviews() {
     }
 
     function validateDate(date) {
-        const regex = /^\d{4}-\d{2}-\d{2}$/; // ✅ Ora il formato è YYYY-MM-DD
+        const regex = /^\d{4}-\d{2}-\d{2}$/;
         return regex.test(date);
     }
 
     function validateEmail(email) {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // ✅ Regex per email valida
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
     }
 
@@ -85,7 +85,7 @@ function FormReviews() {
 
     function validateForm() {
         let errorMessage = {};
-        const today = new Date().toISOString().split("T")[0];  // ✅ Data odierna `YYYY-MM-DD`
+        const today = new Date().toISOString().split("T")[0];
         const checkInDate = formData.check_in;
         const checkOutDate = formData.check_out;
 
