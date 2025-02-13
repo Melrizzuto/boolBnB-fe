@@ -15,9 +15,12 @@ export default function Homepage() {
         // effettuo richiesta GET per ottenere i dati dal server
         axios.get(`http://localhost:3000/properties`)
             .then((response) => {
+                // ordino le properties in base al numero di likes
+                const sortedProperties = response.data.results.sort((a, b) => b.total_votes - a.total_votes);
+
                 // quando ottengo i dati aggiorno lo stato delle properties
-                setProperties(response.data.results);
-                console.log(response.data);
+                setProperties(sortedProperties);
+                console.log(sortedProperties);
                 setLoading(false);
             })
             .catch((error) => {
