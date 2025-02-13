@@ -6,10 +6,12 @@
     align-items: center;
 }
 
+/* Link */
 a {
     color: var(--border-color);
 }
 
+/* Logo */
 .logo {
     font-size: 1.5rem;
     font-weight: bold;
@@ -18,12 +20,16 @@ a {
 .logoLink {
     text-decoration: none;
     color: #222;
+    transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
+/* Hover effect sul logo */
 .logoLink:hover {
     color: #4C40F7;
+    transform: scale(1.05);
 }
 
+/* Container icone social */
 .socialIcons {
     display: flex;
     gap: 15px;
@@ -31,16 +37,21 @@ a {
     flex-grow: 1;
 }
 
+/* Icone social */
 .icon {
     font-size: 1.5rem;
     color: #333;
     text-decoration: none;
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
+/* Effetto scale sulle icone al passaggio del mouse */
 .icon:hover {
     color: #4C40F7;
+    transform: scale(1.2);
 }
 
+/* Testo del footer */
 .footerText {
     text-align: right;
     font-size: 0.9rem;
