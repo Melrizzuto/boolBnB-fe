@@ -28,7 +28,6 @@ const DetailPage = () => {
     const { slug } = useParams();
     const [property, setProperty] = useState(null);
     const [reviews, setReviews] = useState([]);
-    const [likes, setLikes] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -36,7 +35,6 @@ const DetailPage = () => {
         axios.get(`http://localhost:3000/properties/${slug}`)
             .then(response => {
                 setProperty(response.data.property);
-                setLikes(response.data.property.likes);
                 setLoading(false);
             })
             .catch(() => {
@@ -52,17 +50,6 @@ const DetailPage = () => {
                 setReviews([]);
             });
     }, [slug]);
-
-    // Funzione per gestire il like
-    const handleLike = () => {
-        axios.post(`http://localhost:3000/properties/${slug}/like`)
-            .then(response => {
-                setLikes(response.data.property.likes); // Sincronizza lo stato locale con il backend
-            })
-            .catch(error => {
-                console.error("Error updating likes:", error);
-            });
-    };
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
@@ -94,12 +81,12 @@ const DetailPage = () => {
             {/* PROPERTY DETAILS */}
             <section className={styles.detailsSection}>
                 <div className={styles.info}>
-                    <h1>{property.title}</h1>
+                    <h1 className="text-center">{property.title}</h1>
 
                     {/* Likes Interaction */}
-                    <div className={styles.likesContainer} onClick={handleLike}>
-                        <FontAwesomeIcon icon={faHeart} className={styles.heartIcon} />
-                        <span className={styles.likesCount}>{likes} is your favorite {property.property_type} ?</span>
+                    <div className={styles.likesContainer}>
+                        <p className={styles.likesCount}>is your favorite {property.property_type} ?</p>
+                        <p> <FontAwesomeIcon icon={faHeart} className={styles.heartIcon} /></p>
                     </div>
 
                     <p className={styles.description}>{property.description}</p>
