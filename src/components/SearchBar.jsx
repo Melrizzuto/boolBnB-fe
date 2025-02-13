@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const SearchBar = ({ onSearch }) => {
     const [searchTerm, setSearchTerm] = useState("");
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSearch(searchTerm.trim());
-    };
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            onSearch(searchTerm.trim());
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [searchTerm, onSearch]);
+
 
     return (
-        <form onSubmit={handleSubmit} className="search-bar">
             <div className="input-group">
                 <input
                     type="text"
@@ -19,14 +22,7 @@ const SearchBar = ({ onSearch }) => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                     aria-label="Cerca immobili"
                 />
-                <button 
-                    type="submit" 
-                    className="btn btn-primary"
-                >
-                    Cerca
-                </button>
             </div>
-        </form>
     );
 };
 
