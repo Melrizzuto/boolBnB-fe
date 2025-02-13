@@ -15,7 +15,7 @@ export default function Card({ property }) {
             />
             <div className="card-body" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                 <h5 className="card-title text-center">{property.title}</h5>
-                <p className="fw-lighter">{property.total_votes} Likes</p>
+                <p className="fw-lighter">{property.likes} Likes</p>
                 <Link to={`/properties/${property.slug}`} className={` ${styles.btnGreen}`}>See more</Link>
             </div>
         </div >
