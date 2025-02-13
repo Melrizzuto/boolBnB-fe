@@ -166,8 +166,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    flex-direction: column;
+    gap: 2px;
     cursor: pointer;
+    margin-top: 2px;
+}
+
+p {
     margin-top: 10px;
 }
 
@@ -179,12 +184,13 @@
 
 .heartIcon {
     font-size: 22px;
-    color: var(--heart-color);
+
     transition: transform 0.2s ease-in-out;
 }
 
 .heartIcon:hover {
     transform: scale(1.2);
+    color: var(--heart-color);
 }
 
 /* FORM RECENSIONI & CONTACT */
