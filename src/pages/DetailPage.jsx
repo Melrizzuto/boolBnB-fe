@@ -104,7 +104,11 @@ const DetailPage = () => {
                     </ul>
                 </div>
             </section>
+            <div>
 
+
+
+            </div>
             {/* REVIEWS */}
             <section className={styles.reviewsSection}>
                 <h2>Reviews</h2>
@@ -121,18 +125,19 @@ const DetailPage = () => {
                     <p>No reviews available.</p>
                 )}
             </section>
+            <div className={styles.formsContainer}>
+                {/* REVIEW FORM */}
+                <section className={styles.reviewForm}>
+                    <h3>Leave a Review</h3>
+                    {/* COMPONENTE FORM REVIEWS */}
+                </section>
 
-            {/* REVIEW FORM */}
-            <section className={styles.reviewForm}>
-                <h3>Leave a Review</h3>
-                {/* COMPONENTE FORM REVIEWS */}
-            </section>
-
-            {/* CONTACT FORM */}
-            <section className={styles.contactHost}>
-                <h3>Contact the Host</h3>
-                <FormContact />
-            </section>
+                {/* CONTACT FORM */}
+                <section className={styles.contactHost}>
+                    <h3>Contact the Host</h3>
+                    <FormContact />
+                </section>
+            </div>
 
         </div>
     );

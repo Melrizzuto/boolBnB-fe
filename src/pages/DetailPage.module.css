@@ -184,7 +184,6 @@ p {
 
 .heartIcon {
     font-size: 22px;
-
     transition: transform 0.2s ease-in-out;
 }
 
@@ -194,9 +193,18 @@ p {
 }
 
 /* FORM RECENSIONI & CONTACT */
+.formsContainer {
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    margin-top: 40px;
+}
+
 .reviewForm,
 .contactHost {
-    width: 80%;
+    flex: 1;
     background: #fff;
     padding: 30px;
     margin-top: 20px;
@@ -211,4 +219,12 @@ p {
     margin-bottom: 15px;
     text-align: center;
 
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+    .formsContainer {
+        flex-direction: column;
+    }
 }
