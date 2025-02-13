@@ -16,8 +16,7 @@ export default function Jumbotron({ scrollToCards }) {
                     View All
                 </button>
 
-                {/* DA AGGIORNARE CON IL PATH PER LA PAGINA DI RICERCA AVANZATA */}
-                <Link to="/" className={styles.btnGreen}>
+                <Link to="/search" className={styles.btnGreen}>
                     Find Your Perfect Home
                 </Link>
 

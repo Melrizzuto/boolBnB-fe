@@ -1,0 +1,44 @@
+.footer {
+    background-color: #E7FE78;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.logoLink {
+    text-decoration: none;
+    color: #222;
+}
+
+.logoLink:hover {
+    color: #4C40F7;
+}
+
+.socialIcons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.icon {
+    font-size: 1.5rem;
+    color: #333;
+    text-decoration: none;
+}
+
+.icon:hover {
+    color: #4C40F7;
+}
+
+.footerText {
+    text-align: right;
+    font-size: 0.9rem;
+    color: #222;
+}
