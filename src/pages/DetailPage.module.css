@@ -116,34 +116,95 @@
 }
 
 /* Stile per la descrizione della proprietà */
+
+/* Lato sx - Descrizione */
 .description {
-    font-size: 36px;
-    font-weight: 500;
-    line-height: 1.8;
-    color: #333;
-    padding: 0 27px;
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1.7;
+    color: #222;
+    padding: 0 30px;
     width: 100%;
-    max-width: 700px;
-    margin: 40px auto;
+    max-width: 750px;
+    margin: 50px auto;
+    text-align: center;
 }
 
+/* Contenitore dei like */
+.likesContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.likesContainer:hover {
+    transform: scale(1.05);
+}
+
+/* Testo generico */
+p {
+    margin-top: 12px;
+    font-size: 16px;
+    color: #555;
+}
+
+/* Numero di like */
+.likesCount {
+    font-size: 20px;
+    font-weight: bold;
+    color: #222;
+}
+
+/* Icona del cuore */
+.heartIcon {
+    font-size: 24px;
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.heartIcon:hover {
+    transform: scale(1.3);
+    color: var(--heart-color, #ff4d4d);
+}
+
+/* lato dx */
 .specs {
     flex: 1;
-    background: #f5f5f5;
-    padding: 20px;
-    border-radius: 10px;
+    background: #f9f9f9;
+    padding: 24px;
+    border-radius: 12px;
     border: 3px solid #000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.specs:hover {
+    transform: scale(1.02);
 }
 
 .specs ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .specs li {
-    padding: 10px 0;
-    font-size: 18px;
+    display: flex;
     align-items: center;
+    gap: 10px;
+    padding: 12px 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.specs li:last-child {
+    border-bottom: none;
 }
 
 /* SEZIONE RECENSIONI */
@@ -180,35 +241,6 @@
     margin-bottom: 10px;
 }
 
-.likesContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 2px;
-    cursor: pointer;
-    margin-top: 2px;
-}
-
-p {
-    margin-top: 10px;
-}
-
-.likesCount {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-}
-
-.heartIcon {
-    font-size: 22px;
-    transition: transform 0.2s ease-in-out;
-}
-
-.heartIcon:hover {
-    transform: scale(1.2);
-    color: var(--heart-color);
-}
 
 /* FORM RECENSIONI & CONTACT */
 .formsContainer {
