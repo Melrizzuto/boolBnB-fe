@@ -99,7 +99,7 @@ const DetailPage = () => {
                     {/* Likes Interaction */}
                     <div className={styles.likesContainer} onClick={handleLike}>
                         <FontAwesomeIcon icon={faHeart} className={styles.heartIcon} />
-                        <span className={styles.likesCount}>{likes} is your preferite {property.property_type} ?</span>
+                        <span className={styles.likesCount}>{likes} is your favorite {property.property_type} ?</span>
                     </div>
 
                     <p className={styles.description}>{property.description}</p>

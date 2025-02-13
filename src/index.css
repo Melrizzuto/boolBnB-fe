@@ -1,10 +1,35 @@
 /* General style */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Edu+TAS+Beginner:wght@400..700&family=Gochi+Hand&family=Imprima&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Righteous&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Plus Jakarta Sans", serif;
 }
+
+/* palette di colori */
+:root {
+    --primary-color: #E7FE78;
+    /* Giallo chiaro */
+    --secondary-color: #4C40F7;
+    /* Blu */
+    --accent-color: #ff7b72;
+    /* Rosso chiaro */
+    --background-color: #F7F7F7;
+    /* Sfondo principale */
+    --text-color: #222;
+    /* Testo principale */
+    --border-color: #000;
+    /* Bordo nero */
+    --card-background: #fff;
+    /* Sfondo delle card */
+    --section-background: #d4c2e7;
+    /* Lilla */
+    --specs-background: #f5f5f5;
+    /* Grigio chiaro */
+    --heart-color: red;
+    /* Cuore delle recensioni */
+}
+
+
 
 /* reset */
 * {
