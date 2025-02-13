@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Header.module.css";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaHome } from "react-icons/fa";
 
 function Header() {
     const [scrolled, setScrolled] = useState(false);
@@ -25,16 +25,17 @@ function Header() {
 
                 {/* NAVBAR */}
                 <nav className={styles.nav}>
-
                 </nav>
 
-                {/* PULSANTE RICERCA AVANZATA */}
-                <Link to="/search" className={styles.searchButton}>
-                    <FaSearch /> Search your fav
-                </Link>
-                {/* <Link to="/search" className={styles.searchButton}>
-                    <FaAd /> add news
-                </Link> */}
+                {/* PULSANTI A DESTRA */}
+                <div className={styles.buttonsContainer}>
+                    <Link to="/search" className={styles.searchButton}>
+                        <FaSearch /> Search your fav
+                    </Link>
+                    <Link to="/add" className={styles.addButton}>
+                        <FaHome /> Add new
+                    </Link>
+                </div>
             </div>
         </header>
     );
