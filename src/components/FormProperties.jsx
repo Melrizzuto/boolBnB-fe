@@ -186,12 +186,12 @@ function FormProperties() {
             </div>
             <div>
                 <label htmlFor="description">Descrizione immobile</label>
-                <input
-                    type="text"
+                <textarea
                     name="description"
                     value={formData.description}
                     onChange={handleInput}
-                />
+                >
+                </textarea>
                 {errorMessage.description && <p style={{ color: 'red' }}>{errorMessage.description}</p>}
             </div>
             <div>
