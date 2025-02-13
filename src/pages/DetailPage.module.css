@@ -139,6 +139,17 @@
 }
 
 /* SEZIONE RECENSIONI */
+.starsContainer {
+    display: flex;
+    gap: 3px;
+}
+
+.star {
+    color: gold;
+    font-size: 13px;
+    margin: 2px;
+}
+
 .reviewsSection {
     width: 80%;
     background: var(--section-background);

@@ -1,29 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import styles from "./DetailPage.module.css";
 import FormContact from "../components/FormContact";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBed, faBath, faRulerCombined, faHouse, faMapMarkerAlt, faStar, faStarHalfStroke, faStar as faStarEmpty, faEnvelope, faLandmark, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { FaStar, FaRegStar } from "react-icons/fa";
+import { faBed, faBath, faRulerCombined, faHouse, faMapMarkerAlt, faEnvelope, faLandmark, faHeart } from '@fortawesome/free-solid-svg-icons';
 
-// Funzione per generare stelle dinamiche in base al rating
-const renderStars = (rating) => {
-    const fullStars = Math.floor(rating);
-    const halfStar = rating % 1 !== 0;
-    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+// Function to draw stars dynamically
+function drawStars(rating) {
+    rating = parseFloat(rating); // ✅ Ensure rating is a number
+    if (isNaN(rating) || rating < 1 || rating > 5) return <span>No rating</span>;
 
-    return (
-        <>
-            {[...Array(fullStars)].map((_, index) => (
-                <FontAwesomeIcon key={`full-${index}`} icon={faStar} className={styles.star} />
-            ))}
-            {halfStar && <FontAwesomeIcon icon={faStarHalfStroke} className={styles.star} />}
-            {[...Array(emptyStars)].map((_, index) => (
-                <FontAwesomeIcon key={`empty-${index}`} icon={faStarEmpty} className={styles.star} />
-            ))}
-        </>
+    let stars = [];
+    for (let i = 1; i <= 5; i++) {
+        stars.push(getStar(rating, i));
+    }
+    return <span className={styles.starsContainer}>{stars}</span>;
+}
+
+// Function that returns the correct star icon
+function getStar(rating, index) {
+    return index <= Math.ceil(rating / 2) ? (
+        <FaStar key={index} className={styles.star} />
+    ) : (
+        <FaRegStar key={index} className={styles.star} />
     );
-};
+}
 
 const DetailPage = () => {
     const { slug } = useParams();
@@ -31,6 +34,10 @@ const DetailPage = () => {
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    // Refs for scrolling
+    const reviewFormRef = useRef(null);
+    const contactFormRef = useRef(null);
 
     useEffect(() => {
         axios.get(`http://localhost:3000/properties/${slug}`)
@@ -45,6 +52,7 @@ const DetailPage = () => {
 
         axios.get(`http://localhost:3000/properties/${slug}/reviews`)
             .then(response => {
+                console.log("Reviews data:", response.data);
                 setReviews(response.data.reviews || []);
             })
             .catch(() => {
@@ -58,6 +66,13 @@ const DetailPage = () => {
 
     const imageUrl = `http://localhost:3000/${property.image}`;
 
+    // Smooth scrolling function
+    function scrollToSection(ref) {
+        if (ref.current) {
+            ref.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    }
+
     return (
         <div className={styles.container}>
 
@@ -70,10 +85,10 @@ const DetailPage = () => {
                     <img src={imageUrl} alt={property.title} className={styles.propertyImage} />
                 </div>
                 <div className={styles.actions}>
-                    <button className={styles.reviewButton}>
-                        <FontAwesomeIcon icon={faStar} /> Leave a Review
+                    <button className={styles.reviewButton} onClick={() => scrollToSection(reviewFormRef)}>
+                        <FaStar /> Leave a Review
                     </button>
-                    <button className={styles.contactButton}>
+                    <button className={styles.contactButton} onClick={() => scrollToSection(contactFormRef)}>
                         <FontAwesomeIcon icon={faEnvelope} /> Contact Host
                     </button>
                 </div>
@@ -86,7 +101,7 @@ const DetailPage = () => {
 
                     {/* Likes Interaction */}
                     <div className={styles.likesContainer}>
-                        <p className={styles.likesCount}>is your favorite {property.property_type} ?</p>
+                        <p className={styles.likesCount}>Is your favorite {property.property_type}?</p>
                         <p> <FontAwesomeIcon icon={faHeart} className={styles.heartIcon} /></p>
                     </div>
 
@@ -100,15 +115,10 @@ const DetailPage = () => {
                         <li><FontAwesomeIcon icon={faBed} /> Beds: {property.num_beds}</li>
                         <li><FontAwesomeIcon icon={faRulerCombined} /> Square Meters: {property.square_meters}</li>
                         <li><FontAwesomeIcon icon={faHouse} /> Type: {property.property_type}</li>
-
                     </ul>
                 </div>
             </section>
-            <div>
 
-
-
-            </div>
             {/* REVIEWS */}
             <section className={styles.reviewsSection}>
                 <h2>Reviews</h2>
@@ -116,8 +126,13 @@ const DetailPage = () => {
                     <ul>
                         {reviews.map((review, index) => (
                             <li key={index} className={styles.reviewItem}>
-                                <strong>{review.user_name}</strong> | {renderStars(review.rating)} <br />
-                                {review.review_text}
+                                {/* Riga superiore: Nome e stelle */}
+                                <div className={styles.reviewHeader}>
+                                    <strong>{review.user_name}</strong> | {drawStars(parseFloat(review.rating))}
+                                </div>
+
+                                {/* Riga inferiore: Testo della recensione */}
+                                <p className={styles.reviewText}>{review.review_text}</p>
                             </li>
                         ))}
                     </ul>
@@ -125,15 +140,18 @@ const DetailPage = () => {
                     <p>No reviews available.</p>
                 )}
             </section>
+
+
+            {/* REVIEW FORM + CONTACT FORM */}
             <div className={styles.formsContainer}>
                 {/* REVIEW FORM */}
-                <section className={styles.reviewForm}>
+                <section className={styles.reviewForm} ref={reviewFormRef}>
                     <h3>Leave a Review</h3>
                     {/* COMPONENTE FORM REVIEWS */}
                 </section>
 
                 {/* CONTACT FORM */}
-                <section className={styles.contactHost}>
+                <section className={styles.contactHost} ref={contactFormRef}>
                     <h3>Contact the Host</h3>
                     <FormContact />
                 </section>
