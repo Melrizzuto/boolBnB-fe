@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import styles from "./FormContact.module.css";
+import styles from "./FormContact&Reviews.module.css";
 
 const initialData = {
     sender_name: "",
@@ -17,7 +17,6 @@ function FormContact() {
     const [errorMessage, setErrorMessage] = useState({});
     const { slug } = useParams();
 
-    // State for dynamic placeholders
     const [placeholders, setPlaceholders] = useState({
         sender_name: "Enter your name",
         sender_email: "Enter your email",
@@ -69,6 +68,8 @@ function FormContact() {
             sender_email: formData.sender_email,
             message_text: formData.message_text,
         };
+
+        console.log("📤 Sending review:", newEmail);
 
         axios
             .post(`${apiUrl}/properties/${slug}/contact`, newEmail)
@@ -130,7 +131,7 @@ function FormContact() {
                 {errorMessage.sender_email && <p className={styles.errorMessage}>{errorMessage.sender_email}</p>}
             </div>
             <div className={styles.formGroup}>
-                <label htmlFor="message_text">Message</label>
+                <label htmlFor="message_text">What do you need?</label>
                 <textarea
                     name="message_text"
                     value={formData.message_text}

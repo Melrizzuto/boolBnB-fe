@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    max-width: 500px;
+    max-width: 400px;
     margin: 0 auto;
     padding: 24px;
     background: var(--card-background);
@@ -72,7 +72,7 @@ textarea {
 }
 
 .resetButton {
-    width: 20%;
+    width: 22%;
     padding: 12px;
     font-size: 16px;
     font-weight: 600;
@@ -87,6 +87,52 @@ textarea {
 .resetButton:hover {
     background: var(--accent-color);
     color: var(--text-color);
+}
+
+/* form reviews */
+.starRating {
+    display: flex;
+    gap: 5px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.star {
+    color: #ccc;
+    transition: color 0.3s;
+}
+
+.star:hover,
+.selectedStar {
+    color: #FFD700;
+    /* Oro */
+}
+
+.successMessage {
+    color: green;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    animation: fadeOut 3s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    80% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.errorMessage {
+    color: red;
+    font-size: 14px;
 }
 
 /* Responsive */

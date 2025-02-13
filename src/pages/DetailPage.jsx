@@ -3,13 +3,14 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import styles from "./DetailPage.module.css";
 import FormContact from "../components/FormContact";
+import FormReviews from "../components/FormReviews";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { faBed, faBath, faRulerCombined, faHouse, faMapMarkerAlt, faEnvelope, faLandmark, faHeart } from '@fortawesome/free-solid-svg-icons';
 
-// Function to draw stars dynamically
+// fn che disegna stelle
 function drawStars(rating) {
-    rating = parseFloat(rating); // ✅ Ensure rating is a number
+    rating = parseFloat(rating);
     if (isNaN(rating) || rating < 1 || rating > 5) return <span>No rating</span>;
 
     let stars = [];
@@ -19,7 +20,7 @@ function drawStars(rating) {
     return <span className={styles.starsContainer}>{stars}</span>;
 }
 
-// Function that returns the correct star icon
+// fn che ritorna le stelle corrette in base al voto
 function getStar(rating, index) {
     return index <= Math.ceil(rating / 2) ? (
         <FaStar key={index} className={styles.star} />
@@ -38,6 +39,7 @@ const DetailPage = () => {
     // Refs for scrolling
     const reviewFormRef = useRef(null);
     const contactFormRef = useRef(null);
+    const descriptionProp = useRef(null);
 
     useEffect(() => {
         axios.get(`http://localhost:3000/properties/${slug}`)
@@ -66,10 +68,10 @@ const DetailPage = () => {
 
     const imageUrl = `http://localhost:3000/${property.image}`;
 
-    // Smooth scrolling function
+    // scrolling stile
     function scrollToSection(ref) {
         if (ref.current) {
-            ref.current.scrollIntoView({ behavior: "smooth", block: "start" });
+            ref.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
         }
     }
 
@@ -81,7 +83,7 @@ const DetailPage = () => {
                 <div className={styles.heroText}>
                     <FontAwesomeIcon icon={faMapMarkerAlt} /> {property.address}
                 </div>
-                <div className={styles.imageContainer}>
+                <div className={styles.imageContainer} onClick={() => scrollToSection(descriptionProp)}>
                     <img src={imageUrl} alt={property.title} className={styles.propertyImage} />
                 </div>
                 <div className={styles.actions}>
@@ -95,7 +97,7 @@ const DetailPage = () => {
             </section>
 
             {/* PROPERTY DETAILS */}
-            <section className={styles.detailsSection}>
+            <section className={styles.detailsSection} ref={descriptionProp}>
                 <div className={styles.info}>
                     <h1 className="text-center">{property.title}</h1>
 
@@ -141,13 +143,12 @@ const DetailPage = () => {
                 )}
             </section>
 
-
             {/* REVIEW FORM + CONTACT FORM */}
             <div className={styles.formsContainer}>
                 {/* REVIEW FORM */}
                 <section className={styles.reviewForm} ref={reviewFormRef}>
                     <h3>Leave a Review</h3>
-                    {/* COMPONENTE FORM REVIEWS */}
+                    <FormReviews />
                 </section>
 
                 {/* CONTACT FORM */}
@@ -162,3 +163,4 @@ const DetailPage = () => {
 };
 
 export default DetailPage;
+

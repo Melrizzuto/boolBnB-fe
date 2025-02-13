@@ -30,6 +30,8 @@
     border-radius: 15px;
     overflow: hidden;
     border: 5px solid var(--border-color);
+    margin-top: 80px;
+    cursor: pointer;
 }
 
 .propertyImage {
@@ -41,7 +43,7 @@
 /* Testo sopra immagine */
 .heroText {
     position: absolute;
-    top: 30px;
+    top: 95px;
     left: 50%;
     transform: translateX(-50%);
     font-size: 28px;
@@ -54,7 +56,7 @@
 
 /* Pulsanti azione */
 .actions {
-    margin-top: 20px;
+    margin-top: 50px;
     display: flex;
     gap: 20px;
 }
@@ -142,7 +144,6 @@
 
 /* SEZIONE RECENSIONI */
 .starsContainer {
-    display: flex;
     gap: 3px;
 }
 
