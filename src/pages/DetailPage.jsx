@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import styles from "./DetailPage.module.css";
+import FormContact from "../components/FormContact";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBed, faBath, faRulerCombined, faHouse, faMapMarkerAlt, faStar, faStarHalfStroke, faStar as faStarEmpty, faEnvelope, faLandmark, faHeart } from '@fortawesome/free-solid-svg-icons';
 
@@ -130,7 +131,7 @@ const DetailPage = () => {
             {/* CONTACT FORM */}
             <section className={styles.contactHost}>
                 <h3>Contact the Host</h3>
-                {/* COMPONENTE FORM CONTACT */}
+                <FormContact />
             </section>
 
         </div>
