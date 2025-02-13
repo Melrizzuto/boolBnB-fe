@@ -1,5 +1,54 @@
-function Homepage() {
-    return <h1>Welcome to the Homepage!</h1>;
-}
+import axios from "axios";
+import { useState, useEffect } from "react";
 
-export default Homepage;
+import Jumbotron from "../components/Jumbotron";
+import Card from "../components/Card";
+
+export default function Homepage() {
+
+    //stato per le properties e per il caricamento
+    const [properties, setProperties] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    //funzione per recuperare i dati dal server
+    function fetchProperties() {
+        // effettuo richiesta GET per ottenere i dati dal server
+        axios.get(`http://localhost:3000/properties`)
+            .then((response) => {
+                // quando ottengo i dati aggiorno lo stato delle properties
+                setProperties(response.data.results);
+                console.log(response.data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                // stampo eventuali errori in console
+                console.error("Error loading data:", error);
+            });
+    }
+
+    // useEffect per chiamare l'API al caricamento della pagina
+    useEffect(() => {
+        fetchProperties();
+    }, []);
+
+    return (
+        <>
+            <Jumbotron />
+            {loading ? (
+                <p>Loading properties...</p>
+            ) : properties && properties.length > 0 ? (
+                <div className="container">
+                    <div className="row d-flex justify-content-center">
+                        {properties.map((property) => (
+                            <div key={property.id} className="col-md-4 mb-4">
+                                <Card key={property.id} property={property} />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            ) : (
+                <p>No properties found.</p>
+            )}
+        </>
+    )
+}
