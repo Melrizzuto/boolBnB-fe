@@ -7,26 +7,26 @@ import FormReviews from "../components/FormReviews";
 import HeartRatingComponent from "../components/HeartRatingComponent";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FaStar, FaRegStar } from "react-icons/fa";
-import { faBed, faBath, faRulerCombined, faHouse, faMapMarkerAlt, faEnvelope, faLandmark, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faBed, faBath, faRulerCombined, faHouse, faMapMarkerAlt, faEnvelope, faLandmark, faHeart, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
-// fn che disegna stelle
+// Funzione per disegnare le stelle
 function drawStars(rating) {
     rating = parseFloat(rating);
     if (isNaN(rating) || rating < 1 || rating > 5) return <span>No rating</span>;
 
-    let stars = [];
-    for (let i = 1; i <= 5; i++) {
-        stars.push(getStar(rating, i));
-    }
-    return <span className={styles.starsContainer}>{stars}</span>;
+    return (
+        <span className={styles.starsContainer}>
+            {[...Array(5)].map((_, index) => getStar(rating, index + 1))}
+        </span>
+    );
 }
 
-// fn che ritorna le stelle corrette in base al voto
+// Funzione che ritorna le stelle corrette in base al voto
 function getStar(rating, index) {
     return index <= Math.ceil(rating / 2) ? (
-        <FaStar key={index} className={styles.star} />
+        <FaStar key={`star-filled-${index}`} className={styles.star} />
     ) : (
-        <FaRegStar key={index} className={styles.star} />
+        <FaRegStar key={`star-empty-${index}`} className={styles.star} />
     );
 }
 
@@ -35,34 +35,67 @@ const DetailPage = () => {
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [showScroll, setShowScroll] = useState(false);
+
     const location = useLocation();
     const mine_slug = location.state?.slug;
 
-    // Refs for scrolling
+    // Refs per lo scrolling
     const reviewFormRef = useRef(null);
     const contactFormRef = useRef(null);
     const descriptionProp = useRef(null);
 
+    // Effetto per recuperare i dati
     useEffect(() => {
-        axios.get(`http://localhost:3000/properties/${mine_slug}`)
-            .then(response => {
-                setProperty(response.data.property);
-                setLoading(false);
-            })
-            .catch(() => {
-                setError("Error fetching property.");
-                setLoading(false);
-            });
+        if (!mine_slug) {
+            setError("Invalid property slug.");
+            setLoading(false);
+            return;
+        }
 
-        axios.get(`http://localhost:3000/properties/${mine_slug}/reviews`)
-            .then(response => {
-                console.log("Reviews data:", response.data);
-                setReviews(response.data.reviews || []);
-            })
-            .catch(() => {
-                setReviews([]);
-            });
+        const fetchData = async () => {
+            try {
+                const [propertyRes, reviewsRes] = await Promise.all([
+                    axios.get(`http://localhost:3000/properties/${mine_slug}`),
+                    axios.get(`http://localhost:3000/properties/${mine_slug}/reviews`)
+                ]);
+
+                setProperty(propertyRes.data.property);
+                setReviews(reviewsRes.data.reviews || []);
+            } catch {
+                setError("Error fetching data.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
     }, [mine_slug]);
+
+    // Effetto per la gestione della freccia di scroll
+    useEffect(() => {
+        const handleScroll = () => {
+            setShowScroll(window.scrollY > window.innerHeight / 2);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    const scrollToSection = (ref) => {
+        if (ref.current) {
+            ref.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    };
+
+    const updateReviews = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3000/properties/${mine_slug}/reviews`);
+            setReviews(response.data.reviews || []);
+        } catch {
+            setReviews([]);
+        }
+    };
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
@@ -70,27 +103,8 @@ const DetailPage = () => {
 
     const imageUrl = `http://localhost:3000/${property.image}`;
 
-    // scrolling stile
-    function scrollToSection(ref) {
-        if (ref.current) {
-            ref.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
-        }
-    }
-
-    const updateReviews = () => {
-        axios.get(`http://localhost:3000/properties/${mine_slug}/reviews`)
-            .then(response => {
-                setReviews(response.data.reviews || []);
-            })
-            .catch(() => {
-                setReviews([]);
-            });
-    };
-
-
     return (
         <div className={styles.container}>
-
             {/* HERO SECTION */}
             <section className={styles.heroSection}>
                 <div className={styles.heroText}>
@@ -117,7 +131,7 @@ const DetailPage = () => {
                     {/* Likes Interaction */}
                     <div className={styles.likesContainer}>
                         <p className={styles.likesCount}>Is your favorite {property.property_type}?</p>
-                        <p> <HeartRatingComponent icon={faHeart} className={styles.heartIcon} slug={mine_slug} /></p>
+                        <HeartRatingComponent icon={faHeart} className={styles.heartIcon} slug={mine_slug} />
                     </div>
 
                     <p className={styles.description}>{property.description}</p>
@@ -141,12 +155,9 @@ const DetailPage = () => {
                     <ul>
                         {reviews.map((review, index) => (
                             <li key={index} className={styles.reviewItem}>
-                                {/* Riga superiore: Nome e stelle */}
                                 <div className={styles.reviewHeader}>
                                     <strong>{review.user_name}</strong> | {drawStars(parseFloat(review.rating))}
                                 </div>
-
-                                {/* Riga inferiore: Testo della recensione */}
                                 <p className={styles.reviewText}>{review.review_text}</p>
                             </li>
                         ))}
@@ -158,22 +169,25 @@ const DetailPage = () => {
 
             {/* REVIEW FORM + CONTACT FORM */}
             <div className={styles.formsContainer}>
-                {/* REVIEW FORM */}
                 <section className={styles.reviewForm} ref={reviewFormRef}>
                     <h3>Leave a Review</h3>
                     <FormReviews updateReviews={updateReviews} />
                 </section>
-
-                {/* CONTACT FORM */}
                 <section className={styles.contactHost} ref={contactFormRef}>
                     <h3>Contact Host</h3>
                     <FormContact />
                 </section>
             </div>
 
+            {/* SCROLL TO TOP BUTTON */}
+            {showScroll && (
+                <div className={`${styles.scrollToTop} ${showScroll ? styles.visible : ""}`}
+                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                    <FontAwesomeIcon icon={faArrowUp} className={styles.arowUp} />
+                </div>
+            )}
         </div>
     );
 };
 
 export default DetailPage;
-
