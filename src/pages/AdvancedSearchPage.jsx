@@ -5,6 +5,8 @@ import SearchBar from '../components/SearchBar';
 import Filters from '../components/Filters';
 import Card from '../components/Card';
 
+import styles from './AdvancedSearchPage.module.css'; // Importa il CSS Module
+
 const AdvancedSearchPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [propertyTypes, setPropertyTypes] = useState([]);
@@ -80,51 +82,50 @@ const AdvancedSearchPage = () => {
     };
 
     return (
-        <div className="container">
-            <h1 className="my-4">Ricerca Avanzata</h1>
-            
-            <div className="mb-4">
-                {/* Bottone per svuotare tutti i campi */}
-                <button onClick={handleResetAll} className="btn btn-secondary mb-4">
-                    Svuota tutti i campi
-                </button>
-            </div>
+        <div className={styles.container}>
 
-            <div className="mb-4">
-                <SearchBar 
-                    onSearch={setSearchTerm} 
-                    searchTerm={searchTerm}  // Passa searchTerm come prop al componente SearchBar
+            {/* Sezione principale con barra di ricerca e risultati */}
+            <div className={styles.mainContent}>
+                <SearchBar
+                    onSearch={setSearchTerm}
+                    searchTerm={searchTerm}
                 />
+                <p className={styles.subtitle}>Begin your search for the perfect stay</p>
+
+                {loading || isSearching ? (
+                    <p>Loading results...</p>
+                ) : properties.length > 0 ? (
+                    <div className={styles.propertiesGrid}>
+                        {properties.map(property => (
+                            <div key={property.id}>
+                                <Card
+                                    property={property}
+                                    onClick={() => navigate(`/properties/${property.slug}`)}
+                                    slug={property.slug}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p>No properties found. Try adjusting your search filters!</p>
+                )}
             </div>
 
-            <div className="row mb-4 g-3">
-                <Filters 
-                    onFilterChange={setFilters} 
-                    propertyTypes={propertyTypes} 
+            {/* Sidebar con i filtri */}
+            <div className={styles.sidebar}>
+                <Filters
+                    onFilterChange={setFilters}
+                    propertyTypes={propertyTypes}
                 />
-            </div>
-
-            {loading || isSearching ? (
-                <p>Caricamento risultati...</p>  // Durante il caricamento o la ricerca
-            ) : (searchTerm.trim() === "" && Object.values(filters).every(x => x === "" || x === null) && !loadingPropertyTypes) ? (
-                <p>Dove vuoi alloggiare?</p>  // Se la ricerca è vuota e nessun filtro è applicato
-            ) : properties.length > 0 ? (
-                <div className="row d-flex justify-content-center">
-                    {properties.map(property => (
-                        <div key={property.id} className="col-md-4 mb-4">
-                            <Card 
-                                property={property} 
-                                onClick={() => navigate(`/properties/${property.slug}`)}
-                                slug={property.slug}
-                            />
-                        </div>
-                    ))}
+                <div className={styles.buttonContainer}>
+                    <button onClick={handleResetAll} className={styles.resetButton}>
+                        Reset
+                    </button>
                 </div>
-            ) : (
-                <p>Nessun immobile trovato</p>  // Quando non ci sono risultati dopo la ricerca
-            )}
+            </div>
+
         </div>
     );
-};
+}
 
 export default AdvancedSearchPage;
