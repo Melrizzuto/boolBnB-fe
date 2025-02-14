@@ -56,6 +56,12 @@ function FormContact() {
         }[field];
     }
 
+    function handleReset() {
+        setFormData(initialData);
+        setErrorMessage({});
+        setIsFormValid(null);
+    }
+
     function handleSubmit(e) {
         e.preventDefault();
         if (!validateForm()) return;
@@ -128,7 +134,7 @@ function FormContact() {
             </div>
             <div className={styles.buttonContainer}>
                 <button className={styles.submitButton} type="submit">Send</button>
-                <button className={styles.resetButton} type="reset">Reset</button>
+                <button className={styles.resetButton} onClick={handleReset}>Reset</button>
             </div>
         </form>
     );

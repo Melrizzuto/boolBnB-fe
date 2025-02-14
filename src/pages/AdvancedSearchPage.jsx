@@ -9,13 +9,14 @@ import styles from './AdvancedSearchPage.module.css'; // Importa il CSS Module
 
 const AdvancedSearchPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [propertyTypes, setPropertyTypes] = useState([]);
     const [filters, setFilters] = useState({
         minRooms: '',
         minBeds: '',
         minBathrooms: '',
         propertyType: ''
     });
+
+    const [propertyTypes, setPropertyTypes] = useState([]);
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(false);
     const [loadingPropertyTypes, setLoadingPropertyTypes] = useState(true);
@@ -26,8 +27,9 @@ const AdvancedSearchPage = () => {
     useEffect(() => {
         const fetchPropertyTypes = async () => {
             try {
-                const { data } = await axios.get('http://localhost:3000/api/properties-types');
-                setPropertyTypes(data.types);
+                const { data } = await axios.get('http://localhost:3000/api/property-types');
+                console.log(data);
+                setPropertyTypes(data);
             } catch (error) {
                 console.error('Errore nel recupero delle tipologie:', error);
             } finally {

@@ -56,6 +56,7 @@ const Filters = ({ onFilterChange, propertyTypes }) => {
                 onChange={handleChange}
                 className={styles.filtersInput}
             />
+
             <label htmlFor="type_name" className={styles.filtersLabel}>Select a type</label>
             <select
                 name="propertyType"
@@ -65,11 +66,12 @@ const Filters = ({ onFilterChange, propertyTypes }) => {
             >
                 <option value="">All types</option>
                 {propertyTypes.map(type => (
-                    <option key={type.id} value={type.type_name}>
-                        {type.type_name}
+                    <option key={type.id} value={type.name}>
+                        {type.name}
                     </option>
                 ))}
             </select>
+
         </div>
     );
 };

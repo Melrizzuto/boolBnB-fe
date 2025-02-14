@@ -15,7 +15,7 @@ const initialData = {
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-function FormReviews() {
+function FormReviews({ updateReviews }) {
     const [reviews, setReviews] = useState([]);
     const [formData, setFormData] = useState(initialData);
     const [errorMessage, setErrorMessage] = useState({});
@@ -64,16 +64,16 @@ function FormReviews() {
         }));
     }
     // Funzione per recuperare le recensioni dal backend
-    function fetchReviews() {
-        axios.get(`${apiUrl}/properties/${slug}/reviews`)
-            .then(response => setReviews(response.data)) // Aggiorna le recensioni nello stato
-            .catch(error => console.error("Errore nel recupero delle recensioni:", error));
-    }
+    //function fetchReviews() {
+    //    axios.get(`${apiUrl}/${slug}/reviews`)
+    //        .then(response => setReviews(response.data)) // Aggiorna le recensioni nello stato
+    //        .catch(error => console.error("Errore nel recupero delle recensioni:", error));
+    //}
 
     // Recupera le recensioni al caricamento della pagina
-    useEffect(() => {
-        fetchReviews();
-    }, [slug]);
+    //useEffect(() => {
+    //    fetchReviews();
+    //}, [slug]);
 
     function handleStarClick(rating) {
         setFormData(prev => ({
@@ -122,15 +122,16 @@ function FormReviews() {
 
     function handleSubmit(e) {
         e.preventDefault();
+
         if (!validateForm()) return;
 
-        axios.post(`${apiUrl}/properties/${slug}/reviews`, formData, {
+        axios.post(`${apiUrl}/${slug}/reviews`, formData, {
             headers: { "Content-Type": "application/json" }
         })
             .then(() => {
                 setSuccessMessage("Review submitted successfully!");
                 setFormData(initialData);
-                fetchReviews(); // Aggiorna le recensioni dopo l'invio
+                updateReviews(); // Aggiorna le recensioni dopo l'invio
                 setTimeout(() => setSuccessMessage(""), 3000);
             })
             .catch((err) => {
