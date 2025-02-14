@@ -21,14 +21,18 @@ function drawStars(rating) {
     );
 }
 
+
 // Funzione che ritorna le stelle corrette in base al voto
+
 function getStar(rating, index) {
-    return index <= Math.ceil(rating / 2) ? (
-        <FaStar key={`star-filled-${index}`} className={styles.star} />
+    return index <= Math.ceil(rating) ? (
+        <FaStar key={index} className={styles.star} />
+
     ) : (
         <FaRegStar key={`star-empty-${index}`} className={styles.star} />
     );
 }
+
 
 const DetailPage = () => {
     const [property, setProperty] = useState(null);

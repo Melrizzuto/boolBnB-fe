@@ -50,7 +50,12 @@ textarea:focus {
 }
 
 textarea {
-    min-height: 120px;
+    min-height: 150px;
+    resize: vertical;
+}
+
+.message_text {
+    min-height: 300px;
     resize: vertical;
 }
 
