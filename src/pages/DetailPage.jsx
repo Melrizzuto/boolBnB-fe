@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import styles from "./DetailPage.module.css";
 import FormContact from "../components/FormContact";
@@ -35,7 +35,8 @@ const DetailPage = () => {
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { slug } = useParams();
+    const location = useLocation();
+    const mine_slug = location.state?.slug;
 
     // Refs for scrolling
     const reviewFormRef = useRef(null);
@@ -43,7 +44,7 @@ const DetailPage = () => {
     const descriptionProp = useRef(null);
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/properties/${slug}`)
+        axios.get(`http://localhost:3000/properties/${mine_slug}`)
             .then(response => {
                 setProperty(response.data.property);
                 setLoading(false);
@@ -53,7 +54,7 @@ const DetailPage = () => {
                 setLoading(false);
             });
 
-        axios.get(`http://localhost:3000/properties/${slug}/reviews`)
+        axios.get(`http://localhost:3000/properties/${mine_slug}/reviews`)
             .then(response => {
                 console.log("Reviews data:", response.data);
                 setReviews(response.data.reviews || []);
@@ -61,7 +62,7 @@ const DetailPage = () => {
             .catch(() => {
                 setReviews([]);
             });
-    }, [slug]);
+    }, [mine_slug]);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
@@ -105,7 +106,7 @@ const DetailPage = () => {
                     {/* Likes Interaction */}
                     <div className={styles.likesContainer}>
                         <p className={styles.likesCount}>Is your favorite {property.property_type}?</p>
-                        <p> <HeartRatingComponent icon={faHeart} className={styles.heartIcon} slug={property.slug} /></p>
+                        <p> <HeartRatingComponent icon={faHeart} className={styles.heartIcon} slug={mine_slug} /></p>
                     </div>
 
                     <p className={styles.description}>{property.description}</p>

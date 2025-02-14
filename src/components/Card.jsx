@@ -19,7 +19,7 @@ export default function Card({ property, slug }) {
                 <h5 className="card-title text-center">{property.title}</h5>
                 <HeartRatingComponent slug={slug}/>
                 {/* <p className="fw-lighter">{property.likes} Likes</p> */}
-                <Link to={`/properties/${property.slug}`} className={` ${styles.btnGreen}`}>See more</Link>
+                <Link to={`/properties/${property.slug}`} className={` ${styles.btnGreen}`} state={{ slug: property.slug }}>See more</Link>
             </div>
         </div >
     )
