@@ -2,28 +2,16 @@ import React, { useState, useEffect } from "react";
 
 import styles from "./Filters.module.css";
 
-const Filters = ({ onFilterChange, propertyTypes }) => {
-    const [filters, setFilters] = useState({
-        minRooms: "",
-        minBeds: "",
-        minBathrooms: "",
-        propertyType: ""
-    });
-
+const Filters = ({ onFilterChange, filters, propertyTypes }) => {
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFilters(prev => ({
+        onFilterChange(prev => ({
             ...prev,
             // Per resettare il filtro se si seleziona "Tutte le tipologie"
             [name]: value === "" ? null : value
         }));
     };
-
-    // Aggiorna i filtri immediatamente al cambiamento
-    useEffect(() => {
-        onFilterChange(filters);
-    }, [filters]);
-
     return (
         <div className={styles.filtersContainer}>
             <label htmlFor="type_name" className={styles.filtersLabel}>Rooms number</label>
@@ -32,7 +20,7 @@ const Filters = ({ onFilterChange, propertyTypes }) => {
                 name="minRooms"
                 placeholder="Minimum rooms number"
                 min="0"
-                value={filters.minRooms}
+                value={filters.minRooms || ""}
                 onChange={handleChange}
                 className={styles.filtersInput}
             />
@@ -42,7 +30,7 @@ const Filters = ({ onFilterChange, propertyTypes }) => {
                 name="minBeds"
                 placeholder="Minimum bed number"
                 min="0"
-                value={filters.minBeds}
+                value={filters.minBeds || ""}
                 onChange={handleChange}
                 className={styles.filtersInput}
             />
@@ -52,7 +40,7 @@ const Filters = ({ onFilterChange, propertyTypes }) => {
                 name="minBathrooms"
                 placeholder="Minimum bathrooms number"
                 min="0"
-                value={filters.minBathrooms}
+                value={filters.minBathrooms || ""}
                 onChange={handleChange}
                 className={styles.filtersInput}
             />

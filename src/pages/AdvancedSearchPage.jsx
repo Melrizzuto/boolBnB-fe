@@ -117,6 +117,7 @@ const AdvancedSearchPage = () => {
             <div className={styles.sidebar}>
                 <Filters
                     onFilterChange={setFilters}
+                    filters={filters}
                     propertyTypes={propertyTypes}
                 />
                 <div className={styles.buttonContainer}>
