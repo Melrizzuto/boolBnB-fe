@@ -65,7 +65,7 @@ function FormReviews() {
     }
     // Funzione per recuperare le recensioni dal backend
     function fetchReviews() {
-        axios.get(`${apiUrl}/properties/${slug}/reviews`)
+        axios.get(`${apiUrl}/${slug}/reviews`)
             .then(response => setReviews(response.data)) // Aggiorna le recensioni nello stato
             .catch(error => console.error("Errore nel recupero delle recensioni:", error));
     }
@@ -122,9 +122,10 @@ function FormReviews() {
 
     function handleSubmit(e) {
         e.preventDefault();
+
         if (!validateForm()) return;
 
-        axios.post(`${apiUrl}/properties/${slug}/reviews`, formData, {
+        axios.post(`${apiUrl}/${slug}/reviews`, formData, {
             headers: { "Content-Type": "application/json" }
         })
             .then(() => {

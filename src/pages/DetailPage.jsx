@@ -62,7 +62,7 @@ const DetailPage = () => {
             .catch(() => {
                 setReviews([]);
             });
-    }, [mine_slug]);
+    }, [mine_slug, reviews]);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
