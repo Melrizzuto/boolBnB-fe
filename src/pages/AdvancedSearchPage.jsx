@@ -115,6 +115,7 @@ const AdvancedSearchPage = () => {
                             <Card 
                                 property={property} 
                                 onClick={() => navigate(`/properties/${property.slug}`)}
+                                slug={property.slug}
                             />
                         </div>
                     ))}
