@@ -9,7 +9,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { faBed, faBath, faRulerCombined, faHouse, faMapMarkerAlt, faEnvelope, faLandmark, faHeart } from '@fortawesome/free-solid-svg-icons';
 
-// fn che disegna stelle
 function drawStars(rating) {
     rating = parseFloat(rating);
     if (isNaN(rating) || rating < 1 || rating > 5) return <span>No rating</span>;
@@ -21,14 +20,14 @@ function drawStars(rating) {
     return <span className={styles.starsContainer}>{stars}</span>;
 }
 
-// fn che ritorna le stelle corrette in base al voto
 function getStar(rating, index) {
-    return index <= Math.ceil(rating / 2) ? (
+    return index <= Math.ceil(rating) ? (
         <FaStar key={index} className={styles.star} />
     ) : (
         <FaRegStar key={index} className={styles.star} />
     );
 }
+
 
 const DetailPage = () => {
     const [property, setProperty] = useState(null);

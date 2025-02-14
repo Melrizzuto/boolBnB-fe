@@ -78,7 +78,7 @@ function FormReviews({ updateReviews }) {
     function handleStarClick(rating) {
         setFormData(prev => ({
             ...prev,
-            rating,
+            rating: rating,
         }));
     }
 
