@@ -1,0 +1,17 @@
+input:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 5px rgba(76, 64, 247, 0.3);
+}
+
+.searchInput {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    background: var(--specs-background);
+    color: var(--text-color);
+    transition: border 0.3s ease-in-out;
+}

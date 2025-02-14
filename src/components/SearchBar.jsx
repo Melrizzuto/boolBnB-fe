@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import styles from "./SearchBar.module.css";
+
 const SearchBar = ({ onSearch, searchTerm }) => {
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -13,8 +15,8 @@ const SearchBar = ({ onSearch, searchTerm }) => {
         <div className="input-group">
             <input
                 type="text"
-                className="form-control"
-                placeholder="Cerca città o indirizzo..."
+                className={styles.searchInput}
+                placeholder="Search by city or address..."
                 value={searchTerm}  // Collegato allo stato searchTerm del componente parent
                 onChange={(e) => onSearch(e.target.value)} // Quando cambia, aggiorna lo stato nel componente principale
                 aria-label="Cerca immobili"
