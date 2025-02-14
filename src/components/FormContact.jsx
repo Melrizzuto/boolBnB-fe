@@ -119,6 +119,7 @@ function FormContact() {
             <div className={styles.formGroup}>
                 <label htmlFor="message_text">What do you need?</label>
                 <textarea
+                    className={styles.message_text}
                     name="message_text"
                     value={formData.message_text}
                     placeholder={placeholders.message_text}
