@@ -72,7 +72,8 @@ function FormContact() {
         return true;
     }
 
-    function handleReset() {
+    const handleReset = (e) => {
+        e.preventDefault();
         setFormData(initialData);
         setErrorMessage({});
         setIsFormValid(null);
