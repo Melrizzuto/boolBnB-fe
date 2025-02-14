@@ -4,7 +4,6 @@ import axios from "axios";
 import styles from "./FormContact&Reviews.module.css";
 
 const initialData = {
-    sender_name: "",
     sender_email: "",
     message_text: ""
 };
@@ -56,40 +55,8 @@ function FormContact() {
         }[field];
     }
 
-    function handleReset() {
-        setFormData(initialData);
-        setErrorMessage({});
-        setIsFormValid(null);
-    }
-
-    function handleSubmit(e) {
-        e.preventDefault();
-        if (!validateForm()) return;
-
-        const newEmail = {
-            property_id: slug,
-            sender_email: formData.sender_email,
-            message_text: formData.message_text,
-        };
-
-        console.log("\ud83d\udce4 Sending review:", newEmail);
-
-        axios
-            .post(`${apiUrl}/properties/${slug}/contact`, newEmail)
-            .then(() => {
-                console.log("Email sent successfully!");
-                setFormData(initialData);
-            })
-            .catch((err) => {
-                console.log("Error sending email", err);
-            });
-    }
-
     function validateForm() {
         let errorMessage = {};
-        if (!formData.sender_name || formData.sender_name.trim().length < 3) {
-            errorMessage.sender_name = "Enter a valid name";
-        }
         if (!formData.sender_email || !/\S+@\S+\.\S+/.test(formData.sender_email)) {
             errorMessage.sender_email = "Enter a valid email";
         }
@@ -105,8 +72,37 @@ function FormContact() {
         return true;
     }
 
+    function handleReset() {
+        setFormData(initialData);
+        setErrorMessage({});
+        setIsFormValid(null);
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!validateForm()) return;
+
+        const newEmail = {
+            property_id: slug,
+            sender_email: formData.sender_email,
+            message_text: formData.message_text,
+        };
+
+        console.log("\ud83d\udce4 Sending review:", newEmail);
+
+        axios
+            .post(`${apiUrl}/${slug}/contact`, newEmail)
+            .then(() => {
+                console.log("Email sent successfully!");
+                setFormData(initialData);
+            })
+            .catch((err) => {
+                console.log("Error sending email", err);
+            });
+    }
+
     return (
-        <form className={styles.formContainer} onSubmit={handleSubmit}>
+        <form className={styles.formContainer}>
             <div className={styles.formGroup}>
                 <label htmlFor="sender_email">Email</label>
                 <input
@@ -123,7 +119,6 @@ function FormContact() {
             <div className={styles.formGroup}>
                 <label htmlFor="message_text">What do you need?</label>
                 <textarea
-                    className={styles.message_text}
                     name="message_text"
                     value={formData.message_text}
                     placeholder={placeholders.message_text}
@@ -134,7 +129,7 @@ function FormContact() {
                 {errorMessage.message_text && <p className={styles.errorMessage}>{errorMessage.message_text}</p>}
             </div>
             <div className={styles.buttonContainer}>
-                <button className={styles.submitButton} type="submit">Send</button>
+                <button className={styles.submitButton} onClick={handleSubmit}>Send</button>
                 <button className={styles.resetButton} onClick={handleReset}>Reset</button>
             </div>
         </form>
