@@ -49,18 +49,22 @@ const Filters = ({ onFilterChange, propertyTypes }) => {
                 onChange={handleChange}
             />
             <select 
-                name="propertyType" 
-                value={filters.propertyType} 
-                onChange={handleChange}
-                className="form-select"
-            >
-                <option value="">Tutte le tipologie</option>
-                    {propertyTypes.map(type => (
-                        <option key={type.id} value={type.type_name}>
-                            {type.type_name}
-                        </option>
-                    ))}
-            </select>
+    name="propertyType" 
+    value={filters.propertyType} 
+    onChange={handleChange}
+    className="form-select"
+>
+    <option value="">Tutte le tipologie</option>
+    {propertyTypes && propertyTypes.length > 0 ? (
+        propertyTypes.map(type => (
+            <option key={type.id} value={type.name}>  {/* Usa "type.name" se il nome è "name" nel backend */}
+                {type.name}
+            </option>
+        ))
+    ) : (
+        <option disabled>Caricamento tipologie...</option>  // Mostra un messaggio di caricamento
+    )}
+</select>
         </div>
     );
 };
