@@ -62,7 +62,7 @@ const DetailPage = () => {
             .catch(() => {
                 setReviews([]);
             });
-    }, [mine_slug, reviews]);
+    }, [mine_slug]);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
@@ -76,6 +76,17 @@ const DetailPage = () => {
             ref.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
         }
     }
+
+    const updateReviews = () => {
+        axios.get(`http://localhost:3000/properties/${mine_slug}/reviews`)
+            .then(response => {
+                setReviews(response.data.reviews || []);
+            })
+            .catch(() => {
+                setReviews([]);
+            });
+    };
+
 
     return (
         <div className={styles.container}>
@@ -150,7 +161,7 @@ const DetailPage = () => {
                 {/* REVIEW FORM */}
                 <section className={styles.reviewForm} ref={reviewFormRef}>
                     <h3>Leave a Review</h3>
-                    <FormReviews />
+                    <FormReviews updateReviews={updateReviews} />
                 </section>
 
                 {/* CONTACT FORM */}
