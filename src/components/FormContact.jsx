@@ -14,6 +14,7 @@ function FormContact() {
     const [formData, setFormData] = useState(initialData);
     const [isFormValid, setIsFormValid] = useState(null);
     const [errorMessage, setErrorMessage] = useState({});
+    const [successMessage, setSuccessMessage] = useState("");
     const { slug } = useParams();
 
     const [placeholders, setPlaceholders] = useState({
@@ -77,6 +78,7 @@ function FormContact() {
         setFormData(initialData);
         setErrorMessage({});
         setIsFormValid(null);
+        setSuccessMessage("");
     }
 
     const handleSubmit = (e) => {
@@ -94,16 +96,20 @@ function FormContact() {
         axios
             .post(`${apiUrl}/${slug}/contact`, newEmail)
             .then(() => {
-                console.log("Email sent successfully!");
+                setSuccessMessage("Email sent successfully!");
                 setFormData(initialData);
+                setTimeout(() => setSuccessMessage(""), 3000);
             })
             .catch((err) => {
                 console.log("Error sending email", err);
+                setErrorMessage({ general: "Error sending the email. Please try again." });
             });
     }
 
     return (
         <form className={styles.formContainer}>
+            {successMessage && <p className={styles.successMessage}>{successMessage}</p>}
+            {errorMessage.general && <p className={styles.errorMessage}>{errorMessage.general}</p>}
             <div className={styles.formGroup}>
                 <label htmlFor="sender_email">Email</label>
                 <input
