@@ -3,7 +3,7 @@ import styles from "./Card.module.css";
 
 import HeartRatingComponent from "./HeartRatingComponent";
 
-export default function Card({ property }) {
+export default function Card({ property, slug }) {
 
     const imageUrl = `http://localhost:3000/${property.image}`;
     console.log(property);
@@ -17,7 +17,7 @@ export default function Card({ property }) {
             />
             <div className="card-body" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                 <h5 className="card-title text-center">{property.title}</h5>
-                <HeartRatingComponent />
+                <HeartRatingComponent slug={slug}/>
                 {/* <p className="fw-lighter">{property.likes} Likes</p> */}
                 <Link to={`/properties/${property.slug}`} className={` ${styles.btnGreen}`}>See more</Link>
             </div>

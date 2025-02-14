@@ -7,14 +7,16 @@ import styles from "./HeartRatingComponent.module.css";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-function HeartRatingComponent() {
+function HeartRatingComponent({ slug }) {
     const [likes, setLikes] = useState(0);
     const [clicked, setClicked] = useState(false);
-    const { slug } = useParams();
+    
 
     useEffect(() => {
+        if (!slug) return;
+
         axios
-            .get(`${apiUrl}/${slug}`)
+            .get(`http://localhost:3000/properties/${slug}`)
             .then((res) => {
                 setLikes(res.data.property.likes);
             })

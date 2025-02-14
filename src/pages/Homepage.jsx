@@ -46,7 +46,7 @@ export default function Homepage() {
                         <div className="row d-flex justify-content-center">
                             {properties.map((property) => (
                                 <div key={property.id} className="col-md-3 mb-4">
-                                    <Card key={property.id} property={property} />
+                                    <Card key={property.id} property={property} slug={property.slug}/>
                                 </div>
                             ))}
                         </div>

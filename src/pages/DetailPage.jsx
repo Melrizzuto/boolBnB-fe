@@ -31,11 +31,11 @@ function getStar(rating, index) {
 }
 
 const DetailPage = () => {
-    const { slug } = useParams();
     const [property, setProperty] = useState(null);
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { slug } = useParams();
 
     // Refs for scrolling
     const reviewFormRef = useRef(null);
@@ -105,7 +105,7 @@ const DetailPage = () => {
                     {/* Likes Interaction */}
                     <div className={styles.likesContainer}>
                         <p className={styles.likesCount}>Is your favorite {property.property_type}?</p>
-                        <p> <HeartRatingComponent icon={faHeart} className={styles.heartIcon} slug={property?.slug} /></p>
+                        <p> <HeartRatingComponent icon={faHeart} className={styles.heartIcon} slug={property.slug} /></p>
                     </div>
 
                     <p className={styles.description}>{property.description}</p>
