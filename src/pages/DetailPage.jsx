@@ -4,6 +4,7 @@ import axios from "axios";
 import styles from "./DetailPage.module.css";
 import FormContact from "../components/FormContact";
 import FormReviews from "../components/FormReviews";
+import HeartRatingComponent from "../components/HeartRatingComponent";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { faBed, faBath, faRulerCombined, faHouse, faMapMarkerAlt, faEnvelope, faLandmark, faHeart } from '@fortawesome/free-solid-svg-icons';
@@ -104,7 +105,7 @@ const DetailPage = () => {
                     {/* Likes Interaction */}
                     <div className={styles.likesContainer}>
                         <p className={styles.likesCount}>Is your favorite {property.property_type}?</p>
-                        <p> <FontAwesomeIcon icon={faHeart} className={styles.heartIcon} /></p>
+                        <p> <HeartRatingComponent icon={faHeart} className={styles.heartIcon} slug={property?.slug} /></p>
                     </div>
 
                     <p className={styles.description}>{property.description}</p>
