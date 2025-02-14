@@ -1,118 +1,10 @@
-// import { useState } from 'react';
-// import axios from 'axios';
-// import styles from "./FormProperties.module.css";
-
-// const initialData = {
-//     title: "",
-//     type_name: "",
-//     address: "",
-//     city: "",
-//     num_rooms: "",
-//     num_beds: "",
-//     num_bathrooms: "",
-//     square_meters: "",
-//     description: "",
-//     image: "",
-// }
-
-// const apiUrl = import.meta.env.VITE_API_URL;
-
-// function FormProperties() {
-
-//     const [formData, setFormData] = useState(initialData);
-//     const [isFormValid, setIsFormValid] = useState(null);
-//     const [errorMessage, setErrorMessage] = useState({});
-
-//     function handleInput(e) {
-//         const { name, value } = e.target;
-//         setFormData({ ...formData, [name]: value });
-//     }
-
-//     function handleSubmit(e) {
-//         e.preventDefault();
-
-//         if (!validateForm()) return;
-
-//         axios
-//             .post(apiUrl + "/properties", formData)
-//             .then(() => {
-//                 console.log("Immobile aggiunto con successo");
-//                 setFormData(initialData);
-//             })
-//             .catch((err) => {
-//                 console.log("Errore nell'aggiunta della proprietà:", err);
-//             });
-//     }
-
-//     function handleReset() {
-//         setFormData(initialData);
-//         setErrorMessage({});
-//         setIsFormValid(null);
-//     }
-
-//     function validateForm() {
-//         let errors = {};
-//         if (!formData.type_name) errors.type_name = "Enter the property type.";
-//         if (!formData.title || formData.title.trim().length < 3) errors.title = "Enter a valid title.";
-//         if (!formData.address || formData.address.trim().length < 3) errors.address = "Enter a valid address.";
-//         if (!formData.city || formData.city.trim().length < 3) errors.city = "Enter a valid city.";
-//         if (!formData.description || formData.description.trim().length < 100) errors.description = "Description must be at least 100 characters.";
-//         if (!formData.image) errors.image = "Enter a valid image url.";
-//         if (!formData.num_rooms || formData.num_rooms <= 0) errors.num_rooms = "The number of rooms cannot be 0.";
-//         if (!formData.num_beds || formData.num_beds <= 0) errors.num_beds = "The number of beds cannot be 0.";
-//         if (!formData.num_bathrooms || formData.num_bathrooms <= 0) errors.num_bathrooms = "The number of bathrooms cannot be 0.";
-//         if (!formData.square_meters || formData.square_meters <= 0) errors.square_meters = "Enter the size of the property in square meters.";
-
-//         setErrorMessage(errors);
-//         return Object.keys(errors).length === 0;
-//     }
-
-//     return (
-//         <form onSubmit={handleSubmit} className={styles.formPropertiesContainer}>
-//             {Object.keys(initialData).map((key) => (
-//                 <div key={key} className={styles.formPropertiesGroup}>
-//                     <label htmlFor={key} className={styles.formPropertiesLabel}>{key.replace('_', ' ')}</label>
-//                     {key === 'description' ? (
-//                         <textarea
-//                             name={key}
-//                             placeholder={`Enter ${key}`}
-//                             value={formData[key]}
-//                             onChange={handleInput}
-//                             className={styles.formPropertiesTextarea}
-//                         />
-//                     ) : (
-//                         <input
-//                             type={key.includes('num') || key.includes('square') ? 'number' : 'text'}
-//                             name={key}
-//                             placeholder={`Enter ${key}`}
-//                             value={formData[key]}
-//                             onChange={handleInput}
-//                             className={styles.formPropertiesInput}
-//                         />
-//                     )}
-//                     {errorMessage[key] && <p className={styles.formPropertiesErrorMessage}>{errorMessage[key]}</p>}
-//                 </div>
-//             ))}
-//             <div className={styles.formPropertiesButtonContainer}>
-//                 <button type='submit' className={styles.formPropertiesSubmitButton}>Submit</button>
-//                 <button type='button' className={styles.formPropertiesResetButton} onClick={handleReset}>Reset</button>
-//             </div>
-//         </form>
-//     );
-// }
-
-// export default FormProperties;
-
-
-
-import { useState } from 'react';
-import axios from 'axios';
-
+import { useState, useEffect } from "react";
+import axios from "axios";
 import styles from "./FormProperties.module.css";
 
 const initialData = {
     title: "",
-    type_name: "",
+    type_id: "",
     address: "",
     city: "",
     num_rooms: "",
@@ -121,19 +13,33 @@ const initialData = {
     square_meters: "",
     description: "",
     image: "",
-}
-
-const apiUrl = import.meta.env.VITE_API_URL;
+};
 
 function FormProperties() {
-
     const [formData, setFormData] = useState(initialData);
+    const [propertyTypes, setPropertyTypes] = useState([]);
     const [isFormValid, setIsFormValid] = useState(null);
     const [errorMessage, setErrorMessage] = useState({});
+    const [feedbackMessage, setFeedbackMessage] = useState(null);
+    const [feedbackType, setFeedbackType] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+
+    useEffect(() => {
+        axios.get("http://localhost:3000/api/property-types")
+            .then(response => {
+                setPropertyTypes(response.data);
+            })
+            .catch(error => {
+                console.error("Error loading property types:", error);
+            });
+    }, []);
 
     function handleInput(e) {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
     }
 
     function handleSubmit(e) {
@@ -141,70 +47,56 @@ function FormProperties() {
 
         if (!validateForm()) return;
 
-        const newProperties = {
+        const newProperty = {
             title: formData.title,
-            type_name: formData.type_name,
+            type_id: parseInt(formData.type_id, 10) || null,
             address: formData.address,
             city: formData.city,
-            num_rooms: formData.num_rooms,
-            num_beds: formData.num_beds,
-            num_bathrooms: formData.num_bathrooms,
-            square_meters: formData.square_meters,
-            description: formData.description,
-            image: formData.image,
+            num_rooms: parseInt(formData.num_rooms, 10) || 0,
+            num_beds: parseInt(formData.num_beds, 10) || 0,
+            num_bathrooms: parseInt(formData.num_bathrooms, 10) || 0,
+            square_meters: parseInt(formData.square_meters, 10) || 0,
+            description: formData.description.trim() || "No description available",
+            image: formData.image.trim() || "https://example.com/default.jpg",
+            user_name: "Host",
+            user_email: "host@example.com"
         };
 
-        axios
-            .post(apiUrl + "/properties", newProperties)
-            .then((res) => {
-                console.log("Immobile aggiunto con successo")
-                setFormData(initialData)
+        axios.post("http://localhost:3000/properties", newProperty)
+            .then(() => {
+                setFeedbackMessage("✅ Property added successfully!");
+                setFeedbackType("success");
+                setShowModal(true);
+                setFormData(initialData);
             })
-            .catch((err) => {
-                console.log("Errore nell'aggiunta della proprietà:", err)
-            })
+            .catch(() => {
+                setFeedbackMessage("❌ Error adding property. Please try again later.");
+                setFeedbackType("error");
+            });
     }
 
     function handleReset() {
         setFormData(initialData);
         setErrorMessage({});
         setIsFormValid(null);
+        setFeedbackMessage(null);
     }
 
     function validateForm() {
-        let errorMessage = {};
-        if (!formData.type_name) {
-            errorMessage.type_name = "Enter the property type.";
-        }
-        if (!formData.title || typeof formData.title !== 'string' || formData.title.trim() === '' || formData.title.length < 3) {
-            errorMessage.title = "Enter a valid title.";
-        }
-        if (!formData.address || typeof formData.address !== 'string' || formData.address.trim() === '' || formData.address.length < 3) {
-            errorMessage.address = "Enter a valid address.";
-        }
-        if (!formData.city || typeof formData.city !== 'string' || formData.city.trim() === '' || formData.city.length < 3) {
-            errorMessage.city = "Enter a valid city.";
-        }
-        if (!formData.description || typeof formData.description !== 'string' || formData.description.trim() === '' || formData.description.length < 100) {
-            errorMessage.description = "Review must be less than 100 characters";
-        }
-        if (!formData.image || typeof formData.image !== 'string' || formData.image.trim() === '') {
-            errorMessage.image = "Enter a valid image url.";
-        }
-        if (!formData.num_rooms || formData.num_rooms <= 0) {
-            errorMessage.num_rooms = "The number of rooms cannot be 0.";
-        }
-        if (!formData.num_beds || formData.num_beds <= 0) {
-            errorMessage.num_beds = "The number of beds cannot be 0.";
-        }
-        if (!formData.num_bathrooms || formData.num_bathrooms <= 0) {
-            errorMessage.num_bathrooms = "The number of bathrooms cannot be 0.";
-        }
-        if (!formData.square_meters || formData.square_meters <= 0) {
-            errorMessage.square_meters = "Enter the size of the property in square meters.";
-        }
-        if (Object.keys(errorMessage).length > 0) {
-            setErrorMessage(errorMessage);
+        let errors = {};
+        if (!formData.type_id) errors.type_id = "Select a property type.";
+        if (!formData.title || formData.title.trim().length < 3) errors.title = "Enter a valid title.";
+        if (!formData.address || formData.address.trim().length < 3) errors.address = "Enter a valid address.";
+        if (!formData.city || formData.city.trim().length < 3) errors.city = "Enter a valid city.";
+        if (!formData.description || formData.description.trim().length < 30) errors.description = "Description must be at least 30 characters.";
+        if (!formData.image) errors.image = "Enter a valid image URL.";
+        if (!formData.num_rooms || formData.num_rooms <= 0) errors.num_rooms = "Number of rooms cannot be 0.";
+        if (!formData.num_beds || formData.num_beds <= 0) errors.num_beds = "Number of beds cannot be 0.";
+        if (!formData.num_bathrooms || formData.num_bathrooms <= 0) errors.num_bathrooms = "Number of bathrooms cannot be 0.";
+        if (!formData.square_meters || formData.square_meters <= 0) errors.square_meters = "Enter the property size in square meters.";
+
+        if (Object.keys(errors).length > 0) {
+            setErrorMessage(errors);
             return false;
         }
 
@@ -213,132 +105,185 @@ function FormProperties() {
     }
 
     return (
-        <form onSubmit={handleSubmit} className={styles.formPropertiesContainer}>
-            <div className={styles.formPropertiesGroup}>
-                <label htmlFor="title" className={styles.formPropertiesLabel}>Title</label>
-                <input
-                    type="text"
-                    name="title"
-                    placeholder="Enter a title"
-                    value={formData.title}
-                    onChange={handleInput}
-                    className={styles.formPropertiesInput}
-                />
-                {errorMessage.title && <p style={{ color: 'red' }}>{errorMessage.title}</p>}
+        <>
+            <form onSubmit={handleSubmit} className={styles.formPropertiesContainer}>
+
+                {/* Prima riga */}
+                <div className={styles.formPropertiesRow}>
+                    <div className={styles.formPropertiesGroup}>
+                        <label htmlFor="title">Title</label>
+                        <input
+                            id="title"
+                            type="text"
+                            name="title"
+                            placeholder="Enter a title"
+                            value={formData.title}
+                            onChange={handleInput}
+                            className={styles.formPropertiesInput}
+                        />
+                        {errorMessage.title && <p className={styles.formPropertiesErrorMessage}>{errorMessage.title}</p>}
+                    </div>
+
+                    <div className={styles.formPropertiesGroup}>
+                        <label htmlFor="type_id">Type</label>
+                        <select id="type_id" name="type_id" value={formData.type_id} onChange={handleInput} className={styles.formPropertiesInput}>
+                            <option value="">Select a type</option>
+                            {propertyTypes.length > 0 ? (
+                                propertyTypes.map(type => (
+                                    <option key={type.id} value={type.id}>{type.name}</option>
+                                ))
+                            ) : (
+                                <option disabled>Loading types...</option>
+                            )}
+                        </select>
+                        {errorMessage.type_id && <p className={styles.formPropertiesErrorMessage}>{errorMessage.type_id}</p>}
+                    </div>
+
+                    <div className={styles.formPropertiesGroup}>
+                        <label htmlFor="address">Address</label>
+                        <input
+                            id="address"
+                            type="text"
+                            name="address"
+                            placeholder="Enter the property address"
+                            value={formData.address}
+                            onChange={handleInput}
+                            className={styles.formPropertiesInput}
+                        />
+                        {errorMessage.address && <p className={styles.formPropertiesErrorMessage}>{errorMessage.address}</p>}
+                    </div>
+                </div>
+
+                {/* Seconda riga */}
+                <div className={styles.formPropertiesRow}>
+                    <div className={styles.formPropertiesGroup}>
+                        <label htmlFor="city">City</label>
+                        <input
+                            id="city"
+                            type="text"
+                            name="city"
+                            placeholder="Enter the city"
+                            value={formData.city}
+                            onChange={handleInput}
+                            className={styles.formPropertiesInput}
+                        />
+                        {errorMessage.city && <p className={styles.formPropertiesErrorMessage}>{errorMessage.city}</p>}
+                    </div>
+
+                    <div className={styles.formPropertiesGroup}>
+                        <label htmlFor="num_rooms">Rooms number</label>
+                        <input
+                            id="num_rooms"
+                            type="number"
+                            name="num_rooms"
+                            placeholder="How many rooms are there?"
+                            value={formData.num_rooms}
+                            onChange={handleInput}
+                            className={styles.formPropertiesInput}
+                        />
+                        {errorMessage.num_rooms && <p className={styles.formPropertiesErrorMessage}>{errorMessage.num_rooms}</p>}
+                    </div>
+
+                    <div className={styles.formPropertiesGroup}>
+                        <label htmlFor="num_beds">Beds number</label>
+                        <input
+                            id="num_beds"
+                            type="number"
+                            name="num_beds"
+                            placeholder="How many beds are there?"
+                            value={formData.num_beds}
+                            onChange={handleInput}
+                            className={styles.formPropertiesInput}
+                        />
+                        {errorMessage.num_beds && <p className={styles.formPropertiesErrorMessage}>{errorMessage.num_beds}</p>}
+                    </div>
+                </div>
+
+                {/* Terza riga */}
+                <div className={styles.formPropertiesRow}>
+                    <div className={styles.formPropertiesGroup}>
+                        <label htmlFor="num_bathrooms">Bathrooms number</label>
+                        <input
+                            type="number"
+                            name="num_bathrooms"
+                            placeholder="How many bathrooms are there?"
+                            value={formData.num_bathrooms}
+                            onChange={handleInput}
+                            className={styles.formPropertiesInput}
+                        />
+                        {errorMessage.num_bathrooms && <p className={styles.formPropertiesErrorMessage}>{errorMessage.num_bathrooms}</p>}
+                    </div>
+
+                    <div className={styles.formPropertiesGroup}>
+                        <label htmlFor="squareMeters">Square meters</label>
+                        <input
+                            type="number"
+                            name="square_meters"
+                            placeholder="Enter the size in square meters"
+                            value={formData.square_meters}
+                            onChange={handleInput}
+                            className={styles.formPropertiesInput}
+                        />
+                        {errorMessage.square_meters && <p className={styles.formPropertiesErrorMessage}>{errorMessage.square_meters}</p>}
+                    </div>
+                    <div className={styles.formPropertiesRow}>
+                        <div className={styles.formPropertiesGroup}>
+                            <label htmlFor="image">Upload an image</label>
+                            <input
+                                id="image"
+                                type="text"
+                                name="image"
+                                placeholder="Enter an image URL"
+                                value={formData.image}
+                                onChange={handleInput}
+                                className={styles.formPropertiesInput}
+                            />
+                            {errorMessage.image && <p className={styles.formPropertiesErrorMessage}>{errorMessage.image}</p>}
+                        </div>
+                    </div>
+
+
+                </div>
+
+                {/* Riga per description */}
+                <div className={styles.formPropertiesGroup}>
+                    <label htmlFor="description">Add a description</label>
+                    <textarea
+                        name="description"
+                        placeholder="Write a description"
+                        value={formData.description}
+                        onChange={handleInput}
+                        className={styles.formPropertiesTextarea}
+                    ></textarea>
+                    {errorMessage.description && <p className={styles.formPropertiesErrorMessage}>{errorMessage.description}</p>}
+                </div>
+                {/* Bottoni */}
+                <div className={styles.formPropertiesButtonContainer}>
+                    <button type="submit" className={styles.formPropertiesSubmitButton}>Submit</button>
+                    <button type="button" className={styles.formPropertiesResetButton} onClick={handleReset}>Reset</button>
+                </div>
+
+            </form>
+            {/* Bootstrap Modal */}
+            <div className={`modal fade ${showModal ? "show d-block" : "d-none"}`} tabIndex="-1" role="dialog">
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header justify-content-between">
+                            <h5 className="modal-title">{feedbackType === "success" ? "Success" : "Error"}</h5>
+                        </div>
+                        <div className="modal-body">
+                            <p>{feedbackMessage}</p>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className={styles.formPropertiesSubmitButton} onClick={() => window.location.href = "/"}>Go to Homepage</button>
+                            <button type="button" className={styles.formPropertiesResetButton} onClick={() => setShowModal(false)}>Close</button>
+
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className={styles.formPropertiesGroup}>
-                <label htmlFor="type_name" className={styles.formPropertiesLabel}>Type</label>
-                <input type="text"
-                    name="type_name"
-                    placeholder="Select a type"
-                    value={formData.type_name}
-                    onChange={handleInput}
-                    className={styles.formPropertiesInput}
-                />
-                {errorMessage.type_name && <p style={{ color: 'red' }}>{errorMessage.type_name}</p>}
-            </div>
-            <div className={styles.formPropertiesGroup}>
-                <label htmlFor="address" className={styles.formPropertiesLabel}>Address</label>
-                <input
-                    type="text"
-                    name="address"
-                    placeholder="Enter the property address"
-                    value={formData.address}
-                    onChange={handleInput}
-                    className={styles.formPropertiesInput}
-                />
-                {errorMessage.address && <p style={{ color: 'red' }}>{errorMessage.address}</p>}
-            </div>
-            <div className={styles.formPropertiesGroup}>
-                <label htmlFor="city" className={styles.formPropertiesLabel}>City</label>
-                <input
-                    type="text"
-                    name="city"
-                    placeholder="Enter the city"
-                    value={formData.city}
-                    onChange={handleInput}
-                    className={styles.formPropertiesInput}
-                />
-                {errorMessage.city && <p style={{ color: 'red' }}>{errorMessage.city}</p>}
-            </div>
-            <div className={styles.formPropertiesGroup}>
-                <label htmlFor="roomsCount" className={styles.formPropertiesLabel}>Rooms number</label>
-                <input
-                    type="number"
-                    name="num_rooms"
-                    placeholder="How many rooms are there?"
-                    value={formData.num_rooms}
-                    onChange={handleInput}
-                    className={styles.formPropertiesInput}
-                />
-                {errorMessage.num_rooms && <p style={{ color: 'red' }}>{errorMessage.num_rooms}</p>}
-            </div>
-            <div className={styles.formPropertiesGroup}>
-                <label htmlFor="num_beds" className={styles.formPropertiesLabel}>Beds number</label>
-                <input
-                    type="number"
-                    name="num_beds"
-                    placeholder="How many beds are there?"
-                    value={formData.num_beds}
-                    onChange={handleInput}
-                    className={styles.formPropertiesInput}
-                />
-                {errorMessage.num_beds && <p style={{ color: 'red' }}>{errorMessage.num_beds}</p>}
-            </div>
-            <div className={styles.formPropertiesGroup}>
-                <label htmlFor="num_bathrooms" className={styles.formPropertiesLabel}>Bathrooms number</label>
-                <input
-                    type="number"
-                    name="num_bathrooms"
-                    placeholder="How many bathrooms are there?"
-                    value={formData.num_bathrooms}
-                    onChange={handleInput}
-                    className={styles.formPropertiesInput}
-                />
-                {errorMessage.num_bathrooms && <p style={{ color: 'red' }}>{errorMessage.num_bathrooms}</p>}
-            </div>
-            <div className={styles.formPropertiesGroup}>
-                <label htmlFor="squareMeters" className={styles.formPropertiesLabel}>Square meters</label>
-                <input
-                    type="number"
-                    name="square_meters"
-                    placeholder="Enter the size in square meters"
-                    value={formData.square_meters}
-                    onChange={handleInput}
-                    className={styles.formPropertiesInput}
-                />
-                {errorMessage.square_meters && <p style={{ color: 'red' }}>{errorMessage.square_meters}</p>}
-            </div>
-            <div className={styles.formPropertiesGroup}>
-                <label htmlFor="description" className={styles.formPropertiesLabel}>Add a description</label>
-                <textarea
-                    name="description"
-                    placeholder="Write a description"
-                    value={formData.description}
-                    onChange={handleInput}
-                    className={styles.formPropertiesTextarea}
-                >
-                </textarea>
-                {errorMessage.description && <p style={{ color: 'red' }}>{errorMessage.description}</p>}
-            </div>
-            <div className={styles.formPropertiesGroup}>
-                <label htmlFor="image" className={styles.formPropertiesLabel}>Upload an image</label>
-                <input
-                    type="text"
-                    name="image"
-                    placeholder="Enter an image url"
-                    value={formData.image}
-                    onChange={handleInput}
-                    className={styles.formPropertiesInput}
-                />
-                {errorMessage.image && <p style={{ color: 'red' }}>{errorMessage.image}</p>}
-            </div>
-            <div className={styles.formPropertiesButtonContainer}>
-                <button type='submit' className={styles.formPropertiesSubmitButton}>Submit</button>
-                <button type='button' className={styles.formPropertiesResetButton} onClick={handleReset}>Reset</button>
-            </div>
-        </form>
-    )
+        </>
+    );
 }
 
 export default FormProperties;
