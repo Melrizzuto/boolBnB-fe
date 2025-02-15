@@ -37,7 +37,13 @@ export default function Homepage() {
 
     return (
         <>
-            <Jumbotron scrollToCards={() => cardsRef.current?.scrollIntoView({ behavior: "smooth" })} />
+            <Jumbotron scrollToCards={() => {
+                if (cardsRef.current) {
+                const offset = 150; // Modifica questo valore per regolare lo scroll
+                const targetPosition = cardsRef.current.getBoundingClientRect().top + window.scrollY - offset;
+                window.scrollTo({ top: targetPosition, behavior: "smooth" });
+                 }
+                }} />
             <div ref={cardsRef}>
                 {loading ? (
                     <p>Loading properties...</p>

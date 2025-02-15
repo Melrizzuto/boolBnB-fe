@@ -72,3 +72,15 @@
 .btnOutline:hover {
     transform: scale(1.05);
 }
+
+@media screen and (max-width: 576px) {
+    .title{
+        font-size: 60px;
+    }
+    .buttonContainer{
+        flex-direction: column;
+    }
+    .btnOutline{
+        margin: auto;
+    }
+}
