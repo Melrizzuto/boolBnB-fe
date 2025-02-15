@@ -39,7 +39,7 @@ export default function Homepage() {
         <>
             <Jumbotron scrollToCards={() => {
                 if (cardsRef.current) {
-                const offset = 150; // Modifica questo valore per regolare lo scroll
+                const offset = 70; // Modifica questo valore per regolare lo scroll
                 const targetPosition = cardsRef.current.getBoundingClientRect().top + window.scrollY - offset;
                 window.scrollTo({ top: targetPosition, behavior: "smooth" });
                  }
