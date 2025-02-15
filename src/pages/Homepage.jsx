@@ -43,9 +43,9 @@ export default function Homepage() {
                     <p>Loading properties...</p>
                 ) : properties && properties.length > 0 ? (
                     <div className="container-sm">
-                        <div className="row d-flex justify-content-center">
+                        <div className="d-flex justify-content-center flex-wrap column-gap-4">
                             {properties.map((property) => (
-                                <div key={property.id} className="col-md-3 mb-4">
+                                <div key={property.id} className=" mb-4">
                                     <Card key={property.id} property={property} slug={property.slug}/>
                                 </div>
                             ))}

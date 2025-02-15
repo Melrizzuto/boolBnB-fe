@@ -113,3 +113,19 @@
     display: flex;
     gap: 8px;
 }
+
+.textBtn{
+    display: inline;
+}
+
+@media screen and (max-width: 576px) {
+    .textBtn{
+        display: none;
+    }
+    .searchButton, addButton {
+        padding: 10px 14px;
+        border-radius: 15px;
+        gap: 0px;
+    }
+
+}

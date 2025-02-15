@@ -30,10 +30,10 @@ function Header() {
                 {/* PULSANTI A DESTRA */}
                 <div className={styles.buttonsContainer}>
                     <Link to="/search" className={styles.searchButton}>
-                        <FaSearch /> Search your fav
+                        <FaSearch /> <span className={styles.textBtn}>Search your fav</span>
                     </Link>
                     <Link to="/add" className={styles.addButton}>
-                        <FaHome /> Add new
+                        <FaHome /> <span className={styles.textBtn}>Add new</span>
                     </Link>
                 </div>
             </div>
