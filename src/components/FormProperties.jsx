@@ -259,7 +259,7 @@ function FormProperties() {
                 </div>
                 {/* Bottoni */}
                 <div className={styles.formPropertiesButtonContainer}>
-                    <button type="submit" className={styles.formPropertiesSubmitButton}>Submit</button>
+                    <button type="submit" className={styles.formPropertiesSubmitButton}>Add</button>
                     <button type="button" className={styles.formPropertiesResetButton} onClick={handleReset}>Reset</button>
                 </div>
 

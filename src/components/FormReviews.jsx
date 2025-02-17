@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import styles from "./FormContact&Reviews.module.css";
@@ -16,7 +16,6 @@ const initialData = {
 const apiUrl = import.meta.env.VITE_API_URL;
 
 function FormReviews({ updateReviews }) {
-    const [reviews, setReviews] = useState([]);
     const [formData, setFormData] = useState(initialData);
     const [errorMessage, setErrorMessage] = useState({});
     const [successMessage, setSuccessMessage] = useState("");
@@ -228,7 +227,7 @@ function FormReviews({ updateReviews }) {
             </div>
 
             <div className={styles.buttonContainer}>
-                <button className={styles.submitButton} type="submit">Send</button>
+                <button className={styles.submitButton} type="submit">Add</button>
                 <button className={styles.resetButton} type="button" onClick={handleReset}>Reset</button>
             </div>
         </form>
