@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styles from "./Jumbotron.module.css";
+import SearchBarHome from "./SearchBarHome";
 
 export default function Jumbotron({ scrollToCards }) {
     return (
@@ -9,6 +10,8 @@ export default function Jumbotron({ scrollToCards }) {
             <h4 className={styles.subtitle}>
                 Find your perfect stay. Unique homes, unforgettable experiences.
             </h4>
+
+            <SearchBarHome />
 
             <div className={styles.buttonContainer}>
 
