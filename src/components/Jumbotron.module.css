@@ -73,29 +73,35 @@
     transform: scale(1.05);
 }
 
+
 @media screen and (max-width: 576px) {
-    .title{
+    .title {
         font-size: 60px;
     }
-    .buttonContainer{
+
+    .buttonContainer {
         flex-direction: column;
     }
-    .btnOutline{
+
+    .btnOutline {
         margin: auto;
     }
 }
+
 @media screen and (max-width: 492px) {
-    .buttonContainer{
+    .buttonContainer {
         position: sticky;
-        bottom:0;
+        bottom: 0;
     }
-    .title{
+
+    .title {
         font-size: 50px;
     }
-    .subtitle{
+
+    .subtitle {
         font-size: 20px;
-        padding-bottom:10px
+        padding-bottom: 10px
     }
-        
-    
+
+
 }

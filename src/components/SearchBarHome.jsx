@@ -8,21 +8,21 @@ const SearchBarHome = () => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        if(searchTerm.trim()){
+        if (searchTerm.trim()) {
             navigate(`/search?searchTerm=${encodeURIComponent(searchTerm)}`);
         };
     };
-    return(
+    return (
         <form onSubmit={handleSearch} className={styles.form}>
             <input
                 type="text"
-                placeholder="Cerca per città o indirizzo..."
+                placeholder="Search by city or address..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className={styles.searchBar}
-                />
-            <button className={styles.btn}>Cerca</button>
-      </form>
+            />
+            <button className={styles.btn}>Search</button>
+        </form>
     );
 
 };
