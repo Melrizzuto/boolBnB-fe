@@ -20,11 +20,11 @@
 
 /* Griglia delle proprietà */
 .propertiesGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    /* Due colonne */
-    gap: 20px;
+    display: flex;
     justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 /* Stile per il testo sotto la search bar */
