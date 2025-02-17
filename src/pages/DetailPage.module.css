@@ -153,6 +153,13 @@ p {
     color: #555;
 }
 
+.reviewDate {
+    font-size: 14px;
+    display: flex;
+    align-content: flex-end;
+    justify-content: flex-end;
+}
+
 /* Numero di like */
 .likesCount {
     font-size: 20px;
