@@ -21,10 +21,10 @@
 /* Griglia delle proprietà */
 .propertiesGrid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    /* Due colonne */
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     justify-content: center;
+    padding: 20px;
 }
 
 /* Stile per il testo sotto la search bar */

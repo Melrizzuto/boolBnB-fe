@@ -1,33 +1,32 @@
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
-
 import Jumbotron from "../components/Jumbotron";
-import Card from "../components/Card";
+import Carousel from "../components/Carousel"; // Import del componente Carosello
+import Card from "../components/Card"; // Import corretto del componente Card
+import styles from "./Homepage.module.css"; // Import dello stile personalizzato
 
 export default function Homepage() {
-
-    //stato per le properties e per il caricamento
+    // Stato per le proprietà e per il caricamento
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(true);
-    const cardsRef = useRef(null); //creo un ref per le cards
+    const cardsRef = useRef(null);
 
-    //funzione per recuperare i dati dal server
-    function fetchProperties() {
-        // effettuo richiesta GET per ottenere i dati dal server
-        axios.get(`http://localhost:3000/properties`)
-            .then((response) => {
-                // ordino le properties in base al numero di likes
+    // Funzione per recuperare i dati dal server
+    async function fetchProperties() {
+        try {
+            const response = await axios.get(`http://localhost:3000/properties`);
+            if (response.data && Array.isArray(response.data.results)) {
+                // Ordino le proprietà in base ai likes
                 const sortedProperties = response.data.results.sort((a, b) => b.likes - a.likes);
-
-                // quando ottengo i dati aggiorno lo stato delle properties
                 setProperties(sortedProperties);
-                console.log(sortedProperties);
-                setLoading(false);
-            })
-            .catch((error) => {
-                // stampo eventuali errori in console
-                console.error("Error loading data:", error);
-            });
+            } else {
+                console.error("Error: Response data is not an array", response.data);
+            }
+        } catch (error) {
+            console.error("Error loading data:", error);
+        } finally {
+            setLoading(false);
+        }
     }
 
     // useEffect per chiamare l'API al caricamento della pagina
@@ -35,33 +34,65 @@ export default function Homepage() {
         fetchProperties();
     }, []);
 
+    // Funzione per scrollare alla sezione delle cards
+    const scrollToCards = () => {
+        if (cardsRef.current) {
+            const offset = 70;
+            const targetPosition = cardsRef.current.getBoundingClientRect().top + window.scrollY - offset;
+            window.scrollTo({ top: targetPosition, behavior: "smooth" });
+        }
+    };
+
     return (
         <>
-            <Jumbotron scrollToCards={() => {
-                if (cardsRef.current) {
-                    const offset = 70; // Modifica questo valore per regolare lo scroll
-                    const targetPosition = cardsRef.current.getBoundingClientRect().top + window.scrollY - offset;
-                    window.scrollTo({ top: targetPosition, behavior: "smooth" });
-                }
-            }} />
-            <div ref={cardsRef}>
-                <div className="container p-5"><h1>Trending now</h1></div>
-                {loading ? (
-                    <p>Loading properties...</p>
-                ) : properties && properties.length > 0 ? (
-                    <div className="container-sm">
-                        <div className="d-flex justify-content-center flex-wrap column-gap-4">
+            {/* Jumbotron */}
+            <Jumbotron scrollToCards={scrollToCards} />
+
+            {/* Sezione Carosello: Mostra SOLO le 15 più votate */}
+            <div className={`${styles.myContainer} mt-2`}>
+                <h1 className={styles.mainTitle}>Trending now</h1>
+                {!loading && properties.length > 0 && (
+                    <Carousel properties={properties.slice(0, 15)} />
+                )}
+            </div>
+
+            {/* Sezione "we offer what you really need" */}
+            <div className={styles.collectionSection}>
+                <div className="container-lg">
+                    <div className={styles.home_cta_content}>
+                        <div className={styles.div_block_11}>
+                            <h1 className={styles.heading_4}>We offer what you</h1>
+                            <div className={styles.div_block_12}>
+                                <img src="https://cdn.prod.website-files.com/64fc2a65f3e576a13b130e5c/65206ca9ce7fa29d3bf598da_Frame%201171276019.png" loading="lazy" alt="" className={styles.image_6} />
+                            </div>
+                            <h1 className={styles.heading_4}>really need</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h1 className={`pt-5 ${styles.mainTitle}`}>Boolbnb Collections</h1>
+                <p className={styles.sectionDescription}>
+                    Discover the best places for you!
+                </p>
+                <div className="container my-5" ref={cardsRef}>
+                    {loading ? (
+                        <p className="text-center text-white">Loading properties...</p>
+                    ) : properties.length > 0 ? (
+                        <div className="row g-4">
                             {properties.map((property) => (
-                                <div key={property.id} className=" mb-4">
-                                    <Card key={property.id} property={property} slug={property.slug} />
+                                <div key={property.id} className="col-lg-4 col-md-6 col-sm-12">
+                                    <Card property={property} slug={property.slug} />
                                 </div>
                             ))}
                         </div>
-                    </div>
-                ) : (
-                    <p>No properties found.</p>
-                )}
+                    ) : (
+                        <p className="text-center text-white">No properties found.</p>
+                    )}
+                </div>
             </div>
         </>
-    )
+    );
 }
+
