@@ -39,12 +39,13 @@ export default function Homepage() {
         <>
             <Jumbotron scrollToCards={() => {
                 if (cardsRef.current) {
-                const offset = 70; // Modifica questo valore per regolare lo scroll
-                const targetPosition = cardsRef.current.getBoundingClientRect().top + window.scrollY - offset;
-                window.scrollTo({ top: targetPosition, behavior: "smooth" });
-                 }
-                }} />
+                    const offset = 70; // Modifica questo valore per regolare lo scroll
+                    const targetPosition = cardsRef.current.getBoundingClientRect().top + window.scrollY - offset;
+                    window.scrollTo({ top: targetPosition, behavior: "smooth" });
+                }
+            }} />
             <div ref={cardsRef}>
+                <div className="container p-5"><h1>Trending now</h1></div>
                 {loading ? (
                     <p>Loading properties...</p>
                 ) : properties && properties.length > 0 ? (
@@ -52,7 +53,7 @@ export default function Homepage() {
                         <div className="d-flex justify-content-center flex-wrap column-gap-4">
                             {properties.map((property) => (
                                 <div key={property.id} className=" mb-4">
-                                    <Card key={property.id} property={property} slug={property.slug}/>
+                                    <Card key={property.id} property={property} slug={property.slug} />
                                 </div>
                             ))}
                         </div>
