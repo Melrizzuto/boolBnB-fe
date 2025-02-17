@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import styles from "./FormProperties.module.css";
 
@@ -18,11 +19,39 @@ const initialData = {
 function FormProperties() {
     const [formData, setFormData] = useState(initialData);
     const [propertyTypes, setPropertyTypes] = useState([]);
+    //const [properties, setProperties] = useState([]);
     const [isFormValid, setIsFormValid] = useState(null);
     const [errorMessage, setErrorMessage] = useState({});
     const [feedbackMessage, setFeedbackMessage] = useState(null);
     const [feedbackType, setFeedbackType] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [propertySlug, setPropertySlug] = useState(null);
+
+    //const navigate = useNavigate();
+
+    const defaultPlaceholders = {
+        title: "Enter a title",
+        address: "Enter the property address",
+        city: "Enter the city",
+        description: "Write a description",
+        num_rooms: "How many rooms are there?",
+        num_bathrooms: "How many bathrooms are there?",
+        num_beds: "How many beds are there?",
+        square_meters: "Enter the size in square meters"
+    };
+
+    const hoverPlaceholders = {
+        title: "Min. 3 characters",
+        address: "Min. 3 characters",
+        city: "Min. 3 characters",
+        description: "Description must be at least 30 characters.",
+        num_rooms: "The number of rooms cannot be less than or equal to 0.",
+        num_bathrooms: "The number of bathrooms cannot be less than or equal to 0.",
+        num_beds: "The number of beds cannot be less than or equal to 0.",
+        square_meters: "The number of square meters cannot be less than or equal to 0."
+    };
+
+    const [placeholders, setPlaceholders] = useState(defaultPlaceholders);
 
     useEffect(() => {
         axios.get("http://localhost:3000/api/property-types")
@@ -34,11 +63,38 @@ function FormProperties() {
             });
     }, []);
 
+    //useEffect(() => {
+    // Carica tutte le proprietà iniziali
+    //    axios.get("http://localhost:3000/properties")
+    //        .then(response => {
+    //            setProperties(response.data);  // Salva tutte le proprietà
+    //        })
+    //        .catch(error => {
+    //            console.error("Error loading properties:", error);
+    //        });
+    //}, []);
+
     function handleInput(e) {
         const { name, value } = e.target;
         setFormData(prevState => ({
             ...prevState,
             [name]: value
+        }));
+    }
+
+    function handleMouseEnter(e) {
+        const field = e.target.name;
+        setPlaceholders(prev => ({
+            ...prev,
+            [field]: hoverPlaceholders[field]
+        }));
+    }
+
+    function handleMouseLeave(e) {
+        const field = e.target.name;
+        setPlaceholders(prev => ({
+            ...prev,
+            [field]: defaultPlaceholders[field]
         }));
     }
 
@@ -59,20 +115,22 @@ function FormProperties() {
             description: formData.description.trim() || "No description available",
             image: formData.image.trim() || "https://example.com/default.jpg",
             user_name: "Host",
-            user_email: "host@example.com"
+            user_email: "host@example.com",
         };
 
         axios.post("http://localhost:3000/properties", newProperty)
-            .then(() => {
+            .then((res) => {
+                setPropertySlug(res.data.slug);
                 setFeedbackMessage("✅ Property added successfully!");
                 setFeedbackType("success");
                 setShowModal(true);
+                //setProperties(prevProperties => Array.isArray(prevProperties) ? [...prevProperties, res.data] : [res.data]);
                 setFormData(initialData);
             })
             .catch(() => {
                 setFeedbackMessage("❌ Error adding property. Please try again later.");
                 setFeedbackType("error");
-            });
+            })
     }
 
     function handleReset() {
@@ -90,10 +148,10 @@ function FormProperties() {
         if (!formData.city || formData.city.trim().length < 3) errors.city = "Enter a valid city.";
         if (!formData.description || formData.description.trim().length < 30) errors.description = "Description must be at least 30 characters.";
         if (!formData.image) errors.image = "Enter a valid image URL.";
-        if (!formData.num_rooms || formData.num_rooms <= 0) errors.num_rooms = "Number of rooms cannot be 0.";
-        if (!formData.num_beds || formData.num_beds <= 0) errors.num_beds = "Number of beds cannot be 0.";
-        if (!formData.num_bathrooms || formData.num_bathrooms <= 0) errors.num_bathrooms = "Number of bathrooms cannot be 0.";
-        if (!formData.square_meters || formData.square_meters <= 0) errors.square_meters = "Enter the property size in square meters.";
+        if (!formData.num_rooms || formData.num_rooms <= 0) errors.num_rooms = "The number of rooms cannot be less than or equal to 0.";
+        if (!formData.num_beds || formData.num_beds <= 0) errors.num_beds = "The number of beds cannot be less than or equal to 0.";
+        if (!formData.num_bathrooms || formData.num_bathrooms <= 0) errors.num_bathrooms = "The number of bathrooms cannot be less than or equal to 0.";
+        if (!formData.square_meters || formData.square_meters <= 0) errors.square_meters = "The number of square meters cannot be less than or equal to 0.";
 
         if (Object.keys(errors).length > 0) {
             setErrorMessage(errors);
@@ -103,6 +161,22 @@ function FormProperties() {
         setIsFormValid(true);
         return true;
     }
+
+    //useEffect(() => {
+    // Quando la lista delle proprietà viene aggiornata, trova la nuova proprietà aggiunta
+    //    if (properties.length > 0) {
+    // Trova l'ultima proprietà aggiunta (quella con id massimo o altro criterio)
+    //        const newProperty = properties[properties.length - 1];
+    //setPropertySlug(newProperty.slug);  // Salva lo slug
+    //    }
+    //}, [properties]);
+
+    //useEffect(() => {
+    // Quando lo slug cambia (cioè dopo aver aggiunto la proprietà), naviga alla pagina di dettaglio
+    //    if (propertySlug) {
+    //        navigate(`/properties/${propertySlug}`);  // Vai alla pagina della proprietà usando lo slug
+    //   }
+    //}, [propertySlug, navigate]);
 
     return (
         <>
@@ -116,10 +190,12 @@ function FormProperties() {
                             id="title"
                             type="text"
                             name="title"
-                            placeholder="Enter a title"
+                            placeholder={placeholders.title}
                             value={formData.title}
                             onChange={handleInput}
                             className={styles.formPropertiesInput}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
                         />
                         {errorMessage.title && <p className={styles.formPropertiesErrorMessage}>{errorMessage.title}</p>}
                     </div>
@@ -145,10 +221,12 @@ function FormProperties() {
                             id="address"
                             type="text"
                             name="address"
-                            placeholder="Enter the property address"
+                            placeholder={placeholders.address}
                             value={formData.address}
                             onChange={handleInput}
                             className={styles.formPropertiesInput}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
                         />
                         {errorMessage.address && <p className={styles.formPropertiesErrorMessage}>{errorMessage.address}</p>}
                     </div>
@@ -162,10 +240,12 @@ function FormProperties() {
                             id="city"
                             type="text"
                             name="city"
-                            placeholder="Enter the city"
+                            placeholder={placeholders.city}
                             value={formData.city}
                             onChange={handleInput}
                             className={styles.formPropertiesInput}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
                         />
                         {errorMessage.city && <p className={styles.formPropertiesErrorMessage}>{errorMessage.city}</p>}
                     </div>
@@ -176,10 +256,12 @@ function FormProperties() {
                             id="num_rooms"
                             type="number"
                             name="num_rooms"
-                            placeholder="How many rooms are there?"
+                            placeholder={placeholders.num_rooms}
                             value={formData.num_rooms}
                             onChange={handleInput}
                             className={styles.formPropertiesInput}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
                         />
                         {errorMessage.num_rooms && <p className={styles.formPropertiesErrorMessage}>{errorMessage.num_rooms}</p>}
                     </div>
@@ -190,10 +272,12 @@ function FormProperties() {
                             id="num_beds"
                             type="number"
                             name="num_beds"
-                            placeholder="How many beds are there?"
+                            placeholder={placeholders.num_beds}
                             value={formData.num_beds}
                             onChange={handleInput}
                             className={styles.formPropertiesInput}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
                         />
                         {errorMessage.num_beds && <p className={styles.formPropertiesErrorMessage}>{errorMessage.num_beds}</p>}
                     </div>
@@ -206,10 +290,12 @@ function FormProperties() {
                         <input
                             type="number"
                             name="num_bathrooms"
-                            placeholder="How many bathrooms are there?"
+                            placeholder={placeholders.num_bathrooms}
                             value={formData.num_bathrooms}
                             onChange={handleInput}
                             className={styles.formPropertiesInput}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
                         />
                         {errorMessage.num_bathrooms && <p className={styles.formPropertiesErrorMessage}>{errorMessage.num_bathrooms}</p>}
                     </div>
@@ -219,10 +305,12 @@ function FormProperties() {
                         <input
                             type="number"
                             name="square_meters"
-                            placeholder="Enter the size in square meters"
+                            placeholder={placeholders.square_meters}
                             value={formData.square_meters}
                             onChange={handleInput}
                             className={styles.formPropertiesInput}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
                         />
                         {errorMessage.square_meters && <p className={styles.formPropertiesErrorMessage}>{errorMessage.square_meters}</p>}
                     </div>
@@ -250,10 +338,12 @@ function FormProperties() {
                     <label htmlFor="description">Add a description</label>
                     <textarea
                         name="description"
-                        placeholder="Write a description"
+                        placeholder={placeholders.description}
                         value={formData.description}
                         onChange={handleInput}
                         className={styles.formPropertiesTextarea}
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
                     ></textarea>
                     {errorMessage.description && <p className={styles.formPropertiesErrorMessage}>{errorMessage.description}</p>}
                 </div>
@@ -275,9 +365,8 @@ function FormProperties() {
                             <p>{feedbackMessage}</p>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className={styles.formPropertiesSubmitButton} onClick={() => window.location.href = "/"}>Go to Homepage</button>
+                            <Link className={styles.formPropertiesSubmitButton} to={`/properties/${propertySlug}`} state={{ slug: propertySlug }}>Go to Detail page </Link>
                             <button type="button" className={styles.formPropertiesResetButton} onClick={() => setShowModal(false)}>Close</button>
-
                         </div>
                     </div>
                 </div>
