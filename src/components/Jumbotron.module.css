@@ -37,7 +37,7 @@
 
 .buttonContainer {
     position: absolute;
-    bottom: 50px;
+    bottom: 150px;
     display: flex;
     gap: 15px;
 }
