@@ -7,7 +7,7 @@ import FormReviews from "../components/FormReviews";
 import HeartRatingComponent from "../components/HeartRatingComponent";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FaStar, FaRegStar } from "react-icons/fa";
-import { faBed, faBath, faRulerCombined, faHouse, faMapMarkerAlt, faEnvelope, faLandmark, faHeart, faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faBed, faBath, faRulerCombined, faHouse, faMapMarkerAlt, faEnvelope, faLandmark, faHeart, faArrowUp, faCity } from '@fortawesome/free-solid-svg-icons';
 
 // Funzione per disegnare le stelle
 function drawStars(rating) {
@@ -112,7 +112,7 @@ const DetailPage = () => {
             {/* HERO SECTION */}
             <section className={styles.heroSection}>
                 <div className={styles.heroText}>
-                    <FontAwesomeIcon icon={faMapMarkerAlt} /> {property.address}
+                    <FontAwesomeIcon icon={faMapMarkerAlt} /> {property.title}
                 </div>
                 <div className={styles.imageContainer} onClick={() => scrollToSection(descriptionProp)}>
                     <img src={imageUrl} alt={property.title} className={styles.propertyImage} />
@@ -142,12 +142,14 @@ const DetailPage = () => {
                 </div>
                 <div className={styles.specs}>
                     <ul>
-                        <li><FontAwesomeIcon icon={faMapMarkerAlt} /> City: {property.city}</li>
+                        <li><FontAwesomeIcon icon={faCity} /> City: {property.city}</li>
+                        <li><FontAwesomeIcon icon={faMapMarkerAlt} /> Address: {property.address}</li>
                         <li><FontAwesomeIcon icon={faBath} /> Bathrooms: {property.num_bathrooms}</li>
                         <li><FontAwesomeIcon icon={faLandmark} /> Rooms: {property.num_rooms}</li>
                         <li><FontAwesomeIcon icon={faBed} /> Beds: {property.num_beds}</li>
                         <li><FontAwesomeIcon icon={faRulerCombined} /> Square Meters: {property.square_meters}</li>
                         <li><FontAwesomeIcon icon={faHouse} /> Type: {property.property_type}</li>
+
                     </ul>
                 </div>
             </section>
