@@ -72,7 +72,7 @@ export default function Homepage() {
             </div>
 
             <div>
-                <h1 className={`pt-5 ${styles.mainTitle}`}>Boolbnb Collections</h1>
+                <h1 className={`pt-5 ${styles.mainTitle}`}>Boolbnb Collection</h1>
                 <p className={styles.sectionDescription}>
                     Discover the best places for you!
                 </p>
