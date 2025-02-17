@@ -12,15 +12,15 @@ const SearchBarHome = () => {
         };
     };
     return(
-        <form onSubmit={handleSearch} className="search-bar-home">
+        <div>
             <input
                 type="text"
                 placeholder="Cerca per città o indirizzo..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 />
-            <button type="submit">Cerca</button>
-      </form>
+            <button onClick={handleSearch}>Cerca</button>
+      </div>
     );
 
 };
