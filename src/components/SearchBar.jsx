@@ -5,7 +5,7 @@ import styles from "./SearchBar.module.css";
 const SearchBar = ({ onSearch, searchTerm }) => {
     useEffect(() => {
         const timer = setTimeout(() => {
-            onSearch(searchTerm.trim());
+            onSearch(searchTerm);
         }, 300);
 
         return () => clearTimeout(timer);
