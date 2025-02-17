@@ -163,7 +163,8 @@ const DetailPage = () => {
                                     <strong>{review.user_name}</strong> | {drawStars(parseFloat(review.rating))}
                                 </div>
                                 <p className={styles.reviewText}>{review.review_text}</p>
-                            </li>
+                                <p className={styles.reviewDate}>Reviewed on {new Date(review.created_at).toLocaleDateString("it-IT")}
+                                </p>                            </li>
                         ))}
                     </ul>
                 ) : (
