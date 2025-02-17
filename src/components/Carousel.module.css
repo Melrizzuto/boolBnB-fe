@@ -1,0 +1,88 @@
+.carouselContainer {
+    position: relative;
+    width: 100%;
+    padding: 40px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-primary);
+}
+
+/* Wrapper per frecce + carosello */
+.navWrapper {
+    width: 90%;
+    max-width: 1800px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    position: relative;
+
+}
+
+/* Stile per ogni slide */
+.carouselItem {
+
+    display: flex;
+    justify-content: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.carouselItem:hover {
+    transform: scale(1.01);
+}
+
+.swiper {
+    width: 100%;
+    max-width: 1800px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: hidden;
+    list-style: none;
+    padding: 80px;
+    z-index: 1;
+    display: block;
+}
+
+
+/*  Frecce */
+.navButton {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0);
+    border-radius: 50%;
+    border: 2px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Cambia colore al passaggio del mouse */
+.navButton:hover {
+    transform: scale(1.05);
+}
+
+/* stile icona freccia */
+.navButton svg {
+    width: 55px;
+    height: 30px;
+    fill: black;
+    transition: fill 0.3sease;
+}
+
+
+/* Posizionamento frecce */
+.prev {
+    position: absolute;
+    left: -80px;
+}
+
+.next {
+    position: absolute;
+    right: -80px;
+}

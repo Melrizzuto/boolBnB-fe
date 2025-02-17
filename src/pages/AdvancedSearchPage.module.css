@@ -20,11 +20,12 @@
 
 /* Griglia delle proprietà */
 .propertiesGrid {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
+    justify-content: center;
+    padding: 20px;
+
 }
 
 /* Stile per il testo sotto la search bar */
