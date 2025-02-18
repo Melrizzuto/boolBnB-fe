@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./Header.module.css";
-import { FaSearch, FaHome } from "react-icons/fa";
+import { FaTimes, FaHome, FaBars } from "react-icons/fa";
 import SearchBarHome from "./SearchBarHome";
 
 function Header() {
     const [scrolled, setScrolled] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
     const location = useLocation();
 
     // Effetto cambio colore in base allo scroll
@@ -25,16 +26,35 @@ function Header() {
                     BOOLBNB
                 </Link>
 
-                {/* NAVBAR */}
-                <nav className={styles.nav}>
-                </nav>
+                 {/* Bottone Hamburger (visibile solo sotto i 548px) */}
+                 {(location.pathname !== "/search" && location.pathname !== "/add") && 
+                    <button 
+                        className={styles.hamburger} 
+                        onClick={() => setMenuOpen(!menuOpen)}
+                    >
+                        {menuOpen ? <FaTimes /> : <FaBars />}
+                    </button>
+                 }
+                
 
-                {/* PULSANTI A DESTRA */}
+                {/* NAVBAR MOBILE*/}
+                <div className={`${styles.mobileMenu} ${menuOpen ? styles.open : ""}`}>
+                    {(location.pathname !== "/search" && location.pathname !== "/add") && <div className={styles.searchContainer}>Cerca: <SearchBarHome /></div>}
+                    <div className="d-flex align-items-center">
+                        <span className="pe-2">Aggiungi un nuovo immobile:</span>
+                        <Link to="/add" className={styles.addButton} onClick={() => setMenuOpen(false)}>
+                            <FaHome /> <span className={styles.textBtn}>Add new</span>
+                        </Link>
+                    </div>
+                    
+                </div>
+
+                {/* NAVBAR DESKTOP */}
                 <div className={styles.buttonsContainer}>
-                {(location.pathname !== "/search" && location.pathname !== "/add") && <SearchBarHome />}
+                    {(location.pathname !== "/search" && location.pathname !== "/add") && <SearchBarHome />}
                     <Link to="/add" className={styles.addButton}>
                         <FaHome /> <span className={styles.textBtn}>Add new</span>
-                    </Link>
+                    </Link>    
                 </div>
             </div>
         </header>

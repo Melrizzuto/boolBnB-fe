@@ -120,7 +120,7 @@
     display: inline;
 }
 
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 596px) {
     .textBtn{
         display: none;
     }
@@ -130,4 +130,63 @@
         gap: 0px;
     }
 
+}
+
+/* Bottone hamburger (nascosto di default) */
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: black;
+    cursor: pointer;
+    padding-bottom: 4px;
+}
+
+/* Menu mobile */
+.mobileMenu {
+    display: none;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: #9a88ad; 
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+    border-radius: 0 0 15px 15px;
+    gap: 10px;
+}
+
+/* Mostra il menu quando è attivo */
+.mobileMenu.open {
+    display: flex;
+}
+
+@media (max-width: 548px) {
+    /* Mostra il bottone hamburger */
+    .hamburger {
+        display: block;
+    }
+
+    /* Nasconde la barra di ricerca e il bottone add nella versione desktop */
+    .buttonsContainer {
+        display: none;
+    }
+
+    .textBtn{
+        display: inline;
+    }
+
+    .addButton{
+        background-color:#d4c2e7;
+        color:black;
+    }
+}
+
+
+.searchContainer{
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
