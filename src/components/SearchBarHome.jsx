@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./SearchBarHome.module.css";
-
+import { FaSearch } from "react-icons/fa";
 const SearchBarHome = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ const SearchBarHome = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className={styles.searchBar}
             />
-            <button className={styles.btn}>Search</button>
+            <button className={styles.btn}><FaSearch/> Search</button>
         </form>
     );
 

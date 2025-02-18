@@ -11,8 +11,6 @@ export default function Jumbotron({ scrollToCards }) {
                 Find your perfect stay. Unique homes, unforgettable experiences.
             </h4>
 
-            <SearchBarHome />
-
             <div className={styles.buttonContainer}>
 
                 <button className={styles.btnOutline} onClick={scrollToCards}>

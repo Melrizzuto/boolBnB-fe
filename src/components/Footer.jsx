@@ -5,7 +5,9 @@ import styles from './Footer.module.css';
 
 const Footer = () => {
     return (
-        <footer className={styles.footer}>
+        <footer>
+            <div className={styles.container}>
+            <div className={styles.footer}>
             {/* Logo + tagline */}
             <div className={styles.logoContainer}>
                 <Link to="/" className={styles.logo}>BOOLBNB</Link>
@@ -33,6 +35,8 @@ const Footer = () => {
                 <p>Made with love by Team 1</p>
                 <p>&#169; 2025 All Rights Reserved</p>
             </div>
+            </div>
+            </div>  
         </footer>
     );
 };

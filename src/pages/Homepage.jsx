@@ -9,6 +9,8 @@ export default function Homepage() {
     // Stato per le proprietà e per il caricamento
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [visibleCount, setVisibleCount] = useState(9);
+    const [showCard, setShowCard] = useState([]);
     const cardsRef = useRef(null);
 
     // Funzione per recuperare i dati dal server
@@ -34,6 +36,17 @@ export default function Homepage() {
         fetchProperties();
     }, []);
 
+    useEffect(() => {
+        if (visibleCount > 9) {
+            const timer = setTimeout(() => {
+                setShowCard(properties.slice(0, visibleCount));
+            }, 100);  
+            return () => clearTimeout(timer);
+        } else {
+            setShowCard(properties.slice(0, visibleCount));
+        }
+    }, [visibleCount, properties]);
+
     // Funzione per scrollare alla sezione delle cards
     const scrollToCards = () => {
         if (cardsRef.current) {
@@ -43,8 +56,16 @@ export default function Homepage() {
         }
     };
 
+    const showAll = () => {
+        setVisibleCount(properties.length);
+    };
+
+    const showLess = () => {
+        setVisibleCount(9);
+    };
+
     return (
-        <>
+        <div className={styles.mainContainer}>
             {/* Jumbotron */}
             <Jumbotron scrollToCards={scrollToCards} />
 
@@ -77,12 +98,14 @@ export default function Homepage() {
                     Discover the best places for you!
                 </p>
                 <div className="container my-5" ref={cardsRef}>
-                    {loading ? (
+                {loading ? (
                         <p className="text-center text-white">Loading properties...</p>
                     ) : properties.length > 0 ? (
                         <div className="row g-4">
-                            {properties.map((property) => (
-                                <div key={property.id} className="col-lg-4 col-md-6 col-sm-12">
+                            {showCard.map((property) => (
+                                <div 
+                                    key={property.id} 
+                                    className={`col-lg-4 col-md-6 col-sm-12 ${styles.cardContainer} ${showCard.length > 0 ? styles.visible : ""}`}>
                                     <Card property={property} slug={property.slug} />
                                 </div>
                             ))}
@@ -90,9 +113,25 @@ export default function Homepage() {
                     ) : (
                         <p className="text-center text-white">No properties found.</p>
                     )}
+
+                    {visibleCount < properties.length && (
+                        <div>
+                            <button onClick={showAll} className={styles.seeMoreandLessBtns}>
+                                See all properties
+                            </button>
+                        </div>   
+                    )}
+
+                    {visibleCount > 9 && (
+                        <div>
+                            <button onClick={showLess} className={styles.seeMoreandLessBtns}>
+                                See less
+                            </button>
+                        </div>   
+                    )}
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 
