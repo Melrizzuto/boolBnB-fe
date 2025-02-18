@@ -53,12 +53,7 @@ const AdvancedSearchPage = () => {
     // Search properties
     useEffect(() => {
         const searchProperties = async () => {
-            // Verifica se searchTerm è vuoto
-            if (!searchTerm.trim()) {
-                setProperties([]); // Resetta i risultati se la ricerca è vuota
-                return;
-            }
-    
+           
             setIsSearching(true);
             const params = Object.fromEntries(searchParams.entries());
     
