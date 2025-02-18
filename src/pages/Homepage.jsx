@@ -50,7 +50,7 @@ export default function Homepage() {
     // Funzione per scrollare alla sezione delle cards
     const scrollToCards = () => {
         if (cardsRef.current) {
-            const offset = 70;
+            const offset = 250;
             const targetPosition = cardsRef.current.getBoundingClientRect().top + window.scrollY - offset;
             window.scrollTo({ top: targetPosition, behavior: "smooth" });
         }
@@ -97,15 +97,15 @@ export default function Homepage() {
                 <p className={styles.sectionDescription}>
                     Discover the best places for you!
                 </p>
-                <div className="container my-5" ref={cardsRef}>
+                <div className={`container my-5 ${styles.mineContainer}`} ref={cardsRef}>
                 {loading ? (
                         <p className="text-center text-white">Loading properties...</p>
                     ) : properties.length > 0 ? (
-                        <div className="row g-4">
+                        <div className={styles.cardExplorer}>
                             {showCard.map((property) => (
                                 <div 
                                     key={property.id} 
-                                    className={`col-lg-4 col-md-6 col-sm-12 ${styles.cardContainer} ${showCard.length > 0 ? styles.visible : ""}`}>
+                                    className={`${styles.cardContainer} ${showCard.length > 0 ? styles.visible : ""}`}>
                                     <Card property={property} slug={property.slug} />
                                 </div>
                             ))}
