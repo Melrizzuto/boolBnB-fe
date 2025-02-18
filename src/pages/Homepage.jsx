@@ -65,7 +65,7 @@ export default function Homepage() {
     };
 
     return (
-        <>
+        <div className={styles.mainContainer}>
             {/* Jumbotron */}
             <Jumbotron scrollToCards={scrollToCards} />
 
@@ -131,7 +131,7 @@ export default function Homepage() {
                     )}
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 
