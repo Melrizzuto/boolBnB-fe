@@ -1,9 +1,15 @@
+.container{
+    position: relative;
+    width:100%;
+}
 .footer {
     background-color: #E7FE78;
     padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height:150px;
+    margin-top: 145px;
 }
 
 /* Link */

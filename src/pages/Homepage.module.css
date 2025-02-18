@@ -113,3 +113,14 @@
 .seeMoreandLessBtns:hover{
     transform: scale(1.05);
 };
+
+.cardContainer {
+    opacity: 0;
+    visibility: hidden; /* Aggiungi visibility per evitare che le card siano interattive quando invisibili */
+    transition: opacity 1s ease-in-out, visibility 0s 1s; /* Aggiungi un delay per visibility */
+}
+
+.cardContainer.visible {
+    opacity: 1;
+    visibility: visible; /* Rende la card visibile una volta che l'opacità è 1 */
+}
