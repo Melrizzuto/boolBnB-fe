@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styles from "./Header.module.css";
 import { FaSearch, FaHome } from "react-icons/fa";
+import SearchBarHome from "./SearchBarHome";
 
 function Header() {
     const [scrolled, setScrolled] = useState(false);
+    const location = useLocation();
 
     // Effetto cambio colore in base allo scroll
     window.addEventListener("scroll", () => {
@@ -29,9 +31,7 @@ function Header() {
 
                 {/* PULSANTI A DESTRA */}
                 <div className={styles.buttonsContainer}>
-                    <Link to="/search" className={styles.searchButton}>
-                        <FaSearch /> <span className={styles.textBtn}>Search your fav</span>
-                    </Link>
+                {(location.pathname !== "/search" && location.pathname !== "/add") && <SearchBarHome />}
                     <Link to="/add" className={styles.addButton}>
                         <FaHome /> <span className={styles.textBtn}>Add new</span>
                     </Link>
