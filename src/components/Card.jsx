@@ -3,7 +3,7 @@ import styles from "./Card.module.css";
 import HeartRatingComponent from "./HeartRatingComponent";
 
 export default function Card({ property, slug }) {
-    const imageUrl = `http://localhost:3000/${property.image}`;
+    const imageUrl = `http://localhost:3000/${property.cover_img}`;
 
     return (
         <div className={`card ${styles.cardItem}`}>

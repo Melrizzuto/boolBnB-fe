@@ -107,7 +107,7 @@ const DetailPage = () => {
     if (error) return <p>{error}</p>;
     if (!property) return <p>Property not found.</p>;
 
-    const imageUrl = `http://localhost:3000/${property.image}`;
+    const imageUrl = `http://localhost:3000/${property.cover_img}`;
 
     return (
         <div className={styles.container}>
