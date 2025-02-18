@@ -40,7 +40,7 @@ export default function Homepage() {
         if (visibleCount > 9) {
             const timer = setTimeout(() => {
                 setShowCard(properties.slice(0, visibleCount));
-            }, 300);  
+            }, 100);  
             return () => clearTimeout(timer);
         } else {
             setShowCard(properties.slice(0, visibleCount));
