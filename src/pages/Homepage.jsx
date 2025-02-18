@@ -9,6 +9,7 @@ export default function Homepage() {
     // Stato per le proprietà e per il caricamento
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [visibleCount, setVisibleCount] = useState(9);
     const cardsRef = useRef(null);
 
     // Funzione per recuperare i dati dal server
@@ -41,6 +42,14 @@ export default function Homepage() {
             const targetPosition = cardsRef.current.getBoundingClientRect().top + window.scrollY - offset;
             window.scrollTo({ top: targetPosition, behavior: "smooth" });
         }
+    };
+
+    const showAll = () => {
+        setVisibleCount(properties.length);
+    };
+
+    const showLess = () => {
+        setVisibleCount(9);
     };
 
     return (
@@ -81,7 +90,7 @@ export default function Homepage() {
                         <p className="text-center text-white">Loading properties...</p>
                     ) : properties.length > 0 ? (
                         <div className="row g-4">
-                            {properties.map((property) => (
+                            {properties.slice(0, visibleCount).map((property) => (
                                 <div key={property.id} className="col-lg-4 col-md-6 col-sm-12">
                                     <Card property={property} slug={property.slug} />
                                 </div>
@@ -89,6 +98,23 @@ export default function Homepage() {
                         </div>
                     ) : (
                         <p className="text-center text-white">No properties found.</p>
+                    )}
+
+                    {/*Bottone See more*/}
+                    {visibleCount < properties.length && (
+                     <div>
+                        <button onClick={showAll}>
+                            See all properties
+                        </button>
+                     </div>   
+                    )}
+                    {/*Bottone See less*/}
+                    {visibleCount > 9 && (
+                     <div>
+                        <button onClick={showLess}>
+                            See less
+                        </button>
+                     </div>   
                     )}
                 </div>
             </div>
