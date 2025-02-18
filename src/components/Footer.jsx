@@ -6,7 +6,6 @@ import styles from './Footer.module.css';
 const Footer = () => {
     return (
         <footer>
-            <div className={styles.container}>
             <div className={styles.footer}>
             {/* Logo + tagline */}
             <div className={styles.logoContainer}>
@@ -36,7 +35,6 @@ const Footer = () => {
                 <p>&#169; 2025 All Rights Reserved</p>
             </div>
             </div>
-            </div>  
         </footer>
     );
 };

@@ -53,9 +53,15 @@ const AdvancedSearchPage = () => {
     // Search properties
     useEffect(() => {
         const searchProperties = async () => {
+            // Verifica se searchTerm è vuoto
+            if (!searchTerm.trim()) {
+                setProperties([]); // Resetta i risultati se la ricerca è vuota
+                return;
+            }
+    
             setIsSearching(true);
             const params = Object.fromEntries(searchParams.entries());
-        
+    
             try {
                 setLoading(true);
                 const { data } = await axios.get('http://localhost:3000/properties', { params });
@@ -68,9 +74,8 @@ const AdvancedSearchPage = () => {
             }
         };
     
-            searchProperties();
-        
-    }, [searchParams]);
+        searchProperties();
+    }, [searchParams, searchTerm]);
     const handleFilterChange = (updatedFilters) => {
         const newParams = new URLSearchParams();
         
