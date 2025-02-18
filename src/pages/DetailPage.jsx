@@ -7,7 +7,7 @@ import FormReviews from "../components/FormReviews";
 import HeartRatingComponent from "../components/HeartRatingComponent";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FaStar, FaRegStar } from "react-icons/fa";
-import { faBed, faBath, faRulerCombined, faHouse, faMapMarkerAlt, faEnvelope, faLandmark, faHeart, faArrowUp, faCity } from '@fortawesome/free-solid-svg-icons';
+import { faBed, faBath, faRulerCombined, faHouse, faMapMarkerAlt, faEnvelope, faLandmark, faHeart, faArrowUp, faCity, faImages } from '@fortawesome/free-solid-svg-icons';
 
 // Funzione per disegnare le stelle
 function drawStars(rating) {
@@ -40,6 +40,8 @@ const DetailPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showScroll, setShowScroll] = useState(false);
+
+
 
     const location = useLocation();
     const mine_slug = location.state?.slug;
@@ -111,12 +113,50 @@ const DetailPage = () => {
         <div className={styles.container}>
             {/* HERO SECTION */}
             <section className={styles.heroSection}>
+
+                {/* etichetta */}
                 <div className={styles.heroText}>
                     <FontAwesomeIcon icon={faMapMarkerAlt} /> {property.title}
                 </div>
-                <div className={styles.imageContainer} onClick={() => scrollToSection(descriptionProp)}>
-                    <img src={imageUrl} alt={property.title} className={styles.propertyImage} />
+
+                <div
+                    className={styles.heroImagesContainer}
+                >
+                    {/* Contenitore per tutte le immagini */}
+                    <div className={styles.gridContainer}>
+
+                        {/* Immagine principale a sinistra */}
+                        <div className={styles.mainImageContainer} onClick={() => scrollToSection(descriptionProp)}>
+                            <img src={imageUrl}
+                                alt="Main"
+                                className={styles.mainImage} />
+                        </div>
+
+                        {/* Griglia immagini più piccole a destra (2x2) */}
+                        <div className={styles.smallImagesGrid}>
+                            <div className={styles.smallImageContainer}>
+                                <img src={imageUrl} alt="Small 1" className={styles.smallImage} />
+                            </div>
+                            <div className={styles.smallImageContainer}>
+                                <img src={imageUrl} alt="Small 2" className={styles.smallImage} />
+                            </div>
+                            <div className={styles.smallImageContainer}>
+                                <img src={imageUrl} alt="Small 3" className={styles.smallImage} />
+                            </div>
+                            <div className={styles.smallImageContainer}>
+                                <img src={imageUrl} alt="Small 4" className={styles.smallImage} />
+                            </div>
+                        </div>
+
+                        {/* Pulsante "Show all photos" */}
+                        <div className={styles.showAllPhotosButton}>
+                            <FontAwesomeIcon icon={faImages} className={styles.photosIcon} />
+
+                        </div>
+                    </div>
                 </div>
+
+                {/* bottoni */}
                 <div className={styles.actions}>
                     <button className={styles.reviewButton} onClick={() => scrollToSection(reviewFormRef)}>
                         <FaStar /> Leave a Review
@@ -125,10 +165,10 @@ const DetailPage = () => {
                         <FontAwesomeIcon icon={faEnvelope} /> Contact Host
                     </button>
                 </div>
-            </section>
+            </section >
 
             {/* PROPERTY DETAILS */}
-            <section className={styles.detailsSection} ref={descriptionProp}>
+            < section className={styles.detailsSection} ref={descriptionProp} >
                 <div className={styles.info}>
                     <h1 className="text-center">{property.title}</h1>
 
@@ -152,30 +192,32 @@ const DetailPage = () => {
 
                     </ul>
                 </div>
-            </section>
+            </section >
 
             {/* REVIEWS */}
-            <section className={styles.reviewsSection}>
+            < section className={styles.reviewsSection} >
                 <h2>Reviews</h2>
-                {reviews.length > 0 ? (
-                    <ul>
-                        {reviews.map((review, index) => (
-                            <li key={index} className={styles.reviewItem}>
-                                <div className={styles.reviewHeader}>
-                                    <strong>{review.user_name}</strong> | {drawStars(parseFloat(review.rating))}
-                                </div>
-                                <p className={styles.reviewText}>{review.review_text}</p>
-                                <p className={styles.reviewDate}>Reviewed on {new Date(review.created_at).toLocaleDateString("it-IT")}
-                                </p>                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>No reviews available.</p>
-                )}
-            </section>
+                {
+                    reviews.length > 0 ? (
+                        <ul>
+                            {reviews.map((review, index) => (
+                                <li key={index} className={styles.reviewItem}>
+                                    <div className={styles.reviewHeader}>
+                                        <strong>{review.user_name}</strong> | {drawStars(parseFloat(review.rating))}
+                                    </div>
+                                    <p className={styles.reviewText}>{review.review_text}</p>
+                                    <p className={styles.reviewDate}>Reviewed on {new Date(review.created_at).toLocaleDateString("it-IT")}
+                                    </p>                            </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No reviews available.</p>
+                    )
+                }
+            </section >
 
             {/* REVIEW FORM + CONTACT FORM */}
-            <div className={styles.formsContainer}>
+            < div className={styles.formsContainer} >
                 <section className={styles.reviewForm} ref={reviewFormRef}>
                     <h3>Leave a Review</h3>
                     <FormReviews updateReviews={updateReviews} />
@@ -184,16 +226,18 @@ const DetailPage = () => {
                     <h3>Contact Host</h3>
                     <FormContact />
                 </section>
-            </div>
+            </div >
 
             {/* SCROLL TO TOP BUTTON */}
-            {showScroll && (
-                <div className={`${styles.scrollToTop} ${showScroll ? styles.visible : ""}`}
-                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-                    <FontAwesomeIcon icon={faArrowUp} className={styles.arowUp} />
-                </div>
-            )}
-        </div>
+            {
+                showScroll && (
+                    <div className={`${styles.scrollToTop} ${showScroll ? styles.visible : ""}`}
+                        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                        <FontAwesomeIcon icon={faArrowUp} className={styles.arowUp} />
+                    </div>
+                )
+            }
+        </div >
     );
 };
 
