@@ -103,7 +103,7 @@ export default function Homepage() {
                     {/*Bottone See more*/}
                     {visibleCount < properties.length && (
                      <div>
-                        <button onClick={showAll}>
+                        <button onClick={showAll} className={styles.seeMoreandLessBtns}>
                             See all properties
                         </button>
                      </div>   
@@ -111,7 +111,7 @@ export default function Homepage() {
                     {/*Bottone See less*/}
                     {visibleCount > 9 && (
                      <div>
-                        <button onClick={showLess}>
+                        <button onClick={showLess} className={styles.seeMoreandLessBtns}>
                             See less
                         </button>
                      </div>   
