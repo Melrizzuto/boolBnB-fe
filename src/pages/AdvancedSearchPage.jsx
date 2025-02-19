@@ -11,6 +11,8 @@ const AdvancedSearchPage = () => {
     const navigate = useNavigate();
 
     const searchTerm = searchParams.get('searchTerm') || "";
+    const currentPage = parseInt(searchParams.get('page')) || 1;
+    const limit = 4;  // Puoi cambiare questo numero in base alle tue necessità
 
     const [filters, setFilters] = useState({
         minRooms: searchParams.get('minRooms') || '',
@@ -33,8 +35,11 @@ const AdvancedSearchPage = () => {
     const [loading, setLoading] = useState(false);
     const [loadingPropertyTypes, setLoadingPropertyTypes] = useState(true);
     const [isSearching, setIsSearching] = useState(false);
-    
-    
+    const [pagination, setPagination] = useState({
+        totalResults: 0,
+        totalPages: 0
+    });
+
     // Fetch property types
     useEffect(() => {
         const fetchPropertyTypes = async () => {
@@ -53,14 +58,18 @@ const AdvancedSearchPage = () => {
     // Search properties
     useEffect(() => {
         const searchProperties = async () => {
-           
             setIsSearching(true);
             const params = Object.fromEntries(searchParams.entries());
-    
+            params.page = currentPage;  // Imposta il parametro 'page' nei params
+
             try {
                 setLoading(true);
                 const { data } = await axios.get('http://localhost:3000/properties', { params });
                 setProperties(data.results);
+                setPagination({
+                    totalResults: data.pagination.totalResults,
+                    totalPages: data.pagination.totalPages
+                });
             } catch (error) {
                 console.error('Errore nella ricerca:', error);
             } finally {
@@ -68,27 +77,29 @@ const AdvancedSearchPage = () => {
                 setIsSearching(false);
             }
         };
-    
+
         searchProperties();
-    }, [searchParams, searchTerm]);
+    }, [searchParams, searchTerm, currentPage]);
+
     const handleFilterChange = (updatedFilters) => {
         const newParams = new URLSearchParams();
-        
+
         // Aggiungi solo i filtri con valori validi
         Object.entries(updatedFilters).forEach(([key, value]) => {
             if (value !== "" && value != null) { // Esclude stringhe vuote e null/undefined
                 newParams.set(key, value);
             }
         });
-    
+
         // Mantieni il searchTerm solo se presente
         if (searchTerm) {
             newParams.set('searchTerm', searchTerm);
         }
-    
+
         // Aggiorna i searchParams
         setSearchParams(newParams);  // Questo aggiornerà immediatamente l'URL con i nuovi filtri
     };
+
     const handleSearch = (newSearchTerm) => {
         const newParams = new URLSearchParams(searchParams);
         if (newSearchTerm.trim()) {
@@ -99,50 +110,72 @@ const AdvancedSearchPage = () => {
         setSearchParams(newParams);
     };
 
-    // Funzione per svuotare tutti i campi (sia barra di ricerca che filtri)
+    const handlePagination = (page) => {
+        const newParams = new URLSearchParams(searchParams);
+        newParams.set('page', page);
+        setSearchParams(newParams);
+    };
+
     const handleResetAll = () => {
         setSearchParams(new URLSearchParams());
     }
 
     return (
         <div className={styles.container}>
-        <div className={styles.mainContent}>
-            <SearchBar onSearch={handleSearch} searchTerm={searchTerm} />
-            <p className={styles.subtitle}>Begin your search for the perfect stay</p>
+            <div className={styles.mainContent}>
+                <SearchBar onSearch={handleSearch} searchTerm={searchTerm} />
+                <p className={styles.subtitle}>Begin your search for the perfect stay</p>
 
-            {loading || isSearching ? (
-                <p>Loading results...</p>
-            ) : properties.length > 0 ? (
-                <div className={styles.propertiesGrid}>
-                    {properties.map(property => (
-                        <div key={property.id}>
-                            <Card
-                                property={property}
-                                onClick={() => navigate(`/properties/${property.slug}`)}
-                                slug={property.slug}
-                            />
-                        </div>
-                    ))}
+                {loading || isSearching ? (
+                    <p>Loading results...</p>
+                ) : properties.length > 0 ? (
+                    <div className={styles.propertiesGrid}>
+                        {properties.map(property => (
+                            <div key={property.id}>
+                                <Card
+                                    property={property}
+                                    onClick={() => navigate(`/properties/${property.slug}`)}
+                                    slug={property.slug}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p>No properties found. Try adjusting your search filters!</p>
+                )}
+
+                {/* Paginazione */}
+                <div className={styles.pagination}>
+                    <button
+                        onClick={() => handlePagination(currentPage - 1)}
+                        disabled={currentPage <= 1}
+                    >
+                        Previous
+                    </button>
+                    <span>Page {currentPage} of {pagination.totalPages}</span>
+                    <button
+                        onClick={() => handlePagination(currentPage + 1)}
+                        disabled={currentPage >= pagination.totalPages}
+                    >
+                        Next
+                    </button>
                 </div>
-            ) : (
-                <p>No properties found. Try adjusting your search filters!</p>
-            )}
-        </div>
+            </div>
 
-        {/* Sidebar con i filtri */}
-        <div className={styles.sidebar}>
-            <Filters
-                onFilterChange={handleFilterChange}
-                filters={filters}
-                propertyTypes={propertyTypes}
-            />
-            <div className={styles.buttonContainer}>
-                <button onClick={handleResetAll} className={styles.resetButton}>
-                    Reset
-                </button>
+            {/* Sidebar con i filtri */}
+            <div className={styles.sidebar}>
+                <Filters
+                    onFilterChange={handleFilterChange}
+                    filters={filters}
+                    propertyTypes={propertyTypes}
+                />
+                <div className={styles.buttonContainer}>
+                    <button onClick={handleResetAll} className={styles.resetButton}>
+                        Reset
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
     );
 }
 
