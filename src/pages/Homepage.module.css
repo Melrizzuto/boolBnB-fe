@@ -75,12 +75,45 @@
     height: 100%;
 }
 
-.cardExplorer{
+.cardExplorer {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     gap: 30px
+}
+
+/* Freccia per lo scroll verso l'alto */
+
+.scrollToTop {
+    position: fixed;
+    bottom: 140px;
+    right: 35px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    text-align: center;
+    font-weight: bolder;
+    padding: 10px;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.scrollToTop:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.scrollToTop.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.arrowUp {
+    font-size: 1.8rem;
 }
 
 /* Layout responsive */
@@ -103,37 +136,43 @@
     }
 }
 
-.seeMoreandLessBtns{
-        width: 200px;
-        margin-top: 10px;
-        background-color: #E7FE78;
-        color: var(--border-color);
-        padding: 12px 24px;
-        border: 2px solid black;
-        border-radius: 10px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: transform 0.3s ease-in-out;
-        text-align: center;
-        display: inline-block;
+.seeMoreandLessBtns {
+    width: 200px;
+    margin-top: 10px;
+    background-color: #E7FE78;
+    color: var(--border-color);
+    padding: 12px 24px;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    text-align: center;
+    display: inline-block;
 }
-.seeMoreandLessBtns:hover{
+
+.seeMoreandLessBtns:hover {
     transform: scale(1.05);
-};
+}
+
+;
 
 .cardContainer {
     opacity: 0;
-    visibility: hidden; /* Aggiungi visibility per evitare che le card siano interattive quando invisibili */
-    transition: opacity 1s ease-in-out, visibility 0s 1s; /* Aggiungi un delay per visibility */
+    visibility: hidden;
+    /* Aggiungi visibility per evitare che le card siano interattive quando invisibili */
+    transition: opacity 1s ease-in-out, visibility 0s 1s;
+    /* Aggiungi un delay per visibility */
 }
 
 .cardContainer.visible {
     opacity: 1;
-    visibility: visible; /* Rende la card visibile una volta che l'opacità è 1 */
+    visibility: visible;
+    /* Rende la card visibile una volta che l'opacità è 1 */
 }
 
-.mineContainer{
+.mineContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;

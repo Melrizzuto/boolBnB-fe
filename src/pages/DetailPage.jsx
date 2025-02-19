@@ -261,7 +261,7 @@ const DetailPage = () => {
                 showScroll && (
                     <div className={`${styles.scrollToTop} ${showScroll ? styles.visible : ""}`}
                         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-                        <FontAwesomeIcon icon={faArrowUp} className={styles.arowUp} />
+                        <FontAwesomeIcon icon={faArrowUp} className={styles.arrowUp} />
                     </div>
                 )
             }
