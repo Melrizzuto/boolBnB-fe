@@ -42,6 +42,7 @@ const DetailPage = () => {
     const [showScroll, setShowScroll] = useState(false);
     const [showCarousel, setShowCarousel] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [imageSecondaryUrls, setImageSecondaryUrls] = useState([]);
 
 
     const location = useLocation();
@@ -89,6 +90,18 @@ const DetailPage = () => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    useEffect(() => {
+        if(!mine_slug) return;
+
+        axios.get(`http://localhost:3000/properties/${mine_slug}/images`)
+            .then(res => {
+                setImageSecondaryUrls(res.data);
+            })
+            .catch(err => {
+                console.log("Error fetching secondary images:", err);
+            });
+    }, [mine_slug]);
+
     const scrollToSection = (ref) => {
         if (ref.current) {
             ref.current.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -115,6 +128,9 @@ const DetailPage = () => {
         `http://localhost:3000/public/${property.cover_img}`
     ];
 
+    const cover = `http://localhost:3000/public/${property.cover_img}`;
+
+    
     const nextImage = () => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
     };
@@ -141,16 +157,16 @@ const DetailPage = () => {
 
                         {/* Immagine principale a sinistra */}
                         <div className={styles.mainImageContainer} onClick={() => scrollToSection(descriptionProp)}>
-                            <img src={imageUrls[0]}
+                            <img src={cover} //qui devo usare l'url di coverIMG
                                 alt="Main"
                                 className={styles.mainImage} />
                         </div>
 
                         {/* Griglia immagini più piccole a destra (2x2) */}
                         <div className={styles.smallImagesGrid}>
-                            {imageUrls.map((url, index) => (
+                            {imageSecondaryUrls.map((img, index) => (
                                 <div key={index} className={styles.smallImageContainer}>
-                                    <img src={url} alt={`Small ${index + 1}`} className={styles.smallImage} />
+                                    <img src={`http://localhost:3000/public/${img.img_name}`} alt={`Small ${index + 1}`} className={styles.smallImage} />
                                 </div>
                             ))}
 
