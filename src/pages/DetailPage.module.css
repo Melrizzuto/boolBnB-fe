@@ -95,7 +95,7 @@
 
 .arrowLeft:hover,
 .arrowRight:hover {
-    color: #ffcc00;
+    color: var(--section-background);
 }
 
 /* immagini jumbotron */
@@ -184,7 +184,7 @@
 
 /* Icona FontAwesome */
 .photosIcon {
-    font-size: 18px;
+    font-size: 25px;
     color: #555;
 }
 
