@@ -57,16 +57,52 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--secondary-color);
+    background: var(--accent-color);
     color: var(--specs-background);
+    transition: background-color 0.3s, transform 0.4s;
 
 }
 
 .resetButton:hover {
-    background: var(--accent-color);
+    background: var(--section-background);
     color: var(--text-color);
+    transform: scale(1.05);
 }
 
+/* Bottoni Paginazione */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 20px;
+}
+
+.prevNextBtn {
+    background-color: #4C40F7;
+    color: white;
+    padding: 10px 20px;
+    border: 2px solid #000;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.prevNextBtn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    border: none;
+}
+
+.prevNextBtn:hover {
+    background-color: #E7FE78;
+    color: #222;
+    transform: scale(1.05);
+}
+
+.prevNextBtn:disabled:hover {
+    background-color: #cccccc;
+}
 
 /* Responsive: su mobile mostra una sola colonna */
 @media (max-width: 768px) {

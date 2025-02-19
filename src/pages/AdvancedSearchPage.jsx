@@ -4,6 +4,8 @@ import axios from "axios";
 import SearchBar from '../components/SearchBar';
 import Filters from '../components/Filters';
 import Card from '../components/Card';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAnglesLeft, faAnglesRight } from "@fortawesome/free-solid-svg-icons";
 import styles from './AdvancedSearchPage.module.css'; // Importa il CSS Module
 
 const AdvancedSearchPage = () => {
@@ -12,7 +14,7 @@ const AdvancedSearchPage = () => {
 
     const searchTerm = searchParams.get('searchTerm') || "";
     const currentPage = parseInt(searchParams.get('page')) || 1;
-    const limit = 4;  // Puoi cambiare questo numero in base alle tue necessità
+    const limit = 3;  // Puoi cambiare questo numero in base alle tue necessità
 
     const [filters, setFilters] = useState({
         minRooms: searchParams.get('minRooms') || '',
@@ -147,6 +149,14 @@ const AdvancedSearchPage = () => {
                 {/* Paginazione */}
                 <div className={styles.pagination}>
                     <button
+                        className={styles.prevNextBtn}
+                        onClick={() => handlePagination(1)}
+                        disabled={currentPage <= 1}
+                    >
+                        <FontAwesomeIcon icon={faAnglesLeft} /> {/* Doppia freccia a sinistra */}
+                    </button>
+                    <button
+                        className={styles.prevNextBtn}
                         onClick={() => handlePagination(currentPage - 1)}
                         disabled={currentPage <= 1}
                     >
@@ -154,10 +164,18 @@ const AdvancedSearchPage = () => {
                     </button>
                     <span>Page {currentPage} of {pagination.totalPages}</span>
                     <button
+                        className={styles.prevNextBtn}
                         onClick={() => handlePagination(currentPage + 1)}
                         disabled={currentPage >= pagination.totalPages}
                     >
                         Next
+                    </button>
+                    <button
+                        className={styles.prevNextBtn}
+                        onClick={() => handlePagination(pagination.totalPages)} // Ultima pagina
+                        disabled={currentPage >= pagination.totalPages}
+                    >
+                        <FontAwesomeIcon icon={faAnglesRight} /> {/* Doppia freccia a sinistra */}
                     </button>
                 </div>
             </div>
