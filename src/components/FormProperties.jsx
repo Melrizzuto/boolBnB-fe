@@ -13,21 +13,19 @@ const initialData = {
     num_bathrooms: "",
     square_meters: "",
     description: "",
-    image: "",
+    images: [],
 };
 
 function FormProperties() {
     const [formData, setFormData] = useState(initialData);
     const [propertyTypes, setPropertyTypes] = useState([]);
-    //const [properties, setProperties] = useState([]);
     const [isFormValid, setIsFormValid] = useState(null);
     const [errorMessage, setErrorMessage] = useState({});
     const [feedbackMessage, setFeedbackMessage] = useState(null);
     const [feedbackType, setFeedbackType] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [propertySlug, setPropertySlug] = useState(null);
-
-    //const navigate = useNavigate();
+    const [imagePreviews, setImagePreviews] = useState([]);
 
     const defaultPlaceholders = {
         title: "Enter a title",
@@ -55,31 +53,23 @@ function FormProperties() {
 
     useEffect(() => {
         axios.get("http://localhost:3000/api/property-types")
-            .then(response => {
+            .then((response) => {
                 setPropertyTypes(response.data);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error("Error loading property types:", error);
             });
     }, []);
 
-    //useEffect(() => {
-    // Carica tutte le proprietà iniziali
-    //    axios.get("http://localhost:3000/properties")
-    //        .then(response => {
-    //            setProperties(response.data);  // Salva tutte le proprietà
-    //        })
-    //        .catch(error => {
-    //            console.error("Error loading properties:", error);
-    //        });
-    //}, []);
+    useEffect(() => {
+        return () => {
+            imagePreviews.forEach(preview => URL.revokeObjectURL(preview));
+        };
+    }, [imagePreviews]);
 
     function handleInput(e) {
         const { name, value } = e.target;
-        setFormData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
+        setFormData(prev => ({ ...prev, [name]: value }));
     }
 
     function handleMouseEnter(e) {
@@ -98,11 +88,21 @@ function FormProperties() {
         }));
     }
 
+    /*    function handleImageChange(e) {
+            const files = Array.from(e.target.files);
+            const previews = files.map(file => URL.createObjectURL(file));
+    
+            setFormData(prev => ({
+                ...prev,
+                images: [...prev.images, ...files],
+            }));
+            setImagePreviews(prev => [...prev, ...previews]);
+        }
+    */
     function handleSubmit(e) {
         e.preventDefault();
 
         if (!validateForm()) return;
-
         const newProperty = {
             title: formData.title,
             type_id: parseInt(formData.type_id, 10) || null,
@@ -113,7 +113,7 @@ function FormProperties() {
             num_bathrooms: parseInt(formData.num_bathrooms, 10) || 0,
             square_meters: parseInt(formData.square_meters, 10) || 0,
             description: formData.description.trim() || "No description available",
-            image: formData.image.trim() || "https://example.com/default.jpg",
+            image: formData.images.trim() || "https://example.com/default.jpg",
             user_name: "Host",
             user_email: "host@example.com",
         };
@@ -131,6 +131,60 @@ function FormProperties() {
                 setFeedbackMessage("❌ Error adding property. Please try again later.");
                 setFeedbackType("error");
             })
+
+        /*
+                const formDataToSend = new FormData();
+                formDataToSend.append("title", formData.title);
+                formDataToSend.append("type_id", formData.type_id);
+                formDataToSend.append("address", formData.address);
+                formDataToSend.append("city", formData.city);
+                formDataToSend.append("num_rooms", formData.num_rooms);
+                formDataToSend.append("num_beds", formData.num_beds);
+                formDataToSend.append("num_bathrooms", formData.num_bathrooms);
+                formDataToSend.append("square_meters", formData.square_meters);
+                formDataToSend.append("description", formData.description);
+                formDataToSend.append("user_name", "Host");
+                formDataToSend.append("user_email", "host@example.com");
+        
+                if (formData.images.length === 1) {
+                    formDataToSend.append("cover_img", formData.images[0]);
+                }
+        
+                axios
+                    .post("http://localhost:3000/properties", formDataToSend, {
+                        headers: { "Content-Type": "multipart/form-data" }
+                    })
+                    .then((res) => {
+                        setPropertySlug(res.data.slug);
+                        setFeedbackMessage("✅ Property added successfully!");
+                        setFeedbackType("success");
+                        if (formData.images.length > 1) {
+                            const imagesFormData = new FormData();
+                            formData.images.slice(1).forEach((image) => {
+                                imagesFormData.append(`images`, image);
+                            });
+                            axios
+                                .post(`http://localhost:3000/properties/${propertySlug}/images`, imagesFormData, {
+                                    headers: { "Content-Type": "multipart/form-data" }
+                                })
+                                .then(() => {
+                                    setFeedbackMessage("✅ Proprietà e immagini aggiunte con successo!");
+                                    setFeedbackType("success");
+                                    setShowModal(true);
+                                    setFormData(initialData);
+                                    setImagePreviews([]);
+                                })
+                                .catch(() => {
+                                    setFeedbackMessage("❌ Errore nell'aggiunta delle immagini secondarie.");
+                                    setFeedbackType("error");
+                                });
+                        }
+                        console.log(images);
+                    })
+                    .catch(() => {
+                        setFeedbackMessage("❌ Errore nell'aggiunta della proprietà. Riprova più tardi.");
+                        setFeedbackType("error");
+                    });*/
     }
 
     function handleReset() {
@@ -147,7 +201,8 @@ function FormProperties() {
         if (!formData.address || formData.address.trim().length < 3) errors.address = "Enter a valid address.";
         if (!formData.city || formData.city.trim().length < 3) errors.city = "Enter a valid city.";
         if (!formData.description || formData.description.trim().length < 30) errors.description = "Description must be at least 30 characters.";
-        if (!formData.image) errors.image = "Enter a valid image URL.";
+        if (!formData.images) errors.image = "Enter a valid image URL.";
+        //if (!formData.images) errors.image = "Please upload an image.";
         if (!formData.num_rooms || formData.num_rooms <= 0) errors.num_rooms = "The number of rooms cannot be less than or equal to 0.";
         if (!formData.num_beds || formData.num_beds <= 0) errors.num_beds = "The number of beds cannot be less than or equal to 0.";
         if (!formData.num_bathrooms || formData.num_bathrooms <= 0) errors.num_bathrooms = "The number of bathrooms cannot be less than or equal to 0.";
@@ -161,22 +216,6 @@ function FormProperties() {
         setIsFormValid(true);
         return true;
     }
-
-    //useEffect(() => {
-    // Quando la lista delle proprietà viene aggiornata, trova la nuova proprietà aggiunta
-    //    if (properties.length > 0) {
-    // Trova l'ultima proprietà aggiunta (quella con id massimo o altro criterio)
-    //        const newProperty = properties[properties.length - 1];
-    //setPropertySlug(newProperty.slug);  // Salva lo slug
-    //    }
-    //}, [properties]);
-
-    //useEffect(() => {
-    // Quando lo slug cambia (cioè dopo aver aggiunto la proprietà), naviga alla pagina di dettaglio
-    //    if (propertySlug) {
-    //        navigate(`/properties/${propertySlug}`);  // Vai alla pagina della proprietà usando lo slug
-    //   }
-    //}, [propertySlug, navigate]);
 
     return (
         <>
@@ -299,7 +338,6 @@ function FormProperties() {
                         />
                         {errorMessage.num_bathrooms && <p className={styles.formPropertiesErrorMessage}>{errorMessage.num_bathrooms}</p>}
                     </div>
-
                     <div className={styles.formPropertiesGroup}>
                         <label htmlFor="squareMeters">Square meters</label>
                         <input
@@ -320,17 +358,30 @@ function FormProperties() {
                             <input
                                 id="image"
                                 type="text"
-                                name="image"
+                                name="images"
                                 placeholder="Enter an image URL"
-                                value={formData.image}
+                                value={formData.images}
                                 onChange={handleInput}
                                 className={styles.formPropertiesInput}
                             />
+                            {/*<label htmlFor="images">Upload an image</label>
+                            <input
+                                id="image"
+                                type="file"
+                                name="images"
+                                multiple
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                className={styles.formPropertiesInput}
+                            />
+                            <div className={styles.imagePreviews}>
+                                {imagePreviews.map((preview, index) => (
+                                    <img key={index} src={preview} alt={`Preview ${index}`} style={{ width: 100, height: 100, margin: 5 }} />
+                                ))}
+                            </div>*/}
                             {errorMessage.image && <p className={styles.formPropertiesErrorMessage}>{errorMessage.image}</p>}
                         </div>
                     </div>
-
-
                 </div>
 
                 {/* Riga per description */}
@@ -352,8 +403,8 @@ function FormProperties() {
                     <button type="submit" className={styles.formPropertiesSubmitButton}>Add</button>
                     <button type="button" className={styles.formPropertiesResetButton} onClick={handleReset}>Reset</button>
                 </div>
-
             </form>
+
             {/* Bootstrap Modal */}
             <div className={`modal fade ${showModal ? "show d-block" : "d-none"}`} tabIndex="-1" role="dialog">
                 <div className="modal-dialog" role="document">
