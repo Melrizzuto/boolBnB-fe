@@ -26,6 +26,79 @@
     /* Bordo spesso */
 }
 
+/* Overlay per il carosello */
+.carouselOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Contenitore principale del carosello */
+.carouselContent {
+    position: relative;
+    width: 80%;
+    max-width: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Immagine del carosello */
+.carouselImage {
+    max-width: 100%;
+    max-height: 80vh;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Pulsante di chiusura */
+.closeButton {
+    position: absolute;
+    top: 100px;
+    right: 200px;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closeButton:hover {
+    color: #ff4d4d;
+}
+
+/* Frecce di navigazione */
+.arrowLeft,
+.arrowRight {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.arrowLeft {
+    left: 200px;
+}
+
+.arrowRight {
+    right: 200px;
+}
+
+.arrowLeft:hover,
+.arrowRight:hover {
+    color: #ffcc00;
+}
+
+/* immagini jumbotron */
 .heroImagesContainer {
     width: 100%;
     max-width: 1200px;

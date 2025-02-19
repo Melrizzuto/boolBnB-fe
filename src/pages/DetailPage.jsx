@@ -7,7 +7,7 @@ import FormReviews from "../components/FormReviews";
 import HeartRatingComponent from "../components/HeartRatingComponent";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FaStar, FaRegStar } from "react-icons/fa";
-import { faBed, faBath, faRulerCombined, faHouse, faMapMarkerAlt, faEnvelope, faLandmark, faHeart, faArrowUp, faCity, faImages } from '@fortawesome/free-solid-svg-icons';
+import { faBed, faBath, faRulerCombined, faHouse, faMapMarkerAlt, faEnvelope, faLandmark, faHeart, faArrowUp, faCity, faImages, faTimes, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 // Funzione per disegnare le stelle
 function drawStars(rating) {
@@ -40,7 +40,8 @@ const DetailPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showScroll, setShowScroll] = useState(false);
-
+    const [showCarousel, setShowCarousel] = useState(false);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
 
     const location = useLocation();
@@ -107,7 +108,20 @@ const DetailPage = () => {
     if (error) return <p>{error}</p>;
     if (!property) return <p>Property not found.</p>;
 
-    const imageUrl = `http://localhost:3000/${property.cover_img}`;
+    const imageUrls = [
+        `http://localhost:3000/${property.cover_img}`,
+        `http://localhost:3000/${property.cover_img}`,
+        `http://localhost:3000/${property.cover_img}`,
+        `http://localhost:3000/${property.cover_img}`
+    ];
+
+    const nextImage = () => {
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
+    };
+
+    const prevImage = () => {
+        setCurrentImageIndex((prevIndex) => (prevIndex - 1 + imageUrls.length) % imageUrls.length);
+    };
 
     return (
         <div className={styles.container}>
@@ -127,33 +141,38 @@ const DetailPage = () => {
 
                         {/* Immagine principale a sinistra */}
                         <div className={styles.mainImageContainer} onClick={() => scrollToSection(descriptionProp)}>
-                            <img src={imageUrl}
+                            <img src={imageUrls[0]}
                                 alt="Main"
                                 className={styles.mainImage} />
                         </div>
 
                         {/* Griglia immagini più piccole a destra (2x2) */}
                         <div className={styles.smallImagesGrid}>
-                            <div className={styles.smallImageContainer}>
-                                <img src={imageUrl} alt="Small 1" className={styles.smallImage} />
-                            </div>
-                            <div className={styles.smallImageContainer}>
-                                <img src={imageUrl} alt="Small 2" className={styles.smallImage} />
-                            </div>
-                            <div className={styles.smallImageContainer}>
-                                <img src={imageUrl} alt="Small 3" className={styles.smallImage} />
-                            </div>
-                            <div className={styles.smallImageContainer}>
-                                <img src={imageUrl} alt="Small 4" className={styles.smallImage} />
-                            </div>
-                        </div>
+                            {imageUrls.map((url, index) => (
+                                <div key={index} className={styles.smallImageContainer}>
+                                    <img src={url} alt={`Small ${index + 1}`} className={styles.smallImage} />
+                                </div>
+                            ))}
 
-                        {/* Pulsante "Show all photos" */}
-                        <div className={styles.showAllPhotosButton}>
-                            <FontAwesomeIcon icon={faImages} className={styles.photosIcon} />
+                            {/* Pulsante "Show all photos" */}
+                            < div className={styles.showAllPhotosButton} onClick={() => setShowCarousel(true)} >
+                                <FontAwesomeIcon icon={faImages} className={styles.photosIcon} />
 
+                            </div>
                         </div>
                     </div>
+
+                    {/* CAROSELLO OVERLAY */}
+                    {showCarousel && (
+                        <div className={styles.carouselOverlay}>
+                            <div className={styles.carouselContainer}>
+                                <FontAwesomeIcon icon={faTimes} className={styles.closeButton} onClick={() => setShowCarousel(false)} />
+                                <FontAwesomeIcon icon={faArrowLeft} className={styles.arrowLeft} onClick={prevImage} />
+                                <img src={imageUrls[currentImageIndex]} alt="Carousel" className={styles.carouselImage} />
+                                <FontAwesomeIcon icon={faArrowRight} className={styles.arrowRight} onClick={nextImage} />
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* bottoni */}
