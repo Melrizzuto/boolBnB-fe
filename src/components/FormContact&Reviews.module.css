@@ -97,8 +97,8 @@ textarea {
     font-size: 16px;
     font-weight: 600;
     text-transform: uppercase;
-    background: var(--primary-color);
-    color: var(--text-color);
+    background: var(--secondary-color);
+    color: #fff;
     border-radius: 20px;
     cursor: pointer;
     transition: background 0.3s ease-in-out;
@@ -106,7 +106,7 @@ textarea {
 }
 
 .submitButton:hover {
-    background: var(--accent-color);
+    background: var(--primary-color);
     color: #fff;
 }
 
@@ -116,7 +116,7 @@ textarea {
     font-size: 16px;
     font-weight: 600;
     text-transform: uppercase;
-    background: var(--secondary-color);
+    background: var(--accent-color);
     color: var(--specs-background);
     border-radius: 20px;
     cursor: pointer;
@@ -124,7 +124,7 @@ textarea {
 }
 
 .resetButton:hover {
-    background: var(--accent-color);
+    background: var(--secondary-color);
     color: var(--text-color);
 }
 

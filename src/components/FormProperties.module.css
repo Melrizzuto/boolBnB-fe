@@ -89,23 +89,23 @@
 }
 
 .formPropertiesSubmitButton {
-    background: var(--primary-color);
-    color: var(--text-color);
-}
-
-.formPropertiesSubmitButton:hover {
-    background: var(--accent-color);
+    background: var(--secondary-color);
     color: #fff;
 }
 
+.formPropertiesSubmitButton:hover {
+    background: var(--primary-color);
+    color: var(--border-color-);
+}
+
 .formPropertiesResetButton {
-    background: var(--secondary-color);
+    background: var(--accent-color);
     color: var(--specs-background);
 }
 
 .formPropertiesResetButton:hover {
-    background: var(--accent-color);
-    color: var(--text-color);
+    background: var(--primary-color);
+    color: var(--border-color-);
 }
 
 /* Responsive */
