@@ -109,10 +109,10 @@ const DetailPage = () => {
     if (!property) return <p>Property not found.</p>;
 
     const imageUrls = [
-        `http://localhost:3000/${property.cover_img}`,
-        `http://localhost:3000/${property.cover_img}`,
-        `http://localhost:3000/${property.cover_img}`,
-        `http://localhost:3000/${property.cover_img}`
+        `http://localhost:3000/public/${property.cover_img}`,
+        `http://localhost:3000/public/${property.cover_img}`,
+        `http://localhost:3000/public/${property.cover_img}`,
+        `http://localhost:3000/public/${property.cover_img}`
     ];
 
     const nextImage = () => {
