@@ -63,13 +63,15 @@ const DetailPage = () => {
 
         const fetchData = async () => {
             try {
-                const [propertyRes, reviewsRes] = await Promise.all([
+                const [propertyRes, reviewsRes, imagesRes] = await Promise.all([
                     axios.get(`http://localhost:3000/properties/${mine_slug}`),
-                    axios.get(`http://localhost:3000/properties/${mine_slug}/reviews`)
+                    axios.get(`http://localhost:3000/properties/${mine_slug}/reviews`),
+                    axios.get(`http://localhost:3000/properties/${mine_slug}/images`)
                 ]);
 
                 setProperty(propertyRes.data.property);
                 setReviews(reviewsRes.data.reviews || []);
+                setImageSecondaryUrls(imagesRes.data || []);
             } catch {
                 setError("Error fetching data.");
             } finally {
@@ -91,7 +93,7 @@ const DetailPage = () => {
     }, []);
 
     useEffect(() => {
-        if(!mine_slug) return;
+        if (!mine_slug) return;
 
         axios.get(`http://localhost:3000/properties/${mine_slug}/images`)
             .then(res => {
@@ -121,22 +123,16 @@ const DetailPage = () => {
     if (error) return <p>{error}</p>;
     if (!property) return <p>Property not found.</p>;
 
-    const imageUrls = [
-        `http://localhost:3000/public/${property.cover_img}`,
-        `http://localhost:3000/public/${property.cover_img}`,
-        `http://localhost:3000/public/${property.cover_img}`,
-        `http://localhost:3000/public/${property.cover_img}`
-    ];
 
     const cover = `http://localhost:3000/public/${property.cover_img}`;
 
-    
+
     const nextImage = () => {
-        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageSecondaryUrls.length);
     };
 
     const prevImage = () => {
-        setCurrentImageIndex((prevIndex) => (prevIndex - 1 + imageUrls.length) % imageUrls.length);
+        setCurrentImageIndex((prevIndex) => (prevIndex - 1 + imageSecondaryUrls.length) % imageSecondaryUrls.length);
     };
 
     return (
@@ -169,11 +165,8 @@ const DetailPage = () => {
                                     <img src={`http://localhost:3000/public/${img.img_name}`} alt={`Small ${index + 1}`} className={styles.smallImage} />
                                 </div>
                             ))}
-
-                            {/* Pulsante "Show all photos" */}
-                            < div className={styles.showAllPhotosButton} onClick={() => setShowCarousel(true)} >
+                            <div className={styles.showAllPhotosButton} onClick={() => setShowCarousel(true)}>
                                 <FontAwesomeIcon icon={faImages} className={styles.photosIcon} />
-
                             </div>
                         </div>
                     </div>
@@ -184,7 +177,7 @@ const DetailPage = () => {
                             <div className={styles.carouselContainer}>
                                 <FontAwesomeIcon icon={faTimes} className={styles.closeButton} onClick={() => setShowCarousel(false)} />
                                 <FontAwesomeIcon icon={faArrowLeft} className={styles.arrowLeft} onClick={prevImage} />
-                                <img src={imageUrls[currentImageIndex]} alt="Carousel" className={styles.carouselImage} />
+                                <img src={`http://localhost:3000/public/${imageSecondaryUrls[currentImageIndex]?.img_name}`} alt={`Slide ${currentImageIndex + 1}`} className={styles.carouselImage} />
                                 <FontAwesomeIcon icon={faArrowRight} className={styles.arrowRight} onClick={nextImage} />
                             </div>
                         </div>
