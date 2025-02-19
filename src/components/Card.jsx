@@ -12,7 +12,7 @@ export default function Card({ property, slug }) {
                 <h5 className="card-title text-center">{property.title}</h5>
                 <HeartRatingComponent slug={slug} />
                 <Link to={`/properties/${property.slug}`} className={styles.btnGreen} state={{ slug: property.slug }}>
-                    See more
+                    Details
                 </Link>
             </div>
         </div>
