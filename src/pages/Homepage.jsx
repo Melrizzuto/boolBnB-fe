@@ -3,6 +3,9 @@ import { useState, useEffect, useRef } from "react";
 import Jumbotron from "../components/Jumbotron";
 import Carousel from "../components/Carousel"; // Import del componente Carosello
 import Card from "../components/Card"; // Import corretto del componente Card
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+
 import styles from "./Homepage.module.css"; // Import dello stile personalizzato
 
 export default function Homepage() {
@@ -11,6 +14,7 @@ export default function Homepage() {
     const [loading, setLoading] = useState(true);
     const [visibleCount, setVisibleCount] = useState(9);
     const [showCard, setShowCard] = useState([]);
+    const [showScroll, setShowScroll] = useState(false);
     const cardsRef = useRef(null);
 
     // Funzione per recuperare i dati dal server
@@ -40,12 +44,22 @@ export default function Homepage() {
         if (visibleCount > 9) {
             const timer = setTimeout(() => {
                 setShowCard(properties.slice(0, visibleCount));
-            }, 100);  
+            }, 100);
             return () => clearTimeout(timer);
         } else {
             setShowCard(properties.slice(0, visibleCount));
         }
     }, [visibleCount, properties]);
+
+    // useEffect per rilevare lo scroll
+    useEffect(() => {
+        const handleScroll = () => {
+            setShowScroll(window.scrollY > window.innerHeight / 2);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     // Funzione per scrollare alla sezione delle cards
     const scrollToCards = () => {
@@ -98,13 +112,13 @@ export default function Homepage() {
                     Discover the best places for you!
                 </p>
                 <div className={`container my-5 ${styles.mineContainer}`} ref={cardsRef}>
-                {loading ? (
+                    {loading ? (
                         <p className="text-center text-white">Loading properties...</p>
                     ) : properties.length > 0 ? (
                         <div className={styles.cardExplorer}>
                             {showCard.map((property) => (
-                                <div 
-                                    key={property.id} 
+                                <div
+                                    key={property.id}
                                     className={`${styles.cardContainer} ${showCard.length > 0 ? styles.visible : ""}`}>
                                     <Card property={property} slug={property.slug} />
                                 </div>
@@ -119,7 +133,7 @@ export default function Homepage() {
                             <button onClick={showAll} className={styles.seeMoreandLessBtns}>
                                 See all properties
                             </button>
-                        </div>   
+                        </div>
                     )}
 
                     {visibleCount > 9 && (
@@ -127,10 +141,17 @@ export default function Homepage() {
                             <button onClick={showLess} className={styles.seeMoreandLessBtns}>
                                 See less
                             </button>
-                        </div>   
+                        </div>
                     )}
                 </div>
             </div>
+            {/* FRECCIA PER LO SCROLL */}
+            {showScroll && (
+                <div className={`${styles.scrollToTop} ${showScroll ? styles.visible : ""}`}
+                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                    <FontAwesomeIcon icon={faArrowUp} className={styles.arrowUp} />
+                </div>
+            )}
         </div>
     );
 }

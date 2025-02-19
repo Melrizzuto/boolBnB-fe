@@ -433,7 +433,7 @@ p {
 
 .scrollToTop {
     position: fixed;
-    bottom: 180px;
+    bottom: 140px;
     right: 35px;
     background-color: rgba(0, 0, 0, 0.7);
     color: white;
@@ -458,7 +458,7 @@ p {
     transform: translateY(0);
 }
 
-.arowUp {
+.arrowUp {
     font-size: 1.8rem;
 }
 
