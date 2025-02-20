@@ -24,7 +24,9 @@
 
 /* Stile per il bottone */
 .btnGreen {
-    width: 200px;
+    width: 100%;
+    /* Adattabile su schermi piccoli */
+    max-width: 200px;
     margin-top: 10px;
     background-color: var(--primary-color);
     color: var(--border-color);
@@ -44,7 +46,16 @@
 }
 
 /* Stile della card */
+.card-title {
+    font-size: 1.2rem;
+}
+
 .cardItem {
+    min-width: 400px;
+    max-width: 450px;
+    min-height: 300px;
+    max-height: 550px;
+    width: 100%;
     background: var(--card-background);
     padding: 10px;
     border-radius: 10px;
@@ -52,23 +63,229 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 500px;
-    width: 25rem;
+    aspect-ratio: 3 / 4;
+    /* Mantiene proporzioni uniformi */
 }
 
 /* Stile per l'immagine */
 .cardImage {
     width: 100%;
     object-fit: cover;
-    height: 200px;
+    height: auto;
+    max-height: 200px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    aspect-ratio: 16 / 9;
+    /* Mantiene l'immagine proporzionata */
 }
 
 /* Stile per il corpo della card */
 .cardBody {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
+}
+
+.smallText {
+    font-size: 1.08rem;
+}
+
+
+
+
+/********MEDIA QUERIES********/
+@media screen and (max-width: 1280px) {
+    h5 {
+        font-size: 1rem;
+    }
+
+    .smallText {
+        font-size: 0.6rem;
+    }
+
+    .cardItem {
+        min-width: 250px;
+        max-width: 350px;
+        min-height: 400px;
+        max-height: 550px;
+        width: 100%;
+        background: var(--card-background);
+        padding: 10px;
+        border-radius: 10px;
+        border: 3px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        aspect-ratio: 3 / 4;
+    }
+
+    .cardBody {
+        min-height: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+    .smallText {
+        font-size: 0.8rem;
+    }
+}
+
+
+@media screen and (max-width: 900px) {
+    .smallText {
+        font-size: 0.8rem;
+    }
+
+
+    .btnGreen {
+        padding: 10px 20px;
+        margin-top: 30px;
+        font-size: 14px;
+    }
+
+    .cardBody {
+
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        justify-content: unset;
+        align-items: center;
+    }
+
+    .cardItem {
+        min-width: 250px;
+        max-width: 350px;
+        min-height: 300px;
+        max-height: 550px;
+        width: 100%;
+        background: var(--card-background);
+        padding: 10px;
+        border-radius: 10px;
+        border: 3px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        aspect-ratio: 3 / 4;
+    }
+}
+
+
+@media screen and (max-width: 768px) {
+
+    .smallText {
+        font-size: 0.8rem;
+    }
+
+    .cardItem {
+        min-width: 300px;
+        max-width: 350px;
+        min-height: 223px;
+        max-height: 360px;
+        width: 100%;
+        background: var(--card-background);
+        padding: 10px;
+        border-radius: 10px;
+        border: 3px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        aspect-ratio: 3 / 4;
+    }
+
+    .cardImage {
+        height: 100px;
+        aspect-ratio: 16 / 10;
+    }
+
+    .btnGreen {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
+    .cardBody {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        justify-content: unset;
+        align-items: center;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .cardItem {
+        min-width: 100px;
+        max-width: 350px;
+        min-height: 350px;
+        max-height: 350px;
+        width: 100%;
+        background: var(--card-background);
+        padding: 10px;
+        border-radius: 10px;
+        border: 3px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        aspect-ratio: 3 / 4;
+        /* Mantiene proporzioni uniformi */
+    }
+
+
+
+    h5 {
+        font-size: 1rem;
+    }
+
+    .smallText {
+        font-size: 0;
+    }
+
+    .cardItem {
+        min-width: 100px;
+        max-width: 350px;
+        min-height: 150px;
+        max-height: 330px;
+        border: 2px solid var(--border-color);
+        padding: 6px;
+        aspect-ratio: 3 / 5;
+    }
+
+    .cardImage {
+        height: 120px;
+        aspect-ratio: 16 / 10;
+    }
+
+    .btnGreen {
+        font-size: 12px;
+        padding: 8px 16px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .cardContainer .cardImage {
+        display: block;
+    }
+
+    .cardItem {
+        min-width: 100px;
+        max-width: 350px;
+        min-height: 150px;
+        max-height: 330px;
+        background: var(--card-background);
+        padding: 10px;
+        border-radius: 10px;
+        border: 3px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        aspect-ratio: 3 / 4;
+        /* Mantiene proporzioni uniformi */
+    }
+
+    .btnGreen {
+        font-size: 12px;
+        padding: 8px 16px;
+    }
 }
