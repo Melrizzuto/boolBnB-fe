@@ -333,8 +333,12 @@
         /* Mantiene proporzioni uniformi */
     }
 
+    h5 {
+        font-size: 8px;
+    }
+
     .btnGreen {
-        font-size: 12px;
-        padding: 8px 16px;
+        font-size: 10px;
+        padding: 2px 10px;
     }
 }
