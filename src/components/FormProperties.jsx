@@ -25,7 +25,10 @@ function FormProperties() {
     const [feedbackType, setFeedbackType] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [propertySlug, setPropertySlug] = useState(null);
-    const [imagePreviews, setImagePreviews] = useState([]);
+    const [coverImg, setCoverImg] = useState(null);
+    const [coverImgPreviews, setCoverImgPreviews] = useState([]);
+    const [secondaryImages, setSecondaryImages] = useState([]);
+    const [secondaryImagesPreviews, setSecondaryImagesPreviews] = useState([]);
 
     const defaultPlaceholders = {
         title: "Enter a title",
@@ -61,16 +64,36 @@ function FormProperties() {
             });
     }, []);
 
-    useEffect(() => {
-        return () => {
-            imagePreviews.forEach(preview => URL.revokeObjectURL(preview));
-        };
-    }, [imagePreviews]);
+    /* useEffect(() => {
+         return () => {
+             imagePreviews.forEach(preview => URL.revokeObjectURL(preview));
+         };
+     }, [imagePreviews]);*/
 
     function handleInput(e) {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     }
+
+    function handleCoverImgChange(e) {
+        const file = e.target.files[0];
+        if (file) {
+            setCoverImg(file);
+            setCoverImgPreviews(URL.createObjectURL(file));
+        }
+    }
+
+    function handleSecondaryImgChange(e) {
+        const files = Array.from(e.target.files);
+        if (files.length + secondaryImages.length > 4) {
+            return
+        }
+        setSecondaryImages((prev) => [...prev, ...files]);
+        const newPreviews = files.map((file) => URL.createObjectURL(file));
+        setSecondaryImagesPreviews((prev) => [...prev, ...newPreviews]);
+    }
+
+
 
     function handleMouseEnter(e) {
         const field = e.target.name;
@@ -88,103 +111,134 @@ function FormProperties() {
         }));
     }
 
-    /*    function handleImageChange(e) {
-            const files = Array.from(e.target.files);
-            const previews = files.map(file => URL.createObjectURL(file));
-    
-            setFormData(prev => ({
-                ...prev,
-                images: [...prev.images, ...files],
-            }));
-            setImagePreviews(prev => [...prev, ...previews]);
-        }
-    */
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
 
         if (!validateForm()) return;
-        const newProperty = {
-            title: formData.title,
-            type_id: parseInt(formData.type_id, 10) || null,
-            address: formData.address,
-            city: formData.city,
-            num_rooms: parseInt(formData.num_rooms, 10) || 0,
-            num_beds: parseInt(formData.num_beds, 10) || 0,
-            num_bathrooms: parseInt(formData.num_bathrooms, 10) || 0,
-            square_meters: parseInt(formData.square_meters, 10) || 0,
-            description: formData.description.trim() || "No description available",
-            image: formData.images.trim() || "https://example.com/default.jpg",
-            user_name: "Host",
-            user_email: "host@example.com",
-        };
+        try {
+            /*const newProperty = {
+                title: formData.title,
+                type_id: parseInt(formData.type_id, 10) || null,
+                address: formData.address,
+                city: formData.city,
+                num_rooms: parseInt(formData.num_rooms, 10) || 0,
+                num_beds: parseInt(formData.num_beds, 10) || 0,
+                num_bathrooms: parseInt(formData.num_bathrooms, 10) || 0,
+                square_meters: parseInt(formData.square_meters, 10) || 0,
+                description: formData.description.trim() || "No description available",
+                image: formData.images.trim() || "https://example.com/default.jpg",
+                user_name: "Host",
+                user_email: "host@example.com",
+            };
+    
+            axios.post("http://localhost:3000/properties", newProperty)
+                .then((res) => {
+                    setPropertySlug(res.data.slug);
+                    setFeedbackMessage("✅ Property added successfully!");
+                    setFeedbackType("success");
+                    setShowModal(true);
+                    //setProperties(prevProperties => Array.isArray(prevProperties) ? [...prevProperties, res.data] : [res.data]);
+                    setFormData(initialData);
+                })
+                .catch(() => {
+                    setFeedbackMessage("❌ Error adding property. Please try again later.");
+                    setFeedbackType("error");
+                })
+    */
 
-        axios.post("http://localhost:3000/properties", newProperty)
-            .then((res) => {
-                setPropertySlug(res.data.slug);
-                setFeedbackMessage("✅ Property added successfully!");
-                setFeedbackType("success");
-                setShowModal(true);
-                //setProperties(prevProperties => Array.isArray(prevProperties) ? [...prevProperties, res.data] : [res.data]);
-                setFormData(initialData);
-            })
-            .catch(() => {
-                setFeedbackMessage("❌ Error adding property. Please try again later.");
-                setFeedbackType("error");
-            })
+            const formDataToSend = new FormData();
+            formDataToSend.append("title", formData.title);
+            formDataToSend.append("type_id", formData.type_id);
+            formDataToSend.append("address", formData.address);
+            formDataToSend.append("city", formData.city);
+            formDataToSend.append("num_rooms", formData.num_rooms);
+            formDataToSend.append("num_beds", formData.num_beds);
+            formDataToSend.append("num_bathrooms", formData.num_bathrooms);
+            formDataToSend.append("square_meters", formData.square_meters);
+            formDataToSend.append("description", formData.description);
+            formDataToSend.append("user_name", "Host");
+            formDataToSend.append("user_email", "host@example.com");
 
-        /*
-                const formDataToSend = new FormData();
-                formDataToSend.append("title", formData.title);
-                formDataToSend.append("type_id", formData.type_id);
-                formDataToSend.append("address", formData.address);
-                formDataToSend.append("city", formData.city);
-                formDataToSend.append("num_rooms", formData.num_rooms);
-                formDataToSend.append("num_beds", formData.num_beds);
-                formDataToSend.append("num_bathrooms", formData.num_bathrooms);
-                formDataToSend.append("square_meters", formData.square_meters);
-                formDataToSend.append("description", formData.description);
-                formDataToSend.append("user_name", "Host");
-                formDataToSend.append("user_email", "host@example.com");
-        
-                if (formData.images.length === 1) {
-                    formDataToSend.append("cover_img", formData.images[0]);
-                }
-        
-                axios
-                    .post("http://localhost:3000/properties", formDataToSend, {
-                        headers: { "Content-Type": "multipart/form-data" }
-                    })
-                    .then((res) => {
-                        setPropertySlug(res.data.slug);
-                        setFeedbackMessage("✅ Property added successfully!");
-                        setFeedbackType("success");
-                        if (formData.images.length > 1) {
-                            const imagesFormData = new FormData();
-                            formData.images.slice(1).forEach((image) => {
-                                imagesFormData.append(`images`, image);
-                            });
-                            axios
-                                .post(`http://localhost:3000/properties/${propertySlug}/images`, imagesFormData, {
-                                    headers: { "Content-Type": "multipart/form-data" }
-                                })
-                                .then(() => {
-                                    setFeedbackMessage("✅ Proprietà e immagini aggiunte con successo!");
-                                    setFeedbackType("success");
-                                    setShowModal(true);
-                                    setFormData(initialData);
-                                    setImagePreviews([]);
-                                })
-                                .catch(() => {
-                                    setFeedbackMessage("❌ Errore nell'aggiunta delle immagini secondarie.");
-                                    setFeedbackType("error");
-                                });
-                        }
-                        console.log(images);
-                    })
-                    .catch(() => {
-                        setFeedbackMessage("❌ Errore nell'aggiunta della proprietà. Riprova più tardi.");
-                        setFeedbackType("error");
-                    });*/
+            if (coverImg) {
+                formDataToSend.append("cover_img", coverImg)
+            }
+            console.log("Cover Image:", coverImg);
+            const propRes = await axios.post(
+                "http://localhost:3000/properties",
+                formDataToSend);
+            const slug = propRes.data.slug;
+            setPropertySlug(slug);
+            setFeedbackMessage("✅ Property added successfully!");
+
+            if (secondaryImages.length > 0) {
+                const imagesFormData = new FormData();
+                secondaryImages.forEach((img, index) => {
+                    imagesFormData.append(`images[${index}]`, img);
+                });
+                console.log("Images:", imagesFormData);
+                await axios.post(
+                    `http://localhost:3000/properties/${slug}/images`,
+                    imagesFormData,
+                    { headers: { "Content-Type": "multipart/form-data" } }
+                )
+            }
+            console.log("Cover Image:", coverImg);
+            setFeedbackType("success");
+            setShowModal(true);
+            // Resettare i campi
+            setFormData(initialData);
+            setCoverImg(null);
+            setCoverImgPreviews(null);
+            setSecondaryImages([]);
+            setSecondaryImagesPreviews([]);
+        } catch (err) {
+            console.error("Errore nell'aggiunta della proprietà o delle immagini:", err);
+            setFeedbackMessage(
+                "❌ Error adding property or images. Please try again later."
+            );
+            setFeedbackType("error");
+        }
+
+
+        /* if (formData.images.length === 1) {
+             formDataToSend.append("cover_img", formData.images[0]);
+         }
+     
+         axios
+             .post("http://localhost:3000/properties", formDataToSend, {
+                 headers: { "Content-Type": "multipart/form-data" }
+             })
+             .then((res) => {
+                 setPropertySlug(res.data.slug);
+                 setFeedbackMessage("✅ Property added successfully!");
+                 setFeedbackType("success");
+                 if (formData.images.length > 1) {
+                     const imagesFormData = new FormData();
+                     formData.images.slice(1).forEach((image) => {
+                         imagesFormData.append(`images`, image);
+                     });
+                     axios
+                         .post(`http://localhost:3000/properties/${propertySlug}/images`, imagesFormData, {
+                             headers: { "Content-Type": "multipart/form-data" }
+                         })
+                         .then(() => {
+                             setFeedbackMessage("✅ Proprietà e immagini aggiunte con successo!");
+                             setFeedbackType("success");
+                             setShowModal(true);
+                             setFormData(initialData);
+                             setImagePreviews([]);
+                         })
+                         .catch(() => {
+                             setFeedbackMessage("❌ Errore nell'aggiunta delle immagini secondarie.");
+                             setFeedbackType("error");
+                         });
+                 }
+                 console.log(images);
+             })
+             .catch(() => {
+                 setFeedbackMessage("❌ Errore nell'aggiunta della proprietà. Riprova più tardi.");
+                 setFeedbackType("error");
+             });*/
     }
 
     function handleReset() {
@@ -201,7 +255,7 @@ function FormProperties() {
         if (!formData.address || formData.address.trim().length < 3) errors.address = "Enter a valid address.";
         if (!formData.city || formData.city.trim().length < 3) errors.city = "Enter a valid city.";
         if (!formData.description || formData.description.trim().length < 30) errors.description = "Description must be at least 30 characters.";
-        if (!formData.images) errors.image = "Enter a valid image URL.";
+        //if (!formData.images) errors.image = "Enter a valid image URL.";
         //if (!formData.images) errors.image = "Please upload an image.";
         if (!formData.num_rooms || formData.num_rooms <= 0) errors.num_rooms = "The number of rooms cannot be less than or equal to 0.";
         if (!formData.num_beds || formData.num_beds <= 0) errors.num_beds = "The number of beds cannot be less than or equal to 0.";
@@ -354,27 +408,49 @@ function FormProperties() {
                     </div>
                     <div className={styles.formPropertiesRow}>
                         <div className={styles.formPropertiesGroup}>
-                            <label htmlFor="image">Upload an image</label>
+                            <label htmlFor="cover_image">Cover image</label>
                             <input
                                 id="image"
-                                type="text"
-                                name="images"
-                                placeholder="Enter an image URL"
-                                value={formData.images}
-                                onChange={handleInput}
+                                type="file"
+                                name="cover_img"
+                                accept="image/*"
+                                //placeholder="Enter an image URL"
+                                //value={formData.images}
+                                onChange={handleCoverImgChange}
                                 className={styles.formPropertiesInput}
                             />
-                            {/*<label htmlFor="images">Upload an image</label>
+                            {coverImgPreviews && (
+                                <div>
+                                    <img
+                                        src={coverImgPreviews}
+                                        alt="Cover Preview"
+                                        style={{ width: 100, height: 100 }}
+                                    />
+                                </div>
+                            )}
+                            <label htmlFor="images">Secondary images</label>
                             <input
                                 id="image"
                                 type="file"
                                 name="images"
                                 multiple
                                 accept="image/*"
-                                onChange={handleImageChange}
+                                onChange={handleSecondaryImgChange}
                                 className={styles.formPropertiesInput}
                             />
-                            <div className={styles.imagePreviews}>
+                            {secondaryImagesPreviews.length > 0 && (
+                                <div>
+                                    {secondaryImagesPreviews.map((preview, index) => (
+                                        <img
+                                            key={index}
+                                            src={preview}
+                                            alt={`Preview ${index}`}
+                                            style={{ width: 100, height: 100, margin: 5 }}
+                                        />
+                                    ))}
+                                </div>
+                            )}
+                            {/*<div className={styles.imagePreviews}>
                                 {imagePreviews.map((preview, index) => (
                                     <img key={index} src={preview} alt={`Preview ${index}`} style={{ width: 100, height: 100, margin: 5 }} />
                                 ))}
