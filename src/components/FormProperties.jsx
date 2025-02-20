@@ -151,16 +151,16 @@ function FormProperties() {
                     await axios.post(
                         `http://localhost:3000/properties/${slug}/images`,
                         imagesFormData,
-            { 
-                headers: { 
-                    "Content-Type": "multipart/form-data",
-                } 
-            }
-        );
-    } catch (error) {
-        console.error("Errore nel caricamento delle immagini:", error);
-        throw error;
-    }
+                        {
+                            headers: {
+                                "Content-Type": "multipart/form-data",
+                            }
+                        }
+                    );
+                } catch (error) {
+                    console.error("Errore nel caricamento delle immagini:", error);
+                    throw error;
+                }
             }
             console.log("Cover Image:", coverImg);
             setFeedbackType("success");
@@ -175,11 +175,11 @@ function FormProperties() {
             if (err.response) {
                 // Errore dal server
                 setFeedbackMessage(`❌ ${err.response.data.message}`);
-              } else {
+            } else {
                 setFeedbackMessage("❌ Errore di connessione.");
-              }
-              setFeedbackType("error");
-              setShowModal(true);
+            }
+            setFeedbackType("error");
+            setShowModal(true);
         }
 
     }
@@ -357,11 +357,12 @@ function FormProperties() {
                                 type="file"
                                 name="cover_img"
                                 accept="image/*"
-                                //placeholder="Enter an image URL"
-                                //value={formData.images}
+                                placeholder="Upload your cover image"
+                                // value={formData.images}
                                 onChange={handleCoverImgChange}
                                 className={styles.formPropertiesInput}
                             />
+
                             {coverImgPreviews && (
                                 <div>
                                     <img
@@ -380,6 +381,8 @@ function FormProperties() {
                                 accept="image/*"
                                 onChange={handleSecondaryImgChange}
                                 className={styles.formPropertiesInput}
+                                placeholder="Upload your four images"
+                                lang="en"
                             />
                             {secondaryImagesPreviews.length > 0 && (
                                 <div>
