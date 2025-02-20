@@ -21,7 +21,7 @@ const SearchBarHome = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className={styles.searchBar}
             />
-            <button className={styles.btn}><FaSearch /> Search you fav </button>
+            <button className={styles.btn}><FaSearch /> Search your fav </button>
         </form>
     );
 
