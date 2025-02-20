@@ -163,7 +163,7 @@ const AdvancedSearchPage = () => {
                 ) : properties.length > 0 ? (
                     <div className={styles.propertiesGrid}>
                         {properties.map(property => (
-                            <div key={property.id}>
+                            <div key={property.id} className='px-4'>
                                 <Card
                                     property={property}
                                     onClick={() => navigate(`/properties/${property.slug}`)}
