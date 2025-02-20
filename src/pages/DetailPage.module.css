@@ -195,8 +195,8 @@
 /* Testo sopra immagine */
 .heroText {
     position: absolute;
-    top: 3%;
-    left: 37%;
+    top: 4%;
+    left: 36%;
     transform: translateX(-50%);
     font-size: 20px;
     font-weight: bold;
@@ -430,7 +430,7 @@ p {
 }
 
 .scrollToTop {
-    position: fixed;
+    position: absolute;
     bottom: 140px;
     right: 35px;
     background-color: rgba(0, 0, 0, 0.7);
@@ -461,9 +461,16 @@ p {
 }
 
 /* Responsive */
-@media screen and (max-width: 1200px) {
+
+
+@media screen and (max-width:1600px) and (min-width: 1400px) {
+    .heroText {
+        font-size: 16px;
+        left: 50%;
+    }
+
     .heroImagesContainer {
-        max-width: 1000px;
+        max-width: 950px;
     }
 
     .mainImage {
@@ -476,9 +483,45 @@ p {
         min-height: 250px;
         max-height: 250px;
     }
+
+    .closeButton {
+        top: 30px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .heroText {
+        font-size: 16px;
+        left: 50%;
+    }
+
+    .heroImagesContainer {
+        max-width: 950px;
+    }
+
+    .mainImage {
+        min-height: 500px;
+        max-height: 500px;
+    }
+
+    .smallImageContainer {
+        width: 200px;
+        min-height: 250px;
+        max-height: 250px;
+    }
+
+    .closeButton {
+        top: 40px;
+    }
 }
 
 @media screen and (max-width: 1024px) {
+
+    .heroText {
+        font-size: 16px;
+        left: 50%;
+    }
+
     .heroImagesContainer {
         max-width: 850px;
     }
@@ -519,11 +562,24 @@ p {
         max-height: 240px;
         margin-top: 10px;
     }
+
+    .arrowLeft {
+        left: 25px;
+    }
+
+    .arrowRight {
+        right: 35px;
+    }
+
+    .closeButton {
+        top: 10px;
+        right: 35px;
+    }
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 902px) {
     .heroImagesContainer {
-        max-width: 760px;
+        max-width: 650px;
     }
 
     .mainImage {
@@ -540,12 +596,30 @@ p {
         min-height: 190px;
         max-height: 190px;
     }
+
+    .arrowLeft {
+        left: 25px;
+    }
+
+    .arrowRight {
+        right: 35px;
+    }
+
+    .closeButton {
+        top: 10px;
+        right: 35px;
+    }
 }
 
 @media screen and (max-width: 768px) {
-    .heroImagesContainer {
-        max-width: 660px;
+    .heroText {
+        font-size: 12px;
     }
+
+    .heroImagesContainer {
+        max-width: 350px;
+    }
+
 
     .mainImage {
         min-height: 290px;
@@ -564,10 +638,10 @@ p {
     }
 
     .carouselImage {
-        max-height: 400px;
+        max-height: 230px;
     }
 
-    .slick-prev,
+    /* .slick-prev,
     .slick-next {
         width: 40px;
         height: 40px;
@@ -579,9 +653,89 @@ p {
 
     .slick-next {
         right: -40px;
+    } */
+
+    .arrowLeft {
+        left: 25px;
+    }
+
+    .arrowRight {
+        right: 35px;
+    }
+
+    .closeButton {
+        top: 10px;
+        right: 35px;
     }
 }
 
-@media screen and (max-width: 576px) {}
+@media screen and (max-width: 576px) and (min-width: 767px) {
+    .showAllPhotosButton {
+        right: 7px;
+    }
 
-@media screen and (max-width: 368px) {}
+    .heroText {
+        font-size: 10px;
+    }
+
+    .heroImagesContainer {
+        max-width: 650px;
+    }
+
+    .mainImage {
+        min-height: 325px;
+        max-height: 325px;
+    }
+
+    .formsContainer {
+        flex-direction: column;
+    }
+
+    .smallImageContainer {
+        width: 160px;
+        min-height: 190px;
+        max-height: 190px;
+    }
+
+    .arrowLeft {
+        left: 20px;
+    }
+
+    .arrowRight {
+        right: 20px;
+    }
+
+
+}
+
+@media screen and (max-width: 567px) {
+
+
+    .heroText {
+        font-size: 9.6px;
+    }
+
+    .arrowLeft {
+        left: 10px;
+    }
+
+    .arrowRight {
+        right: 10px;
+    }
+}
+
+@media screen and (max-width: 368px) {
+    .heroText {
+        font-size: 8px;
+    }
+
+    .arrowLeft {
+        left: 8px;
+    }
+
+    .arrowRight {
+        right: -8px;
+    }
+
+
+}
