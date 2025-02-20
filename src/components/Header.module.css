@@ -113,24 +113,13 @@
 
 .buttonsContainer {
     display: flex;
-    gap: 8px;
+    gap: 11px;
 }
 
-.textBtn{
+.textBtn {
     display: inline;
 }
 
-@media screen and (max-width: 596px) {
-    .textBtn{
-        display: none;
-    }
-    .searchButton, .addButton {
-        padding: 10px 14px;
-        border-radius: 15px;
-        gap: 0px;
-    }
-
-}
 
 /* Bottone hamburger (nascosto di default) */
 .hamburger {
@@ -150,7 +139,7 @@
     top: 70px;
     left: 0;
     width: 100%;
-    background: #9a88ad; 
+    background: #9a88ad;
     flex-direction: column;
     align-items: flex-start;
     padding: 10px;
@@ -163,7 +152,18 @@
     display: flex;
 }
 
+
+.searchContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+
+
 @media (max-width: 548px) {
+
     /* Mostra il bottone hamburger */
     .hamburger {
         display: block;
@@ -174,19 +174,26 @@
         display: none;
     }
 
-    .textBtn{
+    .textBtn {
         display: inline;
     }
 
-    .addButton{
-        background-color:#d4c2e7;
-        color:black;
+    .addButton {
+        background-color: #d4c2e7;
+        color: black;
     }
 }
 
+@media screen and (max-width: 596px) {
+    .textBtn {
+        display: none;
+    }
 
-.searchContainer{
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    .searchButton,
+    .addButton {
+        padding: 10px 14px;
+        border-radius: 15px;
+        gap: 0px;
+    }
+
 }
