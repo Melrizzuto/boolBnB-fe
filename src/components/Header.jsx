@@ -38,7 +38,7 @@ function Header() {
 
 
                 {/* NAVBAR MOBILE*/}
-                <div className={`${styles.mobileMenu} ${menuOpen ? styles.open : ""}`}>
+                <div className={`${styles.mobileMenu} ${menuOpen ? styles.open : ""} ${scrolled ? styles.scrolled : ""}`}>
                     {(location.pathname !== "/search" && location.pathname !== "/add") && <div className={styles.searchContainer}> <SearchBarHome /></div>}
                     <div className="d-flex align-items-center">
                         <Link to="/add" className={styles.addButton} onClick={() => setMenuOpen(false)}>

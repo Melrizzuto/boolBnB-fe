@@ -148,6 +148,10 @@
     align-items: center;
 }
 
+.scrolled .hamburger {
+    color: var(--background-color);
+}
+
 /* Mostra il menu quando è attivo */
 .mobileMenu.open {
     display: flex;
@@ -164,6 +168,8 @@
 
 
 @media (max-width: 548px) {
+
+
 
     /* Mostra il bottone hamburger */
     .hamburger {
