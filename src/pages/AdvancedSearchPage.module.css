@@ -44,7 +44,7 @@
 /* Griglia delle proprietà */
 .propertiesGrid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     justify-content: center;
     padding: 20px;
@@ -135,7 +135,7 @@
 
 
 
-@media (max-width: 1200px) {
+@media screen and (max-width: 1200px) {
 
     .propertiesGrid {
         grid-template-columns: repeat(2, 1fr);
@@ -148,7 +148,12 @@
     }
 }
 
-@media (max-width: 1024px) {
+@media screen and (max-width: 1024px) {
+    .propertiesGrid {
+        grid-template-columns: 1fr;
+        /* Una colonna su schermi piccoli */
+    }
+
     .container {
         flex-direction: column;
         align-items: center;
@@ -187,14 +192,14 @@
     }
 }
 
-@media (max-width: 900px) {
+@media screen and (max-width: 900px) {
     .propertiesGrid {
         grid-template-columns: 1fr;
         /* Una colonna su schermi piccoli */
     }
 }
 
-@media (max-width: 576px) {
+@media screen and (max-width: 576px) {
     .propertiesGrid {
         grid-template-columns: 1fr;
         /* Una colonna sola */
