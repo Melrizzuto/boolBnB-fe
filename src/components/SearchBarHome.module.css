@@ -1,11 +1,11 @@
-.form{
+.form {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
 }
 
-.searchBar{
+.searchBar {
     width: 100%;
     padding: 12px 50px;
     border: 1px solid var(--border-color);
@@ -16,7 +16,9 @@
     color: var(--text-color);
     transition: border 0.3s ease-in-out;
 }
-.btn{
+
+.btn {
+    width: 250px;
     background: var(--accent-color);
     color: var(--background-color);
     font-size: 14px;
@@ -29,7 +31,7 @@
     gap: 8px;
     transition: all 0.3s ease-in-out;
     border: 2px solid var(--border-color);
-    
+
 }
 
 
@@ -40,7 +42,9 @@
 }
 
 @media screen and (max-width: 768px) {
-    .btn{
+    .btn {
         display: none;
     }
-};
+}
+
+;

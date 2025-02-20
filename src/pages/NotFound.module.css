@@ -1,0 +1,103 @@
+/* Container per la pagina 404 (Not Found) */
+.notFoundContainer {
+    display: flex;
+    /* Utilizzo Flexbox per allineare il contenuto */
+    justify-content: center;
+    /* Centra orizzontalmente il contenuto */
+    align-items: center;
+    /* Centra verticalmente il contenuto */
+    height: 75vh;
+    /* Imposto l'altezza al 75% dell'altezza della finestra */
+    background: linear-gradient(50deg, var(--section-background), var(--primary-color));
+    /* Gradiente diagonale tra due colori */
+    color: var(--accent-color);
+    /* Imposto il colore del testo su bianco */
+    font-family: 'Arial', sans-serif;
+    /* Imposto il font su Arial, con sans-serif come fallback */
+    text-align: center;
+    /* Centra il testo */
+    border: 3px solid var(--border-color);
+}
+
+/* Animazione del contenuto della pagina 404 */
+.notFoundContent {
+    transform: scale(1.1);
+    /* Aumento leggermente la dimensione del contenuto */
+    animation: fadeIn 1s ease-out forwards;
+    /* Animazione di apparizione (fadeIn) */
+}
+
+/* Stile per l'intestazione (numero di errore 404) */
+.heading {
+    font-size: 120px;
+    /* Imposto una dimensione del font molto grande per l'intestazione */
+    margin-bottom: 20px;
+    /* Aggiungo spazio sotto l'intestazione */
+    font-weight: bold;
+    /* Imposto il testo in grassetto */
+    animation: bounce 1s infinite alternate;
+    /* Animazione di rimbalzo (bounce) in loop */
+}
+
+/* Messaggio di errore */
+.message {
+
+    font-size: 24px;
+    /* Imposto la dimensione del font per il messaggio */
+    margin-bottom: 30px;
+    /* Aggiungo spazio sotto il messaggio */
+    color: var(--accent-color);
+    /* Imposto il colore del testo su bianco */
+}
+
+/* Link per tornare alla home */
+.homeLink {
+    width: 200px;
+    margin-top: 30px;
+    background-color: rgb(52, 51, 51);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 40px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    text-align: center;
+    display: inline-block;
+}
+
+/* Stile del link quando viene hoverato */
+.homeLink:hover {
+    transform: scale(1.05);
+}
+
+/* Animazione di fade-in per l'apparizione del contenuto */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        /* Parte dall'opacità 0 */
+    }
+
+    to {
+        opacity: 1;
+        /* Arriva a un'opacità di 1 (completamente visibile) */
+    }
+}
+
+/* Animazione di rimbalzo per l'intestazione */
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+        /* Inizia senza spostamento verticale */
+    }
+
+    50% {
+        transform: translateY(-20px);
+        /* Rimbalza verso l'alto di 20px */
+    }
+
+    100% {
+        transform: translateY(0);
+        /* Torna alla posizione originale */
+    }
+}
