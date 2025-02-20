@@ -27,7 +27,7 @@
     justify-content: center;
     transition: transform 0.3s ease-in-out;
     flex: 1;
-    min-width: 280px;
+    min-width: 450px;
     max-width: 100%;
     width: auto;
 }
