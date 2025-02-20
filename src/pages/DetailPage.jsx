@@ -126,14 +126,22 @@ const DetailPage = () => {
 
     const cover = `http://localhost:3000/public/${property.cover_img}`;
 
+    // creo un array temporaneo con la cover img e le 4 imamgini per il carosello
+    const allImages = property?.cover_img ? [{ img_name: property.cover_img }, ...imageSecondaryUrls] : imageSecondaryUrls;
+
 
     const nextImage = () => {
-        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageSecondaryUrls.length);
+        setCurrentImageIndex((prevIndex) =>
+            (prevIndex + 1) % allImages.length
+        );
     };
 
     const prevImage = () => {
-        setCurrentImageIndex((prevIndex) => (prevIndex - 1 + imageSecondaryUrls.length) % imageSecondaryUrls.length);
+        setCurrentImageIndex((prevIndex) =>
+            (prevIndex - 1 + allImages.length) % allImages.length
+        );
     };
+
 
     return (
         <div className={styles.container}>
@@ -172,21 +180,17 @@ const DetailPage = () => {
                     </div>
 
                     {/* CAROSELLO OVERLAY */}
-                    {showCarousel && (
+                    {showCarousel && allImages.length > 0 && (
                         <div className={styles.carouselOverlay}>
                             <div className={styles.carouselContainer}>
                                 <FontAwesomeIcon icon={faTimes} className={styles.closeButton} onClick={() => setShowCarousel(false)} />
                                 <FontAwesomeIcon icon={faArrowLeft} className={styles.arrowLeft} onClick={prevImage} />
 
-                                {/* Combina `cover_img` e `imageSecondaryUrls` solo qui */}
-                                {imageSecondaryUrls.length > 0 && (
-                                    <img
-                                        src={`http://localhost:3000/public/${currentImageIndex === 0 ? property.cover_img : imageSecondaryUrls[currentImageIndex - 1]?.img_name
-                                            }`}
-                                        alt={`Slide ${currentImageIndex + 1}`}
-                                        className={styles.carouselImage}
-                                    />
-                                )}
+                                <img
+                                    src={`http://localhost:3000/public/${allImages[currentImageIndex]?.img_name}`}
+                                    alt={`Slide ${currentImageIndex + 1}`}
+                                    className={styles.carouselImage}
+                                />
 
                                 <FontAwesomeIcon icon={faArrowRight} className={styles.arrowRight} onClick={nextImage} />
                             </div>
