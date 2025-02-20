@@ -48,7 +48,6 @@
 
 
 /***********MEDIA QUERIES***********/
-
 @media screen and (max-width:902px) {
     .btn {
         max-width: 170px;
