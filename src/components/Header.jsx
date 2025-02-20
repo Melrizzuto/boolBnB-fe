@@ -26,27 +26,26 @@ function Header() {
                     BOOLBNB
                 </Link>
 
-                 {/* Bottone Hamburger (visibile solo sotto i 548px) */}
-                 {(location.pathname !== "/search" && location.pathname !== "/add") && 
-                    <button 
-                        className={styles.hamburger} 
+                {/* Bottone Hamburger (visibile solo sotto i 548px) */}
+                {(location.pathname !== "/search" && location.pathname !== "/add") &&
+                    <button
+                        className={styles.hamburger}
                         onClick={() => setMenuOpen(!menuOpen)}
                     >
                         {menuOpen ? <FaTimes /> : <FaBars />}
                     </button>
-                 }
-                
+                }
+
 
                 {/* NAVBAR MOBILE*/}
                 <div className={`${styles.mobileMenu} ${menuOpen ? styles.open : ""}`}>
-                    {(location.pathname !== "/search" && location.pathname !== "/add") && <div className={styles.searchContainer}>Cerca: <SearchBarHome /></div>}
+                    {(location.pathname !== "/search" && location.pathname !== "/add") && <div className={styles.searchContainer}> <SearchBarHome /></div>}
                     <div className="d-flex align-items-center">
-                        <span className="pe-2">Aggiungi un nuovo immobile:</span>
                         <Link to="/add" className={styles.addButton} onClick={() => setMenuOpen(false)}>
-                            <FaHome /> <span className={styles.textBtn}>Add new</span>
+                            <FaHome className="mx-1" /> Add new
                         </Link>
                     </div>
-                    
+
                 </div>
 
                 {/* NAVBAR DESKTOP */}
@@ -54,7 +53,7 @@ function Header() {
                     {(location.pathname !== "/search" && location.pathname !== "/add") && <SearchBarHome />}
                     <Link to="/add" className={styles.addButton}>
                         <FaHome /> <span className={styles.textBtn}>Add new</span>
-                    </Link>    
+                    </Link>
                 </div>
             </div>
         </header>

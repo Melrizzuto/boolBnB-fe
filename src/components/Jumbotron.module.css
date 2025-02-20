@@ -36,7 +36,7 @@
 }
 
 .buttonContainer {
-    position: absolute;
+    margin-top: 50px;
     bottom: 150px;
     display: flex;
     gap: 15px;
@@ -74,34 +74,125 @@
 }
 
 
-@media screen and (max-width: 576px) {
-    .title {
-        font-size: 60px;
+
+/******* MEDIA QUERIES *******/
+/*  Schermi molto grandi: 2000px */
+@media screen and (max-width: 2000px) {
+    .container {
+        max-width: 1600px;
     }
 
-    .buttonContainer {
-        flex-direction: column;
-    }
-
-    .btnOutline {
-        margin: auto;
+    .jumbotron {
+        min-height: 100vh;
     }
 }
 
-@media screen and (max-width: 492px) {
+/* Schermi grandi: 1200px */
+@media screen and (max-width: 1200px) {
+    .container {
+        padding: 50px;
+    }
+
+    .jumbotron {
+        min-height: 100vh;
+    }
+}
+
+/* Schermi medi: 768px */
+@media screen and (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        padding: 40px;
+    }
+
     .buttonContainer {
-        position: sticky;
-        bottom: 0;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .jumbotron {
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
+    }
+}
+
+/* Schermi piccoli: 576px */
+@media screen and (max-width: 576px) {
+    .container {
+        padding: 30px;
+        min-height: auto;
     }
 
     .title {
         font-size: 50px;
+        text-align: center;
+    }
+
+    .buttonContainer {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .btnOutline {
+        width: 80%;
+    }
+
+    .jumbotron {
+        width: 100%;
+        height: auto;
+        min-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Schermi molto piccoli: 368px */
+@media screen and (max-width: 368px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: auto;
+        padding: 20px;
+    }
+
+    .title {
+        font-size: 45px;
+        text-align: center;
     }
 
     .subtitle {
-        font-size: 20px;
-        padding-bottom: 10px
+        font-size: 18px;
+        padding-bottom: 10px;
     }
 
+    .buttonContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
 
+    .btnOutline {
+        width: 90%;
+        margin: 10px auto;
+    }
+
+    .jumbotron {
+        width: 100%;
+        height: auto;
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
 }

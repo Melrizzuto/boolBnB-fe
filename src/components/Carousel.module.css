@@ -23,7 +23,6 @@
 
 /* Stile per ogni slide */
 .carouselItem {
-
     display: flex;
     justify-content: center;
     transition: transform 0.3s ease-in-out;
@@ -32,6 +31,8 @@
 .carouselItem:hover {
     transform: scale(1.01);
 }
+
+
 
 .swiper {
     width: 100%;
@@ -85,4 +86,178 @@
 .next {
     position: absolute;
     right: -80px;
+}
+
+
+/******* MEDIA QUERIES *******/
+
+/* Schermi piccoli: 900px */
+@media screen and (max-width: 900px) {
+    .swiper {
+        padding: 40px;
+        /* Riduce il padding per non schiacciare le card */
+    }
+
+    .carouselItem {
+        flex-direction: column;
+        /* Se serve, allinea le card in colonna */
+    }
+
+    .navButton {
+        width: 50px;
+        height: 50px;
+    }
+
+    .navButton svg {
+        width: 40px;
+        height: 20px;
+    }
+
+    .prev {
+        left: -50px;
+        /* Avvicina le frecce al carosello */
+    }
+
+    .next {
+        right: -50px;
+    }
+}
+
+/* Tablet: 768px */
+@media screen and (max-width: 768px) {
+    .swiper {
+        padding: 30px;
+    }
+
+    .carouselItem {
+        flex-direction: column;
+    }
+
+    .navWrapper {
+        width: 100%;
+        gap: 10px;
+        /* Riduce la distanza tra gli elementi */
+    }
+
+    .navButton {
+        width: 45px;
+        height: 45px;
+    }
+
+    .navButton svg {
+        width: 35px;
+        height: 18px;
+    }
+
+    .prev {
+        left: -40px;
+    }
+
+    .next {
+        right: -40px;
+    }
+}
+
+/* Schermi molto piccoli: 576px */
+@media screen and (max-width: 576px) {
+    .swiper {
+        padding: 20px;
+    }
+
+    .carouselItem {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navButton {
+        width: 40px;
+        height: 40px;
+    }
+
+    .navButton svg {
+        width: 30px;
+        height: 15px;
+    }
+
+    .prev {
+        left: -30px;
+    }
+
+    .next {
+        right: -30px;
+    }
+}
+
+/* Schermi extra piccoli: 400px */
+@media screen and (max-width: 400px) {
+    .swiper {
+        padding: 10px;
+    }
+
+    .carouselItem {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navButton {
+        width: 50px;
+        height: 35px;
+    }
+
+    .navButton svg {
+        width: 25px;
+        height: 12px;
+    }
+
+    .prev {
+        left: -20px;
+    }
+
+    .next {
+        right: -20px;
+    }
+}
+
+/* Schermi extra piccoli: 368px */
+@media screen and (max-width: 368px) {
+    .swiper {
+        padding: 20px;
+        /* Riduce ulteriormente il padding */
+    }
+
+    .carouselItem img {
+        display: none;
+    }
+
+    .carouselItem {
+        width: 100px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navWrapper {
+        width: 100%;
+        gap: 5px;
+        /* Diminuisce lo spazio tra gli elementi */
+    }
+
+    .navButton {
+        width: 30px;
+        height: 30px;
+    }
+
+    .navButton svg {
+        width: 20px;
+        height: 10px;
+    }
+
+    .prev {
+        left: -15px;
+        /* Avvicina ancora di più le frecce */
+    }
+
+    .next {
+        right: -15px;
+    }
+
 }
