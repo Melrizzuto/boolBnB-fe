@@ -13,7 +13,7 @@ export default function Card({ property, slug }) {
             <img src={imageUrl} className={`card-img-top ${styles.cardImage}`} alt={property.title} />
             <div className={`card-body ${styles.cardBody}`}>
                 <h5 className="card-title text-center">{property.title}</h5>
-                <div className={styles.smallText}>
+                <div className={`${styles.smallText} text-center`}>
                     <FontAwesomeIcon icon={faMapMarkerAlt} className="mx-2" /> {property.address}, {property.city}
                 </div>
                 <div className="d-flex gap-3">
