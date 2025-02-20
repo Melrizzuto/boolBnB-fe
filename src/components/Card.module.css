@@ -176,7 +176,7 @@
 @media screen and (max-width: 768px) {
 
     .smallText {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
     }
 
     .cardItem {
@@ -211,6 +211,55 @@
         padding: 20px;
         justify-content: unset;
         align-items: center;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .cardItem {
+        min-width: 100px;
+        max-width: 350px;
+        min-height: 350px;
+        max-height: 350px;
+        width: 100%;
+        background: var(--card-background);
+        padding: 10px;
+        border-radius: 10px;
+        border: 3px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        aspect-ratio: 3 / 4;
+        /* Mantiene proporzioni uniformi */
+    }
+
+
+
+    h5 {
+        font-size: 0.7rem;
+    }
+
+    .smallText {
+        font-size: 0;
+    }
+
+    .cardItem {
+        min-width: 100px;
+        max-width: 350px;
+        min-height: 150px;
+        max-height: 330px;
+        border: 2px solid var(--border-color);
+        padding: 6px;
+        aspect-ratio: 3 / 5;
+    }
+
+    .cardImage {
+        height: 120px;
+        aspect-ratio: 16 / 10;
+    }
+
+    .btnGreen {
+        font-size: 12px;
+        padding: 8px 16px;
     }
 }
 
