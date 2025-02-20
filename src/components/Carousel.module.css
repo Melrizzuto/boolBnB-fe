@@ -139,7 +139,7 @@
 
     .carouselItem {
         flex-direction: column;
-        min-width: 270px;
+        min-width: 280px;
         max-width: 102%;
     }
 
@@ -176,14 +176,12 @@
 
     .carouselItem {
         flex-direction: column;
-        /* Se serve, allinea le card in colonna */
-        min-width: 100px;
-        max-width: 100%;
-        align-content: center;
+        min-width: 250px;
+        max-width: 102%;
     }
 
     .carouselItem img {
-        height: 25%;
+        height: 40%;
     }
 
     .navButton {
