@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import styles from "./FormProperties.module.css";
@@ -29,6 +29,8 @@ function FormProperties() {
     const [coverImgPreviews, setCoverImgPreviews] = useState([]);
     const [secondaryImages, setSecondaryImages] = useState([]);
     const [secondaryImagesPreviews, setSecondaryImagesPreviews] = useState([]);
+    const coverImgRef = useRef(null);
+    const secondaryImagesRef = useRef(null);
 
     const defaultPlaceholders = {
         title: "Enter a title",
@@ -189,6 +191,12 @@ function FormProperties() {
         setErrorMessage({});
         setIsFormValid(null);
         setFeedbackMessage(null);
+        setCoverImg(null);
+        setCoverImgPreviews(null);
+        setSecondaryImages([]);
+        setSecondaryImagesPreviews([]);
+        if (coverImgRef.current) coverImgRef.current.value = "";
+        if (secondaryImagesRef.current) secondaryImagesRef.current.value = "";
     }
 
     function validateForm() {
@@ -353,6 +361,7 @@ function FormProperties() {
                         <div className={styles.formPropertiesGroup}>
                             <label htmlFor="cover_image">Cover image</label>
                             <input
+                                ref={coverImgRef}
                                 id="image"
                                 type="file"
                                 name="cover_img"
@@ -374,6 +383,7 @@ function FormProperties() {
                             )}
                             <label htmlFor="images">Secondary images</label>
                             <input
+                                ref={secondaryImagesRef}
                                 id="image"
                                 type="file"
                                 name="images"
