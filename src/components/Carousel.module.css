@@ -26,6 +26,9 @@
     display: flex;
     justify-content: center;
     transition: transform 0.3s ease-in-out;
+    flex: 1;
+    min-width: 500px;
+    max-width: 100%;
 }
 
 .carouselItem:hover {
@@ -42,7 +45,8 @@
     position: relative;
     overflow: hidden;
     list-style: none;
-    padding: 80px;
+    padding: 20px;
+    /* Da 80px a 20px */
     z-index: 1;
     display: block;
 }
