@@ -5,8 +5,8 @@ import SearchBar from '../components/SearchBar';
 import Filters from '../components/Filters';
 import Card from '../components/Card';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAnglesLeft, faAnglesRight } from "@fortawesome/free-solid-svg-icons";
-import styles from './AdvancedSearchPage.module.css'; // Importa il CSS Module
+import { faAnglesLeft, faAnglesRight, faSliders, faTimes } from "@fortawesome/free-solid-svg-icons";
+import styles from './AdvancedSearchPage.module.css';
 
 const AdvancedSearchPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -14,7 +14,7 @@ const AdvancedSearchPage = () => {
 
     const searchTerm = searchParams.get('searchTerm') || "";
     const currentPage = parseInt(searchParams.get('page')) || 1;
-    const limit = 3;  // Puoi cambiare questo numero in base alle tue necessità
+    const limit = 3;
 
     const [filters, setFilters] = useState({
         minRooms: searchParams.get('minRooms') || '',
@@ -41,8 +41,12 @@ const AdvancedSearchPage = () => {
         totalResults: 0,
         totalPages: 0
     });
+    const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
-    // Fetch property types
+    const toggleFilters = () => {
+        setIsFiltersOpen(prev => !prev);
+    };
+
     useEffect(() => {
         const fetchPropertyTypes = async () => {
             try {
@@ -57,12 +61,11 @@ const AdvancedSearchPage = () => {
         fetchPropertyTypes();
     }, []);
 
-    // Search properties
     useEffect(() => {
         const searchProperties = async () => {
             setIsSearching(true);
             const params = Object.fromEntries(searchParams.entries());
-            params.page = currentPage;  // Imposta il parametro 'page' nei params
+            params.page = currentPage;
 
             try {
                 setLoading(true);
@@ -86,20 +89,17 @@ const AdvancedSearchPage = () => {
     const handleFilterChange = (updatedFilters) => {
         const newParams = new URLSearchParams();
 
-        // Aggiungi solo i filtri con valori validi
         Object.entries(updatedFilters).forEach(([key, value]) => {
-            if (value !== "" && value != null) { // Esclude stringhe vuote e null/undefined
+            if (value !== "" && value != null) {
                 newParams.set(key, value);
             }
         });
 
-        // Mantieni il searchTerm solo se presente
         if (searchTerm) {
             newParams.set('searchTerm', searchTerm);
         }
 
-        // Aggiorna i searchParams
-        setSearchParams(newParams);  // Questo aggiornerà immediatamente l'URL con i nuovi filtri
+        setSearchParams(newParams);
     };
 
     const handleSearch = (newSearchTerm) => {
@@ -120,14 +120,44 @@ const AdvancedSearchPage = () => {
 
     const handleResetAll = () => {
         setSearchParams(new URLSearchParams());
-    }
+    };
 
     return (
         <div className={styles.container}>
             <div className={styles.mainContent}>
+
+                {/* Searchbar */}
                 <SearchBar onSearch={handleSearch} searchTerm={searchTerm} />
+
                 <p className={styles.subtitle}>Begin your search for the perfect stay</p>
 
+                {/* Bottone per mostrare/nascondere i filtri */}
+                <button className={styles.filtersAccordion} onClick={toggleFilters}>
+                    {isFiltersOpen ? (
+                        <>
+                            Filters <FontAwesomeIcon icon={faTimes} className='mx-2' />
+                        </>
+                    ) : (
+                        <>
+                            Filters <FontAwesomeIcon icon={faSliders} className='mx-2' />
+                        </>
+                    )}
+                </button>
+
+
+                {/* Sezione filtri */}
+                {window.innerWidth > 1024 || isFiltersOpen ? (
+                    <div className={`${styles.sidebar} ${isFiltersOpen ? styles.show : ""}`}>
+                        <Filters onFilterChange={handleFilterChange} filters={filters} propertyTypes={propertyTypes} />
+                        <div className={styles.buttonContainer}>
+                            <button onClick={handleResetAll} className={styles.resetButton}>
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                ) : null}
+
+                {/* Risultati di ricerca */}
                 {loading || isSearching ? (
                     <p>Loading results...</p>
                 ) : properties.length > 0 ? (
@@ -149,11 +179,11 @@ const AdvancedSearchPage = () => {
                 {/* Paginazione */}
                 <div className={styles.pagination}>
                     <button
-                        className={styles.prevNextBtn}
+                        className={styles.prevNextArrow}
                         onClick={() => handlePagination(1)}
                         disabled={currentPage <= 1}
                     >
-                        <FontAwesomeIcon icon={faAnglesLeft} /> {/* Doppia freccia a sinistra */}
+                        <FontAwesomeIcon icon={faAnglesLeft} />
                     </button>
                     <button
                         className={styles.prevNextBtn}
@@ -171,30 +201,17 @@ const AdvancedSearchPage = () => {
                         Next
                     </button>
                     <button
-                        className={styles.prevNextBtn}
-                        onClick={() => handlePagination(pagination.totalPages)} // Ultima pagina
+                        className={styles.prevNextArrow}
+                        onClick={() => handlePagination(pagination.totalPages)}
                         disabled={currentPage >= pagination.totalPages}
                     >
-                        <FontAwesomeIcon icon={faAnglesRight} /> {/* Doppia freccia a sinistra */}
+                        <FontAwesomeIcon icon={faAnglesRight} />
                     </button>
                 </div>
             </div>
 
-            {/* Sidebar con i filtri */}
-            <div className={styles.sidebar}>
-                <Filters
-                    onFilterChange={handleFilterChange}
-                    filters={filters}
-                    propertyTypes={propertyTypes}
-                />
-                <div className={styles.buttonContainer}>
-                    <button onClick={handleResetAll} className={styles.resetButton}>
-                        Reset
-                    </button>
-                </div>
-            </div>
         </div>
     );
-}
+};
 
 export default AdvancedSearchPage;

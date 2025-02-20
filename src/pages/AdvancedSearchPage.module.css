@@ -2,18 +2,40 @@
     display: flex;
     gap: 20px;
     padding: 20px;
-    min-height: calc(100vh - 220px);
+    min-height: calc(100vh - 160px);
+    /* Riduce un po' la parte inferiore per non coprire la pagina */
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 /* Sidebar con larghezza minima fissa */
 .sidebar {
-    flex: 0 0 250px;
-    /* Larghezza fissa di almeno 250px */
+    width: 25vw;
+    height: 100%;
+    padding: 20px;
+    position: absolute;
+    top: 160px;
+    right: 0;
+    /* Allineato a destra */
+    transition: all 0.3s ease;
 }
+
+/* Quando il bottone filtersAccordion è attivo */
+.sidebar.show {
+    position: relative;
+    /* Cambia la posizione per spostarla sopra il contenuto */
+    top: 0;
+    /* La sidebar si posiziona in alto */
+    width: 100%;
+    /* La larghezza diventa piena per adattarsi al contenuto */
+    display: block;
+}
+
 
 /* Contenuto principale */
 .mainContent {
-    flex: 1;
+    flex: 0 0 75%;
+    /* 75% della larghezza per i risultati */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,7 +48,6 @@
     gap: 20px;
     justify-content: center;
     padding: 20px;
-
 }
 
 /* Stile per il testo sotto la search bar */
@@ -78,7 +99,8 @@
     margin-top: 20px;
 }
 
-.prevNextBtn {
+.prevNextBtn,
+.prevNextArrow {
     background-color: #4C40F7;
     color: white;
     padding: 10px 20px;
@@ -88,35 +110,97 @@
     transition: background-color 0.3s, transform 0.2s;
 }
 
-.prevNextBtn:disabled {
+.prevNextBtn:disabled,
+.prevNextArrow:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
     border: none;
 }
 
-.prevNextBtn:hover {
+.prevNextBtn:hover,
+.prevNextArrow:hover {
     background-color: #E7FE78;
     color: #222;
     transform: scale(1.05);
 }
 
-.prevNextBtn:disabled:hover {
+.prevNextBtn:disabled:hover,
+.prevNextArrow:disabled:hover {
     background-color: #cccccc;
 }
 
-/* Responsive: su mobile mostra una sola colonna */
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
+.filtersAccordion {
+    display: none;
+}
+
+
+
+@media (max-width: 1200px) {
+
+    .propertiesGrid {
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+        /* Impedisce overflow */
     }
 
     .sidebar {
-        width: 100%;
-        /* Occupa tutta la larghezza su mobile */
+        display: block;
+    }
+}
+
+@media (max-width: 1024px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow-x: hidden;
     }
 
+    .filtersAccordion {
+        display: block;
+        /* Appare il bottone */
+        width: auto;
+        text-align: center;
+        padding: 15px;
+        background-color: #4C40F7;
+        color: white;
+        border: 2px solid #000;
+        border-radius: 20px;
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
+
+    .sidebar {
+        display: none;
+        /* Nascondiamo la sidebar */
+    }
+
+    .sidebar.show {
+        display: block;
+        /* Mostriamo la sidebar quando attiva */
+        width: 80%;
+        max-width: 400px;
+        margin: 0 auto;
+        /* Centro la sidebar orizzontalmente */
+        padding: 20px;
+        background-color: #fff;
+    }
+}
+
+@media (max-width: 900px) {
     .propertiesGrid {
         grid-template-columns: 1fr;
-        /* Solo una colonna */
+        /* Una colonna su schermi piccoli */
+    }
+}
+
+@media (max-width: 576px) {
+    .propertiesGrid {
+        grid-template-columns: 1fr;
+        /* Una colonna sola */
+    }
+
+    .prevNextArrow {
+        display: none;
     }
 }
