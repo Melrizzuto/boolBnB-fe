@@ -111,7 +111,7 @@ export default function Homepage() {
                 <p className={styles.sectionDescription}>
                     Discover the best places for you!
                 </p>
-                <div className={`container my-5 ${styles.mineContainer}`} ref={cardsRef}>
+                <div className={`container my-5`} ref={cardsRef}>
                     {loading ? (
                         <p className="text-center text-white">Loading properties...</p>
                     ) : properties.length > 0 ? (
@@ -119,7 +119,7 @@ export default function Homepage() {
                             {showCard.map((property) => (
                                 <div
                                     key={property.id}
-                                    className={`${styles.cardContainer} ${showCard.length > 0 ? styles.visible : ""}`}>
+                                    className={` ${showCard.length > 0 ? styles.visible : ""}`}>
                                     <Card property={property} slug={property.slug} />
                                 </div>
                             ))}
@@ -129,7 +129,7 @@ export default function Homepage() {
                     )}
 
                     {visibleCount < properties.length && (
-                        <div>
+                        <div className="d-flex justify-content-center align-items-center">
                             <button onClick={showAll} className={styles.seeMoreandLessBtns}>
                                 Show more
                             </button>
@@ -137,7 +137,7 @@ export default function Homepage() {
                     )}
 
                     {visibleCount > 9 && (
-                        <div>
+                        <div className="d-flex justify-content-center align-items-center">
                             <button onClick={showLess} className={styles.seeMoreandLessBtns}>
                                 Show less
                             </button>
