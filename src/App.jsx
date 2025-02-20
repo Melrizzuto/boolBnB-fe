@@ -4,6 +4,7 @@ import Homepage from './pages/Homepage';
 import DetailPage from './pages/DetailPage';
 import AdvancedSearchPage from './pages/AdvancedSearchPage';
 import NewPropertyPage from './pages/NewPropertyPage';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="properties/:slug" element={<DetailPage />} />
           <Route path="search" element={<AdvancedSearchPage />} />
           <Route path="add" element={<NewPropertyPage />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </Router>
