@@ -187,6 +187,61 @@
 }
 
 
+
+
+@media screen and (max-width: 596px) {
+    .addButton {
+        width: 50px;
+        background: var(--secondary-color);
+        color: var(--background-color);
+        font-size: 14px;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 10px 18px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease-in-out;
+        border: 2px solid var(--border-color);
+        height: 45px;
+    }
+
+    .textBtn {
+        display: none;
+    }
+
+    .searchButton,
+    .addButton {
+        padding: 10px 14px;
+        border-radius: 15px;
+        gap: 0px;
+    }
+
+}
+
+
+@media screen and (max-width: 576px) {
+    .addButton {
+        width: 50px;
+        background: var(--secondary-color);
+        color: var(--background-color);
+        font-size: 14px;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 10px 18px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease-in-out;
+        border: 2px solid var(--border-color);
+        height: 45px;
+    }
+
+}
+
+
 @media (max-width: 548px) {
 
     /* Mostra il bottone hamburger */
@@ -207,18 +262,4 @@
         background-color: #d4c2e7;
         color: black;
     }
-}
-
-@media screen and (max-width: 596px) {
-    .textBtn {
-        display: none;
-    }
-
-    .searchButton,
-    .addButton {
-        padding: 10px 14px;
-        border-radius: 15px;
-        gap: 0px;
-    }
-
 }
