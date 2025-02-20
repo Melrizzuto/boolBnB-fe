@@ -6,6 +6,8 @@
 
 }
 
+
+
 .searchBar {
     width: 100%;
     padding: 12px 50px;
@@ -43,10 +45,27 @@
     transform: scale(1.1);
 }
 
+
+
+/***********MEDIA QUERIES***********/
+
+@media screen and (max-width:902px) {
+    .btn {
+        max-width: 170px;
+
+    }
+
+    .searchBar {
+        width: 300px;
+        margin: 0 auto;
+    }
+
+
+
+}
+
 @media screen and (max-width: 768px) {
     .btn {
         display: none;
     }
 }
-
-;
