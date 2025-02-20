@@ -85,8 +85,9 @@ function FormProperties() {
 
     function handleSecondaryImgChange(e) {
         const files = Array.from(e.target.files);
-        if (files.length + secondaryImages.length > 4) {
-            return
+        if (files.length > 4 || secondaryImages.length + files.length > 4) {
+            alert("Puoi caricare massimo 4 immagini");
+            return;
         }
         setSecondaryImages((prev) => [...prev, ...files]);
         const newPreviews = files.map((file) => URL.createObjectURL(file));
@@ -116,35 +117,6 @@ function FormProperties() {
 
         if (!validateForm()) return;
         try {
-            /*const newProperty = {
-                title: formData.title,
-                type_id: parseInt(formData.type_id, 10) || null,
-                address: formData.address,
-                city: formData.city,
-                num_rooms: parseInt(formData.num_rooms, 10) || 0,
-                num_beds: parseInt(formData.num_beds, 10) || 0,
-                num_bathrooms: parseInt(formData.num_bathrooms, 10) || 0,
-                square_meters: parseInt(formData.square_meters, 10) || 0,
-                description: formData.description.trim() || "No description available",
-                image: formData.images.trim() || "https://example.com/default.jpg",
-                user_name: "Host",
-                user_email: "host@example.com",
-            };
-    
-            axios.post("http://localhost:3000/properties", newProperty)
-                .then((res) => {
-                    setPropertySlug(res.data.slug);
-                    setFeedbackMessage("✅ Property added successfully!");
-                    setFeedbackType("success");
-                    setShowModal(true);
-                    //setProperties(prevProperties => Array.isArray(prevProperties) ? [...prevProperties, res.data] : [res.data]);
-                    setFormData(initialData);
-                })
-                .catch(() => {
-                    setFeedbackMessage("❌ Error adding property. Please try again later.");
-                    setFeedbackType("error");
-                })
-    */
 
             const formDataToSend = new FormData();
             formDataToSend.append("title", formData.title);
@@ -158,7 +130,6 @@ function FormProperties() {
             formDataToSend.append("description", formData.description);
             formDataToSend.append("user_name", "Host");
             formDataToSend.append("user_email", "host@example.com");
-
             if (coverImg) {
                 formDataToSend.append("cover_img", coverImg)
             }
@@ -172,15 +143,24 @@ function FormProperties() {
 
             if (secondaryImages.length > 0) {
                 const imagesFormData = new FormData();
-                secondaryImages.forEach((img, index) => {
-                    imagesFormData.append(`images[${index}]`, img);
+                secondaryImages.forEach((img) => {
+                    imagesFormData.append('images', img);
                 });
-                console.log("Images:", imagesFormData);
-                await axios.post(
-                    `http://localhost:3000/properties/${slug}/images`,
-                    imagesFormData,
-                    { headers: { "Content-Type": "multipart/form-data" } }
-                )
+
+                try {
+                    await axios.post(
+                        `http://localhost:3000/properties/${slug}/images`,
+                        imagesFormData,
+            { 
+                headers: { 
+                    "Content-Type": "multipart/form-data",
+                } 
+            }
+        );
+    } catch (error) {
+        console.error("Errore nel caricamento delle immagini:", error);
+        throw error;
+    }
             }
             console.log("Cover Image:", coverImg);
             setFeedbackType("success");
@@ -192,53 +172,16 @@ function FormProperties() {
             setSecondaryImages([]);
             setSecondaryImagesPreviews([]);
         } catch (err) {
-            console.error("Errore nell'aggiunta della proprietà o delle immagini:", err);
-            setFeedbackMessage(
-                "❌ Error adding property or images. Please try again later."
-            );
-            setFeedbackType("error");
+            if (err.response) {
+                // Errore dal server
+                setFeedbackMessage(`❌ ${err.response.data.message}`);
+              } else {
+                setFeedbackMessage("❌ Errore di connessione.");
+              }
+              setFeedbackType("error");
+              setShowModal(true);
         }
 
-
-        /* if (formData.images.length === 1) {
-             formDataToSend.append("cover_img", formData.images[0]);
-         }
-     
-         axios
-             .post("http://localhost:3000/properties", formDataToSend, {
-                 headers: { "Content-Type": "multipart/form-data" }
-             })
-             .then((res) => {
-                 setPropertySlug(res.data.slug);
-                 setFeedbackMessage("✅ Property added successfully!");
-                 setFeedbackType("success");
-                 if (formData.images.length > 1) {
-                     const imagesFormData = new FormData();
-                     formData.images.slice(1).forEach((image) => {
-                         imagesFormData.append(`images`, image);
-                     });
-                     axios
-                         .post(`http://localhost:3000/properties/${propertySlug}/images`, imagesFormData, {
-                             headers: { "Content-Type": "multipart/form-data" }
-                         })
-                         .then(() => {
-                             setFeedbackMessage("✅ Proprietà e immagini aggiunte con successo!");
-                             setFeedbackType("success");
-                             setShowModal(true);
-                             setFormData(initialData);
-                             setImagePreviews([]);
-                         })
-                         .catch(() => {
-                             setFeedbackMessage("❌ Errore nell'aggiunta delle immagini secondarie.");
-                             setFeedbackType("error");
-                         });
-                 }
-                 console.log(images);
-             })
-             .catch(() => {
-                 setFeedbackMessage("❌ Errore nell'aggiunta della proprietà. Riprova più tardi.");
-                 setFeedbackType("error");
-             });*/
     }
 
     function handleReset() {
