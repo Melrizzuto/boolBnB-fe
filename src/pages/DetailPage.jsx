@@ -152,7 +152,7 @@ const DetailPage = () => {
                     <div className={styles.gridContainer}>
 
                         {/* Immagine principale a sinistra */}
-                        <div className={styles.mainImageContainer} onClick={() => scrollToSection(descriptionProp)}>
+                        <div className={styles.mainImageContainer} onClick={() => setShowCarousel(true)}>
                             <img src={cover} //qui devo usare l'url di coverIMG
                                 alt="Main"
                                 className={styles.mainImage} />
@@ -177,11 +177,22 @@ const DetailPage = () => {
                             <div className={styles.carouselContainer}>
                                 <FontAwesomeIcon icon={faTimes} className={styles.closeButton} onClick={() => setShowCarousel(false)} />
                                 <FontAwesomeIcon icon={faArrowLeft} className={styles.arrowLeft} onClick={prevImage} />
-                                <img src={`http://localhost:3000/public/${imageSecondaryUrls[currentImageIndex]?.img_name}`} alt={`Slide ${currentImageIndex + 1}`} className={styles.carouselImage} />
+
+                                {/* Combina `cover_img` e `imageSecondaryUrls` solo qui */}
+                                {imageSecondaryUrls.length > 0 && (
+                                    <img
+                                        src={`http://localhost:3000/public/${currentImageIndex === 0 ? property.cover_img : imageSecondaryUrls[currentImageIndex - 1]?.img_name
+                                            }`}
+                                        alt={`Slide ${currentImageIndex + 1}`}
+                                        className={styles.carouselImage}
+                                    />
+                                )}
+
                                 <FontAwesomeIcon icon={faArrowRight} className={styles.arrowRight} onClick={nextImage} />
                             </div>
                         </div>
                     )}
+
                 </div>
 
                 {/* bottoni */}

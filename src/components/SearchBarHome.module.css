@@ -2,14 +2,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
+
 }
 
 .searchBar {
     width: 100%;
     padding: 12px 50px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
+    border: 2px solid var(--border-color);
+    background-color: darkgray;
+    border-radius: 50px;
     font-size: 14px;
     font-family: 'Inter', sans-serif;
     background: var(--specs-background);
