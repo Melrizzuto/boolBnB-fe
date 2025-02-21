@@ -97,7 +97,7 @@ const DetailPage = () => {
 
         axios.get(`http://localhost:3000/properties/${mine_slug}/images`)
             .then(res => {
-                setImageSecondaryUrls(res.data);
+                setImageSecondaryUrls(res.data.slice(0, 4));
             })
             .catch(err => {
                 console.log("Error fetching secondary images:", err);
@@ -127,7 +127,9 @@ const DetailPage = () => {
     const cover = `http://localhost:3000/public/${property.cover_img}`;
 
     // creo un array temporaneo con la cover img e le 4 imamgini per il carosello
-    const allImages = property?.cover_img ? [{ img_name: property.cover_img }, ...imageSecondaryUrls] : imageSecondaryUrls;
+    const allImages = property?.cover_img
+        ? [{ img_name: property.cover_img }, ...imageSecondaryUrls.slice(0, 4)]
+        : imageSecondaryUrls.slice(0, 4);
 
 
     const nextImage = () => {
