@@ -372,15 +372,15 @@ function FormProperties() {
                                 className={styles.formPropertiesInput}
                             />
 
-                            {coverImgPreviews && (
+                            {coverImgPreviews instanceof String || typeof coverImgPreviews === "string" ? (
                                 <div>
                                     <img
                                         src={coverImgPreviews}
                                         alt="Cover Preview"
                                         style={{ width: 100, height: 100 }}
-                                    />
-                                </div>
-                            )}
+                                        />
+                                    </div>
+                                ) : null}
                             <label htmlFor="images">Secondary images</label>
                             <input
                                 ref={secondaryImagesRef}
