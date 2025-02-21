@@ -51,6 +51,7 @@
 }
 
 .cardItem {
+    margin: 0 auto;
     min-width: 400px;
     max-width: 450px;
     min-height: 300px;

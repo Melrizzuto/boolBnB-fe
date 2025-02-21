@@ -129,7 +129,7 @@ const AdvancedSearchPage = () => {
                 {/* Searchbar */}
                 <SearchBar onSearch={handleSearch} searchTerm={searchTerm} />
 
-                <p className={styles.subtitle}>Begin your search for the perfect stay</p>
+                <p className={styles.subtitle}><h2 className="m-4">Begin your search for the perfect stay</h2></p>
 
                 {/* Bottone per mostrare/nascondere i filtri */}
                 <button className={styles.filtersAccordion} onClick={toggleFilters}>
@@ -148,6 +148,7 @@ const AdvancedSearchPage = () => {
                 {/* Sezione filtri */}
                 {window.innerWidth > 1024 || isFiltersOpen ? (
                     <div className={`${styles.sidebar} ${isFiltersOpen ? styles.show : ""}`}>
+                        <h5 className='text-center my-3'>What kind of options do you need?</h5>
                         <Filters onFilterChange={handleFilterChange} filters={filters} propertyTypes={propertyTypes} />
                         <div className={styles.buttonContainer}>
                             <button onClick={handleResetAll} className={styles.resetButton}>
