@@ -169,6 +169,7 @@ function FormProperties() {
             setShowModal(true);
             // Resettare i campi
             setFormData(initialData);
+            setIsFormValid(true);
             setCoverImg(null);
             setCoverImgPreviews(null);
             setSecondaryImages([]);
@@ -205,7 +206,7 @@ function FormProperties() {
         if (!formData.title || formData.title.trim().length < 3) errors.title = "Enter a valid title.";
         if (!formData.address || formData.address.trim().length < 3) errors.address = "Enter a valid address.";
         if (!formData.city || formData.city.trim().length < 3) errors.city = "Enter a valid city.";
-        if (!formData.description || formData.description.trim().length < 30) errors.description = "Description must be at least 30 characters.";
+        if (formData.description && formData.description.trim().length < 30) errors.description = "Description must be at least 30 characters.";
         //if (!formData.images) errors.image = "Enter a valid image URL.";
         //if (!formData.images) errors.image = "Please upload an image.";
         if (!formData.num_rooms || formData.num_rooms <= 0) errors.num_rooms = "The number of rooms cannot be less than or equal to 0.";
@@ -217,7 +218,6 @@ function FormProperties() {
             setErrorMessage(errors);
             return false;
         }
-
         setIsFormValid(true);
         return true;
     }
@@ -378,10 +378,10 @@ function FormProperties() {
                                         src={coverImgPreviews}
                                         alt="Cover Preview"
                                         style={{ width: 100, height: 100 }}
-                                        />
-                                    </div>
-                                ) : null}
-                            <label htmlFor="images">Secondary images</label>
+                                    />
+                                </div>
+                            ) : null}
+                            <label htmlFor="images">Secondary images (optional)</label>
                             <input
                                 ref={secondaryImagesRef}
                                 id="image"
@@ -418,7 +418,7 @@ function FormProperties() {
 
                 {/* Riga per description */}
                 <div className={styles.formPropertiesGroup}>
-                    <label htmlFor="description">Add a description</label>
+                    <label htmlFor="description">Add a description (optional)</label>
                     <textarea
                         name="description"
                         placeholder={placeholders.description}

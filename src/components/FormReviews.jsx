@@ -182,6 +182,11 @@ function FormReviews({ updateReviews }) {
                         name="start_date"
                         value={formData.start_date}
                         onChange={handleInput}
+                        min={new Date(new Date().setMonth(new Date().getMonth() - 3))
+                            .toISOString()
+                            .split("T")[0]
+                        }
+                        max={new Date().toISOString().split("T")[0]}
                     />
                     {errorMessage.start_date && <p className={styles.errorMessage}>{errorMessage.start_date}</p>}
                 </div>
@@ -193,6 +198,11 @@ function FormReviews({ updateReviews }) {
                         name="end_date"
                         value={formData.end_date}
                         onChange={handleInput}
+                        min={new Date(new Date().setMonth(new Date().getMonth() - 3))
+                            .toISOString()
+                            .split("T")[0]
+                        }
+                        max={new Date().toISOString().split("T")[0]}
                     />
                     {errorMessage.end_date && <p className={styles.errorMessage}>{errorMessage.end_date}</p>}
                 </div>
