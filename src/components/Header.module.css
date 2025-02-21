@@ -259,6 +259,7 @@
     }
 
     .addButton {
+        width: auto;
         background-color: #d4c2e7;
         color: black;
     }
