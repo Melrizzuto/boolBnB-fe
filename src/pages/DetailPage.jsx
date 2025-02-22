@@ -86,6 +86,7 @@ const DetailPage = () => {
     useEffect(() => {
         const handleScroll = () => {
             setShowScroll(window.scrollY > window.innerHeight / 2);
+            //setShowScroll(document.documentElement.scrollTop > window.innerHeight);
         };
 
         window.addEventListener("scroll", handleScroll);
@@ -223,7 +224,7 @@ const DetailPage = () => {
                         <HeartRatingComponent icon={faHeart} className={styles.heartIcon} slug={mine_slug} />
                     </div>
 
-                     <p className={styles.description}>{property.description || "No description available."}</p>
+                    <p className={styles.description}>{property.description || "No description available."}</p>
                 </div>
                 <div className={styles.specs}>
                     <ul>

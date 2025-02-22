@@ -430,8 +430,8 @@ p {
 }
 
 .scrollToTop {
-    position: absolute;
-    bottom: 140px;
+    position: fixed;
+    bottom: 160px;
     right: 35px;
     background-color: rgba(0, 0, 0, 0.7);
     color: white;
