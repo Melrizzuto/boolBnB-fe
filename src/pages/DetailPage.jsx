@@ -223,7 +223,7 @@ const DetailPage = () => {
                         <HeartRatingComponent icon={faHeart} className={styles.heartIcon} slug={mine_slug} />
                     </div>
 
-                    <p className={styles.description}>{property.description}</p>
+                     <p className={styles.description}>{property.description || "No description available."}</p>
                 </div>
                 <div className={styles.specs}>
                     <ul>

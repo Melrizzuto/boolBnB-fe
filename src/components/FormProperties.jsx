@@ -206,7 +206,7 @@ function FormProperties() {
         if (!formData.title || formData.title.trim().length < 3) errors.title = "Enter a valid title.";
         if (!formData.address || formData.address.trim().length < 3) errors.address = "Enter a valid address.";
         if (!formData.city || formData.city.trim().length < 3) errors.city = "Enter a valid city.";
-        if (formData.description && formData.description.trim().length < 30) errors.description = "Description must be at least 30 characters.";
+        if (formData.description.trim().length < 30 && formData.description.trim().length > 0) errors.description = "Description must be at least 30 characters.";
         //if (!formData.images) errors.image = "Enter a valid image URL.";
         //if (!formData.images) errors.image = "Please upload an image.";
         if (!formData.num_rooms || formData.num_rooms <= 0) errors.num_rooms = "The number of rooms cannot be less than or equal to 0.";
