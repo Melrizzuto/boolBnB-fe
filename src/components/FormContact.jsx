@@ -12,7 +12,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 function FormContact() {
     const [formData, setFormData] = useState(initialData);
-    const [isFormValid, setIsFormValid] = useState(null);
+    const [setIsFormValid] = useState(null);
     const [errorMessage, setErrorMessage] = useState({});
     const [successMessage, setSuccessMessage] = useState("");
     const { slug } = useParams();

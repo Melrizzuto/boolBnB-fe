@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import SearchBar from '../components/SearchBar';
@@ -14,7 +14,6 @@ const AdvancedSearchPage = () => {
 
     const searchTerm = searchParams.get('searchTerm') || "";
     const currentPage = parseInt(searchParams.get('page')) || 1;
-    const limit = 3;
 
     const [filters, setFilters] = useState({
         minRooms: searchParams.get('minRooms') || '',
@@ -35,7 +34,7 @@ const AdvancedSearchPage = () => {
     const [propertyTypes, setPropertyTypes] = useState([]);
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [loadingPropertyTypes, setLoadingPropertyTypes] = useState(true);
+    const [setLoadingPropertyTypes] = useState(true);
     const [isSearching, setIsSearching] = useState(false);
     const [pagination, setPagination] = useState({
         totalResults: 0,

@@ -19,7 +19,7 @@ const initialData = {
 function FormProperties() {
     const [formData, setFormData] = useState(initialData);
     const [propertyTypes, setPropertyTypes] = useState([]);
-    const [isFormValid, setIsFormValid] = useState(null);
+    const [setIsFormValid] = useState(null);
     const [errorMessage, setErrorMessage] = useState({});
     const [feedbackMessage, setFeedbackMessage] = useState(null);
     const [feedbackType, setFeedbackType] = useState(null);
