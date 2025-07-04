@@ -20,7 +20,7 @@ export default function Homepage() {
     // Funzione per recuperare i dati dal server
     async function fetchProperties() {
         try {
-            const response = await axios.get(`http://localhost:3000/properties?page=1&limit=40`);
+            const response = await axios.get(`https://boolbnb-be.onrender.com/properties?page=1&limit=40`);
             if (response.data && Array.isArray(response.data.results)) {
                 // Ordino le proprietà in base ai likes
                 const sortedProperties = response.data.results.sort((a, b) => b.likes - a.likes);

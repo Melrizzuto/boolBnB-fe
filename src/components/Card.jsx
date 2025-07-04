@@ -6,7 +6,7 @@ import { faBed, faMapMarkerAlt, faLandmark } from '@fortawesome/free-solid-svg-i
 
 
 export default function Card({ property, slug }) {
-    const imageUrl = `http://localhost:3000/public/${property.cover_img}`;
+    const imageUrl = `https://boolbnb-be.onrender.com/public/${property.cover_img}`;
 
     return (
         <div className={`card ${styles.cardItem}`}>

@@ -50,7 +50,7 @@ const AdvancedSearchPage = () => {
     useEffect(() => {
         const fetchPropertyTypes = async () => {
             try {
-                const { data } = await axios.get('http://localhost:3000/api/property-types');
+                const { data } = await axios.get('https://boolbnb-be.onrender.com/api/property-types');
                 setPropertyTypes(data);
             } catch (error) {
                 console.error('Errore nel recupero delle tipologie:', error);
@@ -69,7 +69,7 @@ const AdvancedSearchPage = () => {
 
             try {
                 setLoading(true);
-                const { data } = await axios.get('http://localhost:3000/properties', { params });
+                const { data } = await axios.get('https://boolbnb-be.onrender.com/properties', { params });
                 setProperties(data.results);
                 setPagination({
                     totalResults: data.pagination.totalResults,

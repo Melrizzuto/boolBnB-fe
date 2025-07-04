@@ -57,7 +57,7 @@ function FormProperties() {
     const [placeholders, setPlaceholders] = useState(defaultPlaceholders);
 
     useEffect(() => {
-        axios.get("http://localhost:3000/api/property-types")
+        axios.get("https://boolbnb-be.onrender.com/api/property-types")
             .then((response) => {
                 setPropertyTypes(response.data);
             })
@@ -137,7 +137,7 @@ function FormProperties() {
             }
             console.log("Cover Image:", coverImg);
             const propRes = await axios.post(
-                "http://localhost:3000/properties",
+                "https://boolbnb-be.onrender.com/properties",
                 formDataToSend);
             const slug = propRes.data.slug;
             setPropertySlug(slug);
@@ -151,7 +151,7 @@ function FormProperties() {
 
                 try {
                     await axios.post(
-                        `http://localhost:3000/properties/${slug}/images`,
+                        `https://boolbnb-be.onrender.com/${slug}/images`,
                         imagesFormData,
                         {
                             headers: {

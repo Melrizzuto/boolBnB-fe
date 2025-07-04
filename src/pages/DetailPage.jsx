@@ -64,9 +64,9 @@ const DetailPage = () => {
         const fetchData = async () => {
             try {
                 const [propertyRes, reviewsRes, imagesRes] = await Promise.all([
-                    axios.get(`http://localhost:3000/properties/${mine_slug}`),
-                    axios.get(`http://localhost:3000/properties/${mine_slug}/reviews`),
-                    axios.get(`http://localhost:3000/properties/${mine_slug}/images`)
+                    axios.get(`https://boolbnb-be.onrender.com/properties/${mine_slug}`),
+                    axios.get(`https://boolbnb-be.onrender.com/properties/${mine_slug}/reviews`),
+                    axios.get(`https://boolbnb-be.onrender.com/properties/${mine_slug}/images`)
                 ]);
 
                 setProperty(propertyRes.data.property);
@@ -96,7 +96,7 @@ const DetailPage = () => {
     useEffect(() => {
         if (!mine_slug) return;
 
-        axios.get(`http://localhost:3000/properties/${mine_slug}/images`)
+        axios.get(`https://boolbnb-be.onrender.com/properties/${mine_slug}/images`)
             .then(res => {
                 setImageSecondaryUrls(res.data.slice(0, 4));
             })
@@ -113,7 +113,7 @@ const DetailPage = () => {
 
     const updateReviews = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/properties/${mine_slug}/reviews`);
+            const response = await axios.get(`https://boolbnb-be.onrender.com/properties/${mine_slug}/reviews`);
             setReviews(response.data.reviews || []);
         } catch {
             setReviews([]);
@@ -125,7 +125,7 @@ const DetailPage = () => {
     if (!property) return <p>Property not found.</p>;
 
 
-    const cover = `http://localhost:3000/public/${property.cover_img}`;
+    const cover = `https://boolbnb-be.onrender.com/public/${property.cover_img}`;
 
     // creo un array temporaneo con la cover img e le 4 imamgini per il carosello
     const allImages = property?.cover_img
@@ -173,7 +173,7 @@ const DetailPage = () => {
                         <div className={styles.smallImagesGrid}>
                             {imageSecondaryUrls.map((img, index) => (
                                 <div key={index} className={styles.smallImageContainer}>
-                                    <img src={`http://localhost:3000/public/${img.img_name}`} alt={`Small ${index + 1}`} className={styles.smallImage} />
+                                    <img src={`https://boolbnb-be.onrender.com/public/${img.img_name}`} alt={`Small ${index + 1}`} className={styles.smallImage} />
                                 </div>
                             ))}
                             <div className={styles.showAllPhotosButton} onClick={() => setShowCarousel(true)}>
@@ -190,7 +190,7 @@ const DetailPage = () => {
                                 <FontAwesomeIcon icon={faArrowLeft} className={styles.arrowLeft} onClick={prevImage} />
 
                                 <img
-                                    src={`http://localhost:3000/public/${allImages[currentImageIndex]?.img_name}`}
+                                    src={`https://boolbnb-be.onrender.com/public/${allImages[currentImageIndex]?.img_name}`}
                                     alt={`Slide ${currentImageIndex + 1}`}
                                     className={styles.carouselImage}
                                 />
